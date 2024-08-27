@@ -1,3 +1,84 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:react-hooks/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier"
+  ],
+
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": ["vite.config.ts", "dist/*"],
+
+  "plugins": ["@typescript-eslint", "promise", "prettier"],
+
+  "rules": {
+    // Allow throw literal
+    "@typescript-eslint/no-throw-literal": 0,
+    // Allow unused variable with prefix `_`
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_",
+        "caughtErrorsIgnorePattern": "^_"
+      }
+    ],
+    // Unknown
+    "import/extensions": 0,
+    // Order
+    "import/order": [
+      "error",
+      {
+        "groups": ["builtin", "external", "internal", "parent", "sibling"],
+        "pathGroups": [
+          { "pattern": "react", "group": "external", "position": "before" },
+          {
+            "pattern": "react-dom/**",
+            "group": "external",
+            "position": "before"
+          },
+          { "pattern": "@/**", "group": "internal" }
+        ],
+        "pathGroupsExcludedImportTypes": ["react"],
+        "newlines-between": "always"
+      }
+    ],
+    // Disable import default export
+    "import/prefer-default-export": 0,
+    // Restrict max lines
+    "max-lines": [
+      "error",
+      { "max": 300, "skipBlankLines": true, "skipComments": true }
+    ],
+    // Not allow using console
+    "no-console": ["error"],
+    // Allow reassigning state (for redux toolkit)
+    "no-param-reassign": [
+      "error",
+      { "props": true, "ignorePropertyModificationsFor": ["state"] }
+    ],
+    // Only allow using `await` instead of `then`
+    "promise/prefer-await-to-then": ["error"],
+    // useEffect dependence
+    "react-hooks/exhaustive-deps": ["error"],
+    // Not required for import React
+    "react/react-in-jsx-scope": 0,
+    // Allow spreading props
+    "react/jsx-props-no-spreading": 0,
+    // Not required for use Component.defaultProps to assign default props
+    "react/require-default-props": 0,
+    // Only allow function declaration for functional component
+    "react/function-component-definition": [
+      "error",
+      { "namedComponents": "function-declaration" }
+    ],
+    // We already use TypeScript no need to use prop-types
+    "react/prop-types": 0,
+    // Prettier
+    "prettier/prettier": ["error"]
+  }
 }
