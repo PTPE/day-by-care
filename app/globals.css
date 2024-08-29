@@ -2,32 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --color-primary: #007bff;
+    --color-secondary: ##90a4ae;
+    --color-accent: #f5a623;
+    --color-background: #ffffff;
+    --color-text: #333333;
+
+    --color-button-text: #e0e0e0;
+    --color-button-primary-bg: #007bff;
+    --color-button-primary-bg-hover: #0056b3;
+
+    --color-button-secondary-bg: #90a4ae;
+    --color-button-accent-bg: #f5a623;
+
+    --color-button-secondary-bg-hover: #7e8c8d;
+    --color-button-accent-bg-hover: #e59400;
+
+    --color-button-disabled: #b0b0b0;
+    --color-button-warning: #d9534f;
   }
-}
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
-}
+  [data-theme='dark'] {
+    --color-bg: #121212;
+    --color-text: #e0e0e0;
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
+    --color-button-secondary-hover: #4e5d6c;
+    --color-button-accent-hover: #d68e1d;
+
+    --color-button-primary-hover: #007bff;
+    --color-button-disabled: #3a3a3a;
   }
 }
