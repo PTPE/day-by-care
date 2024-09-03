@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-promise": "^7.1.0",
     "next": "14.2.5",
