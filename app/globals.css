@@ -2,36 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  width: 100vw;
+  height: 100vh;
+}
+
 @layer base {
   :root {
-    --color-primary: #007bff;
-    --color-secondary: ##90a4ae;
-    --color-accent: #f5a623;
-    --color-background: #ffffff;
-    --color-text: #333333;
+    --color-primary: 0 123 255;
+    --color-secondary: 144 164 174;
+    --color-accent: 245 166 35;
+    --color-bg: 255 255 255;
+    --color-text: 51 51 51;
 
-    --color-button-text: #e0e0e0;
-    --color-button-primary-bg: #007bff;
-    --color-button-primary-bg-hover: #0056b3;
+    --color-button-text: 224 224 224;
 
-    --color-button-secondary-bg: #90a4ae;
-    --color-button-accent-bg: #f5a623;
+    --color-button-primary-bg: 0 123 255;
+    --color-button-primary-bg-hover: 0 86 179;
 
-    --color-button-secondary-bg-hover: #7e8c8d;
-    --color-button-accent-bg-hover: #e59400;
+    --color-button-secondary-bg: 144 164 174;
+    --color-button-secondary-bg-hover: 126 140 141;
 
-    --color-button-disabled: #b0b0b0;
-    --color-button-warning: #d9534f;
+    --color-button-accent-bg: 245 166 35;
+    --color-button-accent-bg-hover: 229 148 0;
+
+    --color-button-disabled: 176 176 176;
+    --color-button-warning: 217 83 79;
   }
 
   [data-theme='dark'] {
-    --color-bg: #121212;
-    --color-text: #e0e0e0;
+    --color-bg: 18 18 18;
+    --color-text: 224 224 224;
 
-    --color-button-secondary-hover: #4e5d6c;
-    --color-button-accent-hover: #d68e1d;
+    --color-button-secondary-hover: 78 93 108;
+    --color-button-accent-hover: 214 142 29;
 
-    --color-button-primary-hover: #007bff;
-    --color-button-disabled: #3a3a3a;
+    --color-button-primary-hover: 0 123 255;
+    --color-button-disabled: 58 58 58;
   }
 }
