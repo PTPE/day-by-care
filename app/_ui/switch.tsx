@@ -29,6 +29,7 @@ const switchVariants = cva(
 type Props = React.LabelHTMLAttributes<HTMLLabelElement> &
   VariantProps<typeof switchVariants> & {
     onChange?: (checked: boolean) => void;
+    defaultChecked?: boolean;
     leftOption?: {
       render?: React.ReactNode;
       color?: ClassValue;
@@ -40,10 +41,13 @@ type Props = React.LabelHTMLAttributes<HTMLLabelElement> &
   };
 
 const Switch = forwardRef<HTMLDivElement, Props>(
-  ({ size, rightOption, leftOption, className, onChange }, ref) => {
+  (
+    { size, rightOption, leftOption, className, onChange, defaultChecked },
+    ref
+  ) => {
     const id = uuid();
 
-    const [checked, setChecked] = useState(false);
+    const [checked, setChecked] = useState(defaultChecked || false);
 
     const leftOptionColor = {
       switchBgColor: rightOption?.color
@@ -68,6 +72,7 @@ const Switch = forwardRef<HTMLDivElement, Props>(
           type="checkbox"
           id={id}
           className="hidden"
+          checked={checked}
           onChange={(e) => {
             setChecked(e.target.checked);
             onChange?.(e.target.checked);
