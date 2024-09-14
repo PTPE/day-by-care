@@ -93,7 +93,7 @@ const Switch = forwardRef<HTMLDivElement, Props>(
           />
 
           {leftOption?.render && !checked && (
-            <div className="absolute w-1/2 translate-x-[calc(100%_-_4px)] -z-10 grow flex justify-center items-center">
+            <div className="absolute w-1/2 translate-x-[calc(100%_-_4px)] grow flex justify-center items-center">
               <span className="block">{leftOption.render}</span>
             </div>
           )}
