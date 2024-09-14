@@ -20,7 +20,7 @@
     /* Alias */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["app/*"]
     },
     "allowJs": true,
     "incremental": true,
