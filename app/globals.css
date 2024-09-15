@@ -21,6 +21,7 @@ body {
     --color-accent: 245 166 35;
     --color-bg: 255 255 255;
     --color-text: 51 51 51;
+    --color-line: 220 220 220;
 
     --color-button-text: 224 224 224;
 
@@ -40,6 +41,7 @@ body {
   [data-theme='dark'] {
     --color-bg: 18 18 18;
     --color-text: 224 224 224;
+    --color-line: 100 100 100;
 
     --color-button-secondary-hover: 78 93 108;
     --color-button-accent-hover: 214 142 29;

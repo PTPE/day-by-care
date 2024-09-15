@@ -20,6 +20,7 @@ export default function ThemeToggler() {
       defaultChecked={theme === 'light'}
       rightOption={{ render: <Sun /> }}
       leftOption={{ render: <Moon /> }}
+      size="md"
     />
   );
 }

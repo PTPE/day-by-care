@@ -17,6 +17,7 @@ const config: Config = {
         primary: 'rgb(var(--color-primary))',
         secondary: 'rgb(var(--color-secondary))',
         accent: 'rgb(var(--color-accent))',
+        line: 'rgb(var(--color-line))',
 
         'button-primary-text': 'rgb(var(--color-button-primary-text))',
       },
