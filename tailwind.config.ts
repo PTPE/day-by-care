@@ -18,8 +18,6 @@ const config: Config = {
         secondary: 'rgb(var(--color-secondary))',
         accent: 'rgb(var(--color-accent))',
         line: 'rgb(var(--color-line))',
-
-        'button-primary-text': 'rgb(var(--color-button-primary-text))',
       },
       backgroundColor: {
         primary: 'rgb(var(--color-bg))',
@@ -31,8 +29,12 @@ const config: Config = {
         'button-accent-hover': 'rgb(var(--color-button-accent-bg-hover))',
       },
       textColor: {
-        primary: 'rgb(var(--color-text))',
-        'button-primary': 'rgb(var(--color-button-text))',
+        primary: 'rgb(var(--color-primary))',
+        secondary: 'rgb(var(--color-secondary))',
+        accent: 'rgb(var(--color-accent))',
+        'button-primary': 'rgb(var(--color-button-primary-text))',
+        'button-secondary': 'rgb(var(--color-button-secondary-text))',
+        'button-accent': 'rgb(var(--color-button-accent-text))',
       },
     },
   },
