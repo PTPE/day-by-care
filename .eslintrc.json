@@ -76,6 +76,7 @@
       "error",
       { "namedComponents": "function-declaration" }
     ],
+    "jsx-a11y/label-has-associated-control": "off",
     // We already use TypeScript no need to use prop-types
     "react/prop-types": 0,
     // Prettier
