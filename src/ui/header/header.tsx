@@ -1,5 +1,5 @@
-import ThemeToggler from '@/_components/themeToggler';
-import Logo from '@/_ui/logo';
+import ThemeToggler from 'src/themeToggler';
+import Logo from 'src/ui/logo';
 import Link from 'next/link';
 
 export default function Header() {

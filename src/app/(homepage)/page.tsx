@@ -1,4 +1,5 @@
-import { PersonWithDog } from '@/_icons/person_with_dog';
+import { PersonWithDog } from '@/icons/person_with_dog';
+
 import Header from './_header';
 
 export default function Home() {
@@ -18,7 +19,10 @@ export default function Home() {
             <p className="text-xl w-96">
               輕鬆打造班表，讓照護工作更加輕鬆。專為您打造，讓您有效管理工作，同時為未來養狗的生活預留美好時光。
             </p>
-            <button className="bg-button-primary text-button-primary hover:bg-button-primary-hover px-4 py-2 rounded-lg">
+            <button
+              type="button"
+              className="bg-button-primary text-button-primary hover:bg-button-primary-hover px-4 py-2 rounded-lg"
+            >
               以訪客身份繼續
             </button>
           </div>

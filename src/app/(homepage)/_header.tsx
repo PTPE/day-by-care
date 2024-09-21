@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import ThemeToggler from '@/_components/themeToggler';
-import Logo from '@/_ui/logo';
+import ThemeToggler from 'src/themeToggler';
+import Logo from 'src/ui/logo';
 
 export default function Header() {
   return (
@@ -11,10 +11,16 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
-          <button className="border-2 px-3 py-1 text-primary border-primary rounded-lg">
+          <button
+            type="button"
+            className="border-2 px-3 py-1 text-primary border-primary rounded-lg"
+          >
             登入
           </button>
-          <button className="border-2 border-transparent bg-button-primary text-button-primary hover:bg-button-primary-hover hover:border-transparent px-3 py-1 rounded-lg">
+          <button
+            type="button"
+            className="border-2 border-transparent bg-button-primary text-button-primary hover:bg-button-primary-hover hover:border-transparent px-3 py-1 rounded-lg"
+          >
             註冊
           </button>
           <ThemeToggler />

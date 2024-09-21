@@ -4,9 +4,9 @@ import { forwardRef, useState } from 'react';
 
 import { VariantProps, cva } from 'class-variance-authority';
 import { v4 as uuid } from 'uuid';
-
-import cn from 'app/_utils/cn';
 import { ClassValue } from 'clsx';
+
+import cn from '@/utils/cn';
 
 const switchVariants = cva(
   'relative cursor-pointer transition-all flex items-center rounded-full',

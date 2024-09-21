@@ -1,8 +1,11 @@
 'use client';
 
-import Switch from 'app/_ui/switch';
-import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
+
+import { useTheme } from 'next-themes';
+
+import Switch from '@/ui/switch';
+
 import { Sun } from './_sun';
 import { Moon } from './_moon';
 

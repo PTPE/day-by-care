@@ -1,7 +1,10 @@
-import { VariantProps, cva } from 'class-variance-authority';
-import { Dog } from './_dog';
 import { DetailedHTMLProps, HTMLAttributes, forwardRef } from 'react';
-import cn from 'app/_utils/cn';
+
+import { VariantProps, cva } from 'class-variance-authority';
+
+import cn from '@/utils/cn';
+
+import { Dog } from './_dog';
 
 const logoVariants = cva(
   'flex items-center gap-3 font-bold tracking-widest py-2 rounded-full',
@@ -23,14 +26,12 @@ const logoVariants = cva(
 type Props = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> &
   VariantProps<typeof logoVariants>;
 
-const Logo = forwardRef<HTMLDivElement, Props>(({ size, className }, ref) => {
-  return (
-    <div ref={ref} className={cn(logoVariants({ size, className }))}>
-      <Dog className="h-full grow" />
-      <p className="">寵愛照護表</p>
-    </div>
-  );
-});
+const Logo = forwardRef<HTMLDivElement, Props>(({ size, className }, ref) => (
+  <div ref={ref} className={cn(logoVariants({ size, className }))}>
+    <Dog className="h-full grow" />
+    <p>寵愛照護表</p>
+  </div>
+));
 
 Logo.displayName = 'Logo';
 
