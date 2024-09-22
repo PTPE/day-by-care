@@ -26,6 +26,7 @@ body {
     --color-secondary: 144 164 174;
     --color-accent: 245 166 35;
     --color-bg: 255 251 243;
+    --color-bg-secondary: 255 255 255;
     --color-text: 5 25 45;
     --color-line: 220 220 220;
 
@@ -52,6 +53,7 @@ body {
 
   [data-theme='dark'] {
     --color-bg: 18 18 18;
+    --color-bg-secondary: 40 40 40;
     --color-text: 224 224 224;
     --color-line: 100 100 100;
 

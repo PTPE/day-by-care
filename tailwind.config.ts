@@ -23,6 +23,7 @@ const config: Config = {
       },
       backgroundColor: {
         primary: 'rgb(var(--color-bg))',
+        secondary: 'rgb(var(--color-bg-secondary))',
         'button-primary': 'rgb(var(--color-button-primary-bg))',
         'button-primary-hover': 'rgb(var(--color-button-primary-bg-hover))',
         'button-secondary': 'rgb(var(--color-button-secondary-bg))',

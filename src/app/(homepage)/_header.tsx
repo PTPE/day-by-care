@@ -11,18 +11,23 @@ export default function Header() {
         </Link>
 
         <div className="flex items-center gap-2">
-          <button
-            type="button"
-            className="border-2 px-3 py-1 text-primary border-primary rounded-lg"
-          >
-            登入
-          </button>
-          <button
-            type="button"
-            className="border-2 border-transparent bg-button-primary text-button-primary hover:bg-button-primary-hover hover:border-transparent px-3 py-1 rounded-lg"
-          >
-            註冊
-          </button>
+          <Link href="signIn">
+            <button
+              type="button"
+              className="border-2 px-3 py-1 text-primary border-primary rounded-lg"
+            >
+              登入
+            </button>
+          </Link>
+
+          <Link href="signUp">
+            <button
+              type="button"
+              className="border-2 border-transparent bg-button-primary text-button-primary hover:bg-button-primary-hover hover:border-transparent px-3 py-1 rounded-lg"
+            >
+              註冊
+            </button>
+          </Link>
           <ThemeToggler />
         </div>
       </div>
