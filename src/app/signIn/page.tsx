@@ -8,6 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Google } from '@/icons/google';
 import signInSchema from '@/modules/signIn';
 import Logo from '@/ui/logo';
+import signIn from '@/actions/signIn';
+import gmailOauth from '@/actions/gmailOAuth';
 
 export default function SignIn() {
   const {
@@ -18,7 +20,9 @@ export default function SignIn() {
     resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
+    await signIn(data);
+  };
 
   return (
     <div className="flex flex-col items-center h-screen justify-center">
@@ -59,7 +63,7 @@ export default function SignIn() {
         </div>
 
         <button
-          type="button"
+          type="submit"
           className="p-2 mt-3 bg-button-primary text-button-primary hover:bg-button-primary-hover rounded-[5px]"
         >
           登入
@@ -72,10 +76,14 @@ export default function SignIn() {
         </div>
 
         <div>
-          <div className="px-2 py-1 flex items-center justify-center border-2 border-secondary/40 hover:bg-button-secondary-hover/10 rounded-[5px] w-full cursor-pointer">
+          <button
+            type="button"
+            className="px-2 py-1 flex items-center justify-center border-2 border-secondary/40 hover:bg-button-secondary-hover/10 rounded-[5px] w-full cursor-pointer"
+            onClick={() => gmailOauth()}
+          >
             <Google />
             Google
-          </div>
+          </button>
         </div>
       </form>
     </div>

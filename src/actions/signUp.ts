@@ -1,21 +1,23 @@
 'use server';
 
+import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
 import { createClient } from '@/utils/supabase/server';
 import signUpSchema from '@/modules/signUp';
 
-export default async function signIn(formData: FormData) {
+export default async function SignUp(data: z.infer<typeof signUpSchema>) {
   const supabase = createClient();
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
   const isValid = signUpSchema.safeParse({
-    email: formData.get('email'),
-    password: formData.get('password'),
-    firstName: formData.get('firstName'),
-    lastName: formData.get('lastName'),
+    email: data.email,
+    password: data.password,
+    confirmPassword: data.confirmPassword,
+    firstName: data.firstName,
+    lastName: data.lastName,
   });
 
   if (!isValid.success) {
@@ -23,8 +25,8 @@ export default async function signIn(formData: FormData) {
   }
 
   const { error } = await supabase.auth.signUp({
-    email: isValid.data.email,
-    password: isValid.data.password,
+    email: data.email,
+    password: data.password,
   });
 
   if (error) {

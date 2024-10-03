@@ -8,6 +8,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import signUpSchema from '@/modules/signUp';
 import { Google } from '@/icons/google';
 import Logo from '@/ui/logo';
+import signUp from '@/actions/signUp';
+import gmailOauth from '@/actions/gmailOAuth';
 
 export default function SignUp() {
   const {
@@ -18,7 +20,9 @@ export default function SignUp() {
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmit = () => {};
+  const onSubmit = async (data: z.infer<typeof signUpSchema>) => {
+    await signUp(data);
+  };
 
   return (
     <div className="flex flex-col items-center h-screen justify-center">
@@ -31,12 +35,16 @@ export default function SignUp() {
             <Logo size="md" className="self-auto" />
           </Link>
         </div>
-        <h2 className="text-center font-semibold">用以下平台註冊</h2>
+        <h2 className="text-center font-semibold">用以下平台登入</h2>
         <div>
-          <div className="px-2 py-1 flex items-center justify-center border-2 border-secondary/40 hover:bg-button-secondary-hover/10 rounded-[5px] w-full cursor-pointer">
+          <button
+            type="button"
+            onClick={() => gmailOauth()}
+            className="px-2 py-1 flex items-center justify-center border-2 border-secondary/40 hover:bg-button-secondary-hover/10 rounded-[5px] w-full cursor-pointer"
+          >
             <Google />
             Google
-          </div>
+          </button>
         </div>
 
         <div className="flex flex-row items-center gap-5">
@@ -47,13 +55,13 @@ export default function SignUp() {
 
         <div className="flex gap-3">
           <div className="space-y-3">
-            <label htmlFor="name" className="font-semibold">
+            <label htmlFor="lastName" className="font-semibold">
               姓
             </label>
             <div>
               <input
                 type="text"
-                id="name"
+                id="lastName"
                 className={`px-2 py-1 border-2 ${errors.lastName ? 'border-red-500' : 'border-secondary/40'} rounded-[5px]`}
                 {...register('lastName')}
               />
@@ -62,13 +70,13 @@ export default function SignUp() {
           </div>
 
           <div className="space-y-3">
-            <label htmlFor="name" className="font-semibold">
+            <label htmlFor="firstName" className="font-semibold">
               名
             </label>
             <div>
               <input
                 type="text"
-                id="name"
+                id="firstName"
                 className={`px-2 py-1 border-2 ${errors.firstName ? 'border-red-500' : 'border-secondary/40'} rounded-[5px]`}
                 {...register('firstName')}
               />
