@@ -1,4 +1,4 @@
-import ThemeToggler from 'src/themeToggler';
+import ThemeToggler from '@/ui/themeToggler';
 import Logo from 'src/ui/logo';
 import Link from 'next/link';
 
