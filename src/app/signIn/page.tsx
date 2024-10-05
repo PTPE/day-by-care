@@ -27,7 +27,7 @@ export default function SignIn() {
   return (
     <div className="flex flex-col items-center h-screen justify-center">
       <form
-        className="flex flex-col gap-3 shadow-[0_5px_15px_0px_rgba(17,17,26,0.1)] bg-secondary w-1/3 p-10 pt-5 rounded-lg"
+        className="flex flex-col gap-3 shadow-[0_5px_15px_0px_rgba(17,17,26,0.1)] bg-secondary w-1/3 w-min-[500px] p-10 pt-5 rounded-lg"
         onSubmit={handleSubmit(onSubmit)}
       >
         <div className="w-fit self-center">
