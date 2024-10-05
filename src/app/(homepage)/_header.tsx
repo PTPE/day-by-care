@@ -1,6 +1,7 @@
 import Link from 'next/link';
+
 import ThemeToggler from '@/ui/themeToggler';
-import Logo from 'src/ui/logo';
+import Logo from '@/ui/logo';
 
 export default function Header() {
   return (
