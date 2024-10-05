@@ -20,9 +20,7 @@ export default function SignIn() {
     resolver: zodResolver(signInSchema),
   });
 
-  const onSubmit = async (data: z.infer<typeof signInSchema>) => {
-    await signIn(data);
-  };
+  const onSubmit = async (data: z.infer<typeof signInSchema>) => signIn(data);
 
   return (
     <div className="flex flex-col items-center h-screen justify-center">
