@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { addDynamicIconSelectors } from '@iconify/tailwind';
 
 const config: Config = {
   content: [
@@ -20,27 +21,44 @@ const config: Config = {
         secondary: 'rgb(var(--color-secondary))',
         accent: 'rgb(var(--color-accent))',
         line: 'rgb(var(--color-line))',
+
+        primaryBg: 'rgb(var(--color-bg))',
+        secondaryBg: 'rgb(var(--color-bg-secondary))',
+        thirdBg: 'rgb(var(--color-bg-third))',
+
+        button: {
+          primary: {
+            DEFAULT: 'rgb(var(--color-button-primary-bg))',
+            hover: 'rgb(var(--color-button-primary-bg-hover))',
+            text: 'rgb(var(--color-button-primary-text))',
+          },
+          secondary: {
+            DEFAULT: 'rgb(var(--color-button-secondary-bg))',
+            hover: 'rgb(var(--color-button-secondary-bg-hover))',
+            text: 'rgb(var(--color-button-secondary-text))',
+          },
+          accent: {
+            DEFAULT: 'rgb(var(--color-button-accent-bg))',
+            hover: 'rgb(var(--color-button-accent-bg-hover))',
+            text: 'rgb(var(--color-button-accent-text))',
+          },
+          warning: {
+            DEFAULT: 'rgb(var(--color-button-warning))',
+            hover: 'rgb(var(--color-button-warning-hover))',
+            text: 'rgb(var(--color-button-warning-text))',
+          },
+          disabled: {
+            DEFAULT: 'rgb(var(--color-button-disabled))',
+            text: 'rgb(var(--color-button-disabled-text))',
+          },
+        },
       },
-      backgroundColor: {
-        primary: 'rgb(var(--color-bg))',
-        secondary: 'rgb(var(--color-bg-secondary))',
-        'button-primary': 'rgb(var(--color-button-primary-bg))',
-        'button-primary-hover': 'rgb(var(--color-button-primary-bg-hover))',
-        'button-secondary': 'rgb(var(--color-button-secondary-bg))',
-        'button-secondary-hover': 'rgb(var(--color-button-secondary-bg-hover))',
-        'button-accent': 'rgb(var(--color-button-accent-bg))',
-        'button-accent-hover': 'rgb(var(--color-button-accent-bg-hover))',
-      },
+
       textColor: {
-        primary: 'rgb(var(--color-primary))',
-        secondary: 'rgb(var(--color-secondary))',
-        accent: 'rgb(var(--color-accent))',
-        'button-primary': 'rgb(var(--color-button-primary-text))',
-        'button-secondary': 'rgb(var(--color-button-secondary-text))',
-        'button-accent': 'rgb(var(--color-button-accent-text))',
+        DEFAULT: 'rgb(var(--color-text))',
       },
     },
   },
-  plugins: [],
+  plugins: [addDynamicIconSelectors()],
 };
 export default config;

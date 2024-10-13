@@ -11,7 +11,7 @@ export default function Header() {
   const pathname = usePathname();
 
   return (
-    <div className="flex flex-col gap-1 bg-secondary shadow-[0_5px_15px_0px_rgba(17,17,26,0.1)] p-2">
+    <div className="flex flex-col gap-1 bg-secondaryBg shadow-[0_5px_15px_0px_rgba(17,17,26,0.1)] p-2">
       <div className="flex items-center justify-between w-full max-w-[1190px] mx-auto ">
         <Link href="/">
           <Logo size="md" className="cursor-pointer" />
