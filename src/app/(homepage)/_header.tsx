@@ -2,6 +2,7 @@ import Link from 'next/link';
 
 import ThemeToggler from '@/ui/themeToggler';
 import Logo from '@/ui/logo';
+import Button from '@/ui/button/button';
 
 export default function Header() {
   return (
@@ -13,21 +14,13 @@ export default function Header() {
 
         <div className="flex items-center gap-2">
           <Link href="signIn">
-            <button
-              type="button"
-              className="border-2 px-3 py-1 text-primary border-primary rounded-lg"
-            >
+            <Button variant="outline" size="sm">
               登入
-            </button>
+            </Button>
           </Link>
 
           <Link href="signUp">
-            <button
-              type="button"
-              className="border-2 border-transparent bg-button-primary text-button-primary hover:bg-button-primary-hover hover:border-transparent px-3 py-1 rounded-lg"
-            >
-              註冊
-            </button>
+            <Button size="sm">註冊</Button>
           </Link>
           <ThemeToggler />
         </div>
