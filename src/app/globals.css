@@ -24,9 +24,11 @@ body {
   :root {
     --color-primary: 1 82 170;
     --color-secondary: 144 164 174;
+
     --color-accent: 245 166 35;
     --color-bg: 255 251 243;
     --color-bg-secondary: 255 255 255;
+    --color-bg-third: 40 40 40;
     --color-text: 5 25 45;
     --color-line: 220 220 220;
 
@@ -48,12 +50,15 @@ body {
     --color-button-disabled-text: 100 100 100;
 
     --color-button-warning: 217 83 79;
+    --color-button-warning-hover: 217 63 55;
     --color-button-warning-text: 255 255 255;
   }
 
   [data-theme='dark'] {
     --color-bg: 18 18 18;
     --color-bg-secondary: 40 40 40;
+    --color-bg-third: 255 255 255;
+
     --color-text: 224 224 224;
     --color-line: 100 100 100;
 

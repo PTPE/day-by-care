@@ -21,41 +21,88 @@ const config: Config = {
         secondary: 'rgb(var(--color-secondary))',
         accent: 'rgb(var(--color-accent))',
         line: 'rgb(var(--color-line))',
+      },
 
-        primaryBg: 'rgb(var(--color-bg))',
-        secondaryBg: 'rgb(var(--color-bg-secondary))',
-        thirdBg: 'rgb(var(--color-bg-third))',
-
-        button: {
-          primary: {
+      backgroundColor: {
+        primary: {
+          DEFAULT: 'rgb(var(--color-primary-bg))',
+          button: {
             DEFAULT: 'rgb(var(--color-button-primary-bg))',
             hover: 'rgb(var(--color-button-primary-bg-hover))',
-            text: 'rgb(var(--color-button-primary-text))',
           },
-          secondary: {
+        },
+        secondary: {
+          DEFAULT: 'rgb(var(--color-secondary-bg))',
+          button: {
             DEFAULT: 'rgb(var(--color-button-secondary-bg))',
             hover: 'rgb(var(--color-button-secondary-bg-hover))',
-            text: 'rgb(var(--color-button-secondary-text))',
           },
-          accent: {
+        },
+        accent: {
+          DEFAULT: 'rgb(var(--color-accent))',
+          button: {
             DEFAULT: 'rgb(var(--color-button-accent-bg))',
             hover: 'rgb(var(--color-button-accent-bg-hover))',
-            text: 'rgb(var(--color-button-accent-text))',
           },
-          warning: {
+        },
+        warning: {
+          DEFAULT: 'rgb(var(--color-button-warning))',
+          button: {
             DEFAULT: 'rgb(var(--color-button-warning))',
             hover: 'rgb(var(--color-button-warning-hover))',
-            text: 'rgb(var(--color-button-warning-text))',
           },
-          disabled: {
+        },
+        disabled: {
+          DEFAULT: 'rgb(var(--color-button-disabled))',
+          button: {
             DEFAULT: 'rgb(var(--color-button-disabled))',
-            text: 'rgb(var(--color-button-disabled-text))',
           },
         },
       },
 
       textColor: {
         DEFAULT: 'rgb(var(--color-text))',
+
+        primary: {
+          DEFAULT: 'rgb(var(--color-primary))',
+          button: {
+            DEFAULT: 'rgb(var(--color-button-primary-text))',
+          },
+        },
+        secondary: {
+          DEFAULT: 'rgb(var(--color-secondary))',
+          button: {
+            DEFAULT: 'rgb(var(--color-button-secondary-text))',
+          },
+        },
+        accent: {
+          DEFAULT: 'rgb(var(--color-accent))',
+          button: {
+            DEFAULT: 'rgb(var(--color-button-accent-text))',
+          },
+        },
+        warning: {
+          DEFAULT: 'rgb(var(--color-button-warning-text))',
+          button: {
+            DEFAULT: 'rgb(var(--color-button-warning-text))',
+          },
+        },
+        disabled: {
+          DEFAULT: 'rgb(var(--color-button-disabled-text))',
+          button: {
+            DEFAULT: 'rgb(var(--color-button-disabled-text))',
+          },
+        },
+      },
+      keyframes: {
+        ripple: {
+          '0%': { transform: 'scale(0)', opacity: '0.5' },
+          '75%': { transform: 'scale(20)', opacity: '0' },
+          '100%': { transform: 'scale(20)', opacity: '0' },
+        },
+      },
+      animation: {
+        ripple: 'ripple 0.9s ease',
       },
     },
   },
