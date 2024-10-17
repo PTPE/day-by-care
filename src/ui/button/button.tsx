@@ -23,7 +23,7 @@ const buttonVariants = cva('relative rounded-lg overflow-hidden', {
       disabled: 'bg-disabled-button text-disabled-button',
     },
     variant: {
-      text: 'border',
+      text: 'bg-transparent',
       contained: '',
       outline: 'border-2',
     },
@@ -106,7 +106,7 @@ type Props = DetailedHTMLProps<
   };
 
 const Button = forwardRef<HTMLButtonElement, Props>(
-  ({ children, size, color, variant }, ref) => {
+  ({ children, size, color, variant, className }, ref) => {
     const buttonRef = useRef<HTMLButtonElement>(null);
     useImperativeHandle(ref, () => buttonRef.current!);
 
@@ -140,7 +140,7 @@ const Button = forwardRef<HTMLButtonElement, Props>(
       <button
         ref={buttonRef}
         onClick={handleClick}
-        className={cn(buttonVariants({ size, color, variant }))}
+        className={cn(buttonVariants({ size, color, variant, className }))}
       >
         {children}
       </button>

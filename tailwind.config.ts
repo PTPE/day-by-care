@@ -25,14 +25,14 @@ const config: Config = {
 
       backgroundColor: {
         primary: {
-          DEFAULT: 'rgb(var(--color-primary-bg))',
+          DEFAULT: 'rgb(var(--color-bg-primary))',
           button: {
             DEFAULT: 'rgb(var(--color-button-primary-bg))',
             hover: 'rgb(var(--color-button-primary-bg-hover))',
           },
         },
         secondary: {
-          DEFAULT: 'rgb(var(--color-secondary-bg))',
+          DEFAULT: 'rgb(var(--color-bg-secondary))',
           button: {
             DEFAULT: 'rgb(var(--color-button-secondary-bg))',
             hover: 'rgb(var(--color-button-secondary-bg-hover))',
