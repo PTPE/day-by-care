@@ -32,5 +32,5 @@ export default async function signIn(data: z.infer<typeof signInSchema>) {
 
   revalidatePath('/', 'layout');
 
-  redirect('/dashboard');
+  redirect('/dashboard/clients');
 }
