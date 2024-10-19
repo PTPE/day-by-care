@@ -106,7 +106,7 @@ type Props = DetailedHTMLProps<
   };
 
 const Button = forwardRef<HTMLButtonElement, Props>(
-  ({ children, size, color, variant, className }, ref) => {
+  ({ children, size, color, variant, className, onClick, ...others }, ref) => {
     const buttonRef = useRef<HTMLButtonElement>(null);
     useImperativeHandle(ref, () => buttonRef.current!);
 
@@ -134,10 +134,15 @@ const Button = forwardRef<HTMLButtonElement, Props>(
       setTimeout(() => {
         button.removeChild(ripple);
       }, 1500);
+
+      if (onClick) {
+        onClick(event);
+      }
     }
 
     return (
       <button
+        {...others}
         ref={buttonRef}
         onClick={handleClick}
         className={cn(buttonVariants({ size, color, variant, className }))}
