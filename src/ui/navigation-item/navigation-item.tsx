@@ -41,7 +41,7 @@ type Props = DetailedHTMLProps<HTMLAttributes<HTMLElement>, HTMLElement> &
 const NavigationItem = forwardRef<HTMLLIElement, Props>(
   ({ children, href, size, color, className, ...others }, ref) => {
     const pathname = usePathname();
-    const isActive = pathname.includes(href);
+    const isActive = pathname === href;
 
     return (
       <li
