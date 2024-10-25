@@ -20,6 +20,7 @@ const config: Config = {
         primary: 'rgb(var(--color-primary))',
         secondary: 'rgb(var(--color-secondary))',
         accent: 'rgb(var(--color-accent))',
+        warning: 'rgb(var(--color-warning))',
         line: 'rgb(var(--color-line))',
       },
 
@@ -82,7 +83,7 @@ const config: Config = {
           },
         },
         warning: {
-          DEFAULT: 'rgb(var(--color-button-warning-text))',
+          DEFAULT: 'rgb(var(--color-warning))',
           button: {
             DEFAULT: 'rgb(var(--color-button-warning-text))',
           },
