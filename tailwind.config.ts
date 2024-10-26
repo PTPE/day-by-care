@@ -2,6 +2,7 @@ import type { Config } from 'tailwindcss';
 import { addDynamicIconSelectors } from '@iconify/tailwind';
 
 const config: Config = {
+  darkMode: ['class'],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
@@ -17,96 +18,76 @@ const config: Config = {
           'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
       colors: {
-        primary: 'rgb(var(--color-primary))',
-        secondary: 'rgb(var(--color-secondary))',
-        accent: 'rgb(var(--color-accent))',
+        primary: {
+          DEFAULT: 'hsl(var(--primary))',
+          foreground: 'hsl(var(--primary-foreground))',
+        },
+        secondary: {
+          DEFAULT: 'hsl(var(--secondary))',
+          foreground: 'hsl(var(--secondary-foreground))',
+        },
+        accent: {
+          DEFAULT: 'hsl(var(--accent))',
+          foreground: 'hsl(var(--accent-foreground))',
+        },
         warning: 'rgb(var(--color-warning))',
         line: 'rgb(var(--color-line))',
-      },
-
-      backgroundColor: {
-        primary: {
-          DEFAULT: 'rgb(var(--color-bg-primary))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-primary-bg))',
-            hover: 'rgb(var(--color-button-primary-bg-hover))',
-          },
+        background: 'hsl(var(--background))',
+        foreground: 'hsl(var(--foreground))',
+        card: {
+          DEFAULT: 'hsl(var(--card))',
+          foreground: 'hsl(var(--card-foreground))',
         },
-        secondary: {
-          DEFAULT: 'rgb(var(--color-bg-secondary))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-secondary-bg))',
-            hover: 'rgb(var(--color-button-secondary-bg-hover))',
-          },
+        popover: {
+          DEFAULT: 'hsl(var(--popover))',
+          foreground: 'hsl(var(--popover-foreground))',
         },
-        accent: {
-          DEFAULT: 'rgb(var(--color-accent))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-accent-bg))',
-            hover: 'rgb(var(--color-button-accent-bg-hover))',
-          },
+        muted: {
+          DEFAULT: 'hsl(var(--muted))',
+          foreground: 'hsl(var(--muted-foreground))',
         },
-        warning: {
-          DEFAULT: 'rgb(var(--color-button-warning))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-warning))',
-            hover: 'rgb(var(--color-button-warning-hover))',
-          },
+        destructive: {
+          DEFAULT: 'hsl(var(--destructive))',
+          foreground: 'hsl(var(--destructive-foreground))',
         },
-        disabled: {
-          DEFAULT: 'rgb(var(--color-button-disabled))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-disabled))',
-          },
+        border: 'hsl(var(--border))',
+        input: 'hsl(var(--input))',
+        ring: 'hsl(var(--ring))',
+        chart: {
+          '1': 'hsl(var(--chart-1))',
+          '2': 'hsl(var(--chart-2))',
+          '3': 'hsl(var(--chart-3))',
+          '4': 'hsl(var(--chart-4))',
+          '5': 'hsl(var(--chart-5))',
         },
       },
 
-      textColor: {
-        DEFAULT: 'rgb(var(--color-text))',
-
-        primary: {
-          DEFAULT: 'rgb(var(--color-primary))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-primary-text))',
-          },
-        },
-        secondary: {
-          DEFAULT: 'rgb(var(--color-secondary))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-secondary-text))',
-          },
-        },
-        accent: {
-          DEFAULT: 'rgb(var(--color-accent))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-accent-text))',
-          },
-        },
-        warning: {
-          DEFAULT: 'rgb(var(--color-warning))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-warning-text))',
-          },
-        },
-        disabled: {
-          DEFAULT: 'rgb(var(--color-button-disabled-text))',
-          button: {
-            DEFAULT: 'rgb(var(--color-button-disabled-text))',
-          },
-        },
-      },
       keyframes: {
         ripple: {
-          '0%': { transform: 'scale(0)', opacity: '0.5' },
-          '75%': { transform: 'scale(20)', opacity: '0' },
-          '100%': { transform: 'scale(20)', opacity: '0' },
+          '0%': {
+            transform: 'scale(0)',
+            opacity: '0.5',
+          },
+          '75%': {
+            transform: 'scale(20)',
+            opacity: '0',
+          },
+          '100%': {
+            transform: 'scale(20)',
+            opacity: '0',
+          },
         },
       },
       animation: {
         ripple: 'ripple 0.9s ease',
       },
+      borderRadius: {
+        lg: 'var(--radius)',
+        md: 'calc(var(--radius) - 2px)',
+        sm: 'calc(var(--radius) - 4px)',
+      },
     },
   },
-  plugins: [addDynamicIconSelectors()],
+  plugins: [addDynamicIconSelectors(), require('tailwindcss-animate')],
 };
 export default config;
