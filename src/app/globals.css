@@ -16,26 +16,30 @@ html {
 body {
   width: 100%;
   height: 100%;
-  color: rgb(var(--foreground));
-  background-color: rgb(var(--background));
+  color: hsl(var(--foreground));
+  background-color: hsl(var(--primary-background));
 }
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --primary-background: 48, 60%, 95%;
+    --secondary-background: 48, 60%, 99%;
+    --primary-button-background: 200, 90%, 45%;
+    --secondary-button-background: 214.3, 40%, 80%;
+    --accent-button-background: 37.7, 80%, 55%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 224.3 76.3% 48%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 215 20.2% 65.1%;
+    --primary: 200.4 98% 39.4%;
+    --primary-foreground: 213.8 100% 96.9%;
+    --secondary: 214.3, 40%, 80%;
     --secondary-foreground: 222.2 84% 4.9%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 222.2 84% 4.9%;
-    --accent: 37.7 92.1% 50.2%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 37.7, 80%, 55%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
@@ -50,20 +54,22 @@ body {
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --primary-background: 224 71.4% 4.1%;
+    --secondary-background: 240 5.9% 10%;
+
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --primary: 200, 100%, 40%;
+    --primary-foreground: 213.8 100% 96.9%;
+    --secondary: 214.3 31.8% 91.4%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 222.2 84% 4.9%;
+    --accent: 37.7 92.1% 50.2%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
     --border: 217.2 32.6% 17.5%;
@@ -82,6 +88,6 @@ body {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-primary text-foreground;
   }
 }

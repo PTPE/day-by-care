@@ -19,46 +19,74 @@ const config: Config = {
       },
       colors: {
         primary: {
-          DEFAULT: 'hsl(var(--primary))',
-          foreground: 'hsl(var(--primary-foreground))',
+          DEFAULT: 'hsla(var(--primary))',
+          foreground: 'hsla(var(--primary-foreground))',
         },
         secondary: {
-          DEFAULT: 'hsl(var(--secondary))',
-          foreground: 'hsl(var(--secondary-foreground))',
+          DEFAULT: 'hsla(var(--secondary))',
+          foreground: 'hsla(var(--secondary-foreground))',
         },
         accent: {
-          DEFAULT: 'hsl(var(--accent))',
-          foreground: 'hsl(var(--accent-foreground))',
+          DEFAULT: 'hsla(var(--accent))',
+          foreground: 'hsla(var(--accent-foreground))',
         },
         warning: 'rgb(var(--color-warning))',
         line: 'rgb(var(--color-line))',
-        background: 'hsl(var(--background))',
-        foreground: 'hsl(var(--foreground))',
+        background: {
+          primary: {
+            DEFAULT: 'hsla(var(--primary-background))',
+          },
+          secondary: {
+            DEFAULT: 'hsla(var(--secondary-background))',
+          },
+        },
+        foreground: 'hsla(var(--foreground))',
         card: {
-          DEFAULT: 'hsl(var(--card))',
-          foreground: 'hsl(var(--card-foreground))',
+          DEFAULT: 'hsla(var(--card))',
+          foreground: 'hsla(var(--card-foreground))',
         },
         popover: {
-          DEFAULT: 'hsl(var(--popover))',
-          foreground: 'hsl(var(--popover-foreground))',
+          DEFAULT: 'hsla(var(--popover))',
+          foreground: 'hsla(var(--popover-foreground))',
         },
         muted: {
-          DEFAULT: 'hsl(var(--muted))',
-          foreground: 'hsl(var(--muted-foreground))',
+          DEFAULT: 'hsla(var(--muted))',
+          foreground: 'hsla(var(--muted-foreground))',
         },
         destructive: {
-          DEFAULT: 'hsl(var(--destructive))',
-          foreground: 'hsl(var(--destructive-foreground))',
+          DEFAULT: 'hsla(var(--destructive))',
+          foreground: 'hsla(var(--destructive-foreground))',
         },
-        border: 'hsl(var(--border))',
-        input: 'hsl(var(--input))',
-        ring: 'hsl(var(--ring))',
+        border: 'hsla(var(--border))',
+        input: 'hsla(var(--input))',
+        ring: 'hsla(var(--ring))',
         chart: {
-          '1': 'hsl(var(--chart-1))',
-          '2': 'hsl(var(--chart-2))',
-          '3': 'hsl(var(--chart-3))',
-          '4': 'hsl(var(--chart-4))',
-          '5': 'hsl(var(--chart-5))',
+          '1': 'hsla(var(--chart-1))',
+          '2': 'hsla(var(--chart-2))',
+          '3': 'hsla(var(--chart-3))',
+          '4': 'hsla(var(--chart-4))',
+          '5': 'hsla(var(--chart-5))',
+        },
+      },
+
+      backgroundColor: {
+        primary: {
+          DEFAULT: 'hsla(var(--primary-background))',
+          button: {
+            DEFAULT: 'hsla(var(--primary-button-background))',
+          },
+        },
+        secondary: {
+          DEFAULT: 'hsla(var(--secondary-background))',
+          button: {
+            DEFAULT: 'hsla(var(--secondary-button-background))',
+          },
+        },
+        accent: {
+          DEFAULT: 'hsla(var(--accent))',
+          button: {
+            DEFAULT: 'hsla(var(--accent-button-background))',
+          },
         },
       },
 

@@ -71,7 +71,6 @@ export default function SignIn() {
 
         <div>
           <Button
-            color="secondary"
             variant="outline"
             className="w-full rounded-[5px]"
             onClick={() => gmailOauth()}

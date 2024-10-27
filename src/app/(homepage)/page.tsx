@@ -11,13 +11,11 @@ export default function Home() {
         endChildren={
           <>
             <Link href="signIn">
-              <Button variant="outline" size="sm">
-                登入
-              </Button>
+              <Button>登入</Button>
             </Link>
 
             <Link href="signUp">
-              <Button size="sm">註冊</Button>
+              <Button>註冊</Button>
             </Link>
           </>
         }
