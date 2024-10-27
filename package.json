@@ -11,6 +11,7 @@
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
     "@iconify/json": "^2.2.257",
+    "@radix-ui/react-slot": "^1.1.0",
     "@react-email/components": "^0.0.22",
     "@supabase/ssr": "^0.5.1",
     "@supabase/supabase-js": "^2.45.4",
