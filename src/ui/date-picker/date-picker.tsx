@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+
 import { CalendarIcon } from '@radix-ui/react-icons';
 import { format, getMonth, getYear, setMonth, setYear } from 'date-fns';
 
@@ -47,7 +48,7 @@ export function DatePicker({
   };
 
   const handleYearChange = (year: string) => {
-    const newDate = setYear(date, parseInt(year));
+    const newDate = setYear(date, parseInt(year, 10));
     setDate(newDate);
   };
 
@@ -65,7 +66,7 @@ export function DatePicker({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant={'outline'}>
+        <Button variant="outline">
           <CalendarIcon />
           {date ? format(date, 'PPP') : <span>Pick a date</span>}
         </Button>

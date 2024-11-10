@@ -2,11 +2,11 @@
 
 import { DetailedHTMLProps, HTMLAttributes, forwardRef } from 'react';
 
+import { usePathname } from 'next/navigation';
 import { VariantProps, cva } from 'class-variance-authority';
 import Link from 'next/link';
 
 import cn from '@/utils/cn';
-import { usePathname } from 'next/navigation';
 
 const navigationItemVariants = cva(
   'group relative list-none flex items-center justify-center flex-col font-semibold',

@@ -97,6 +97,7 @@ const config: Config = {
     'icon-[emojione-v1--old-man]',
     'icon-[streamline-emojis--old-man-1]',
     'icon-[streamline-emojis--old-man-2]',
+    // 'bg-orange-700',
   ],
   content: [
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
@@ -104,6 +105,7 @@ const config: Config = {
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './src/icons/**/*.{js,ts,jsx,tsx,mdx}',
     './src/ui/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/features/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
     extend: {

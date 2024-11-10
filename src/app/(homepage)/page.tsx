@@ -1,8 +1,8 @@
-import { PersonWithDog } from '@/icons/person_with_dog';
+import Link from 'next/link';
 
+import { PersonWithDog } from '@/icons/person_with_dog';
 import Button from '@/ui/button/button';
 import Header from '@/ui/header';
-import Link from 'next/link';
 
 export default function Home() {
   return (
