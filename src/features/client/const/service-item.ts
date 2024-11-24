@@ -1,3 +1,5 @@
+import { ServiceItem } from '../types/service-items';
+
 export const serviceItems = [
   '協助如廁',
   '口腔清潔',
@@ -11,4 +13,4 @@ export const serviceItems = [
   '協助沐浴',
   '陪同運動',
   '活動安排',
-];
+] as ServiceItem[];

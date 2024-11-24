@@ -19,6 +19,7 @@ import {
 type Props = {
   startYear?: number;
   endYear?: number;
+  onChange?: (date: Date) => void;
 };
 
 const months = [
@@ -39,6 +40,7 @@ const months = [
 export function DatePicker({
   startYear = getYear(new Date()) - 100,
   endYear = getYear(new Date()) + 100,
+  onChange,
 }: Props) {
   const [date, setDate] = React.useState<Date>(new Date());
 
@@ -55,6 +57,7 @@ export function DatePicker({
   const handleSelect = (selectedData: Date | undefined) => {
     if (selectedData) {
       setDate(selectedData);
+      onChange?.(selectedData);
     }
   };
 

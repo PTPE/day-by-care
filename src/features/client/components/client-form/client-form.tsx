@@ -1,104 +1,240 @@
 'use client';
 
-import { useState } from 'react';
+import { useRef } from 'react';
 
-import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover';
 import DatePicker from '@/ui/date-picker';
 import Button from '@/ui/button';
-import Label from '@/ui/label';
 import Input from '@/ui/input';
 import Checkbox from '@/ui/checkbox';
 import { icons } from '@/features/client/const/client-icons';
 import { serviceItems } from '@/features/client/const/service-item';
 import { createClientFormSchema } from '@/features/client/models/create-client-form-schema';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/ui/form/form';
+import { createClientAction } from '@/features/client/actions/create-client-action';
+import { useRouter } from 'next/navigation';
 
 export default function ClientForm() {
-  const [selectedIcon, setSelectedIcon] = useState<string | null>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
 
-  const { register } = useForm<z.infer<typeof createClientFormSchema>>();
+  const form = useForm<z.infer<typeof createClientFormSchema>>({
+    resolver: zodResolver(createClientFormSchema),
+    defaultValues: {
+      clientIcon: '',
+      clientName: '',
+      birthday: new Date().toISOString(),
+      address: '',
+      supervisorName: '',
+      supervisorPhone: '',
+      officePhone: '',
+      emergencyContact: '',
+      emergencyContactPhone: '',
+      serviceItems: [],
+    },
+  });
+
+  const onSubmit = async (data: z.infer<typeof createClientFormSchema>) => {
+    await createClientAction(data);
+    router.push('/clients');
+  };
 
   return (
-    <form className="space-y-5">
-      <div className="flex flex-col w-fit items-center gap-4">
-        <span className={`${selectedIcon || ''} text-5xl`} />
-        <div>
-          <Popover>
-            <PopoverTrigger asChild>
-              <Button variant="outline">案主頭像</Button>
-            </PopoverTrigger>
-            <PopoverContent align="start" className="h-52 overflow-auto">
-              {icons.map((icon) => (
-                <button
-                  type="button"
-                  key={icon}
-                  className={`${icon} cursor-pointer text-3xl`}
-                  onClick={() => setSelectedIcon(icon)}
-                  aria-label={`Select ${icon}`}
-                />
-              ))}
-            </PopoverContent>
-          </Popover>
+    <Form {...form}>
+      <form ref={formRef} className="space-y-5 max-w-lg">
+        <div className="flex flex-col w-fit items-center gap-4">
+          <span className={`${form.watch('clientIcon') || ''} text-5xl`} />
+          <div>
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline">案主頭像</Button>
+              </PopoverTrigger>
+              <PopoverContent align="start" className="h-52 overflow-auto">
+                {icons.map((icon) => (
+                  <button
+                    type="button"
+                    key={icon}
+                    className={`${icon} cursor-pointer text-3xl`}
+                    onClick={() => form.setValue('clientIcon', icon)}
+                    aria-label={`Select ${icon}`}
+                  />
+                ))}
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-      </div>
 
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label>案主姓名</Label>
-        <Input {...register('name')} />
-      </div>
+        <FormField
+          control={form.control}
+          name="clientName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>案主姓名</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label>地址</Label>
-        <Input {...register('address')} />
-      </div>
+        <FormField
+          control={form.control}
+          name="address"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>地址</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label {...register('birthday')}>生日</Label>
-        <DatePicker />
-      </div>
+        <FormField
+          control={form.control}
+          name="birthday"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>生日</FormLabel>
+              <div>
+                <FormControl>
+                  <DatePicker
+                    onChange={(date) =>
+                      field.onChange(new Date(date).toISOString())
+                    }
+                  />
+                </FormControl>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="flex flex-col items-start gap-3">
-        <Label className="h-[28px] flex items-center shrink-0">服務項目</Label>
-        <div className="flex gap-2 flex-wrap">
-          {serviceItems.map((service) => (
-            <div className="flex max-w-sm items-center gap-3" key={service}>
-              <Checkbox id={service} />
-              <Label htmlFor={service} className="cursor-pointer">
-                {service}
-              </Label>
-            </div>
-          ))}
-        </div>
-      </div>
+        <FormField
+          control={form.control}
+          name="serviceItems"
+          render={() => (
+            <FormItem>
+              <FormLabel>服務項目</FormLabel>
+              <div className="flex gap-2 flex-wrap">
+                {serviceItems.map((serviceItem) => (
+                  <FormField
+                    key={serviceItem}
+                    control={form.control}
+                    name="serviceItems"
+                    render={({ field }) => (
+                      <FormItem className="flex items-center space-y-0 gap-1 flex-shrink-0">
+                        <FormControl>
+                          <Checkbox
+                            checked={field.value?.includes(serviceItem)}
+                            onCheckedChange={(checked) =>
+                              checked
+                                ? field.onChange([...field.value, serviceItem])
+                                : field.onChange(
+                                    field.value?.filter(
+                                      (value) => value !== serviceItem
+                                    )
+                                  )
+                            }
+                          />
+                        </FormControl>
+                        <FormLabel className="cursor-pointer">
+                          {serviceItem}
+                        </FormLabel>
+                      </FormItem>
+                    )}
+                  />
+                ))}
+              </div>
+            </FormItem>
+          )}
+        />
 
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label>督導</Label>
-        <Input {...register('supervisorName')} />
-      </div>
+        <FormField
+          control={form.control}
+          name="supervisorName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>督導姓名</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label>督導電話</Label>
-        <Input {...register('supervisorPhone')} />
-      </div>
+        <FormField
+          control={form.control}
+          name="supervisorPhone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>督導電話</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label>辦公室電話</Label>
-        <Input {...register('officePhone')} />
-      </div>
+        <FormField
+          control={form.control}
+          name="officePhone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>辦公室電話</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label>緊急聯絡人</Label>
-        <Input {...register('emergencyContact')} />
-      </div>
+        <FormField
+          control={form.control}
+          name="emergencyContact"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>緊急聯絡人</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <div className="grid w-full max-w-sm items-center gap-3">
-        <Label>緊急聯絡人電話</Label>
-        <Input />
-      </div>
+        <FormField
+          control={form.control}
+          name="emergencyContactPhone"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>緊急聯絡人電話</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <Button>儲存</Button>
-    </form>
+        <Button onClick={form.handleSubmit(onSubmit)}>儲存</Button>
+      </form>
+    </Form>
   );
 }
