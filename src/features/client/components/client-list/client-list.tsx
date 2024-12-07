@@ -1,9 +1,15 @@
+import getClientsAction from '@/features/client/actions/get-clients-action';
+
 import ClientListItem from './_client-list-item';
 
-export default function ClientList() {
+export default async function ClientList() {
+  const clients = await getClientsAction();
+
   return (
-    <div>
-      <ClientListItem />
+    <div className="grid grid-cols-4 gap-4 place-items-center">
+      {clients.map((client) => (
+        <ClientListItem key={client.id} client={client} />
+      ))}
     </div>
   );
 }
