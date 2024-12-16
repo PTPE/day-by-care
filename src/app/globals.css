@@ -27,6 +27,7 @@ body {
     --primary-button-background: 200, 90%, 45%;
     --secondary-button-background: 214.3, 40%, 80%;
     --accent-button-background: 37.7, 80%, 55%;
+    --line-background: 214.3, 40%, 80%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -56,7 +57,6 @@ body {
   .dark {
     --primary-background: 224 71.4% 4.1%;
     --secondary-background: 240 5.9% 10%;
-
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;

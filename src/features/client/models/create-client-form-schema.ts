@@ -12,5 +12,7 @@ export const createClientFormSchema = z.object({
   officePhone: z.string().optional(),
   emergencyContact: z.string().optional(),
   emergencyContactPhone: z.string().optional(),
-  serviceItems: z.array(z.nativeEnum(ServiceItem)).nonempty(),
+  serviceItems: z
+    .array(z.nativeEnum(ServiceItem))
+    .min(1, { message: '請選擇服務項目' }),
 });

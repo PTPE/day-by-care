@@ -16,6 +16,8 @@
   "plugins": ["@typescript-eslint", "promise", "prettier"],
 
   "rules": {
+    "react/self-closing-comp": "off",
+    "jsx-a11y/control-has-associated-label": "off",
     // Allow throw literal
     "@typescript-eslint/no-throw-literal": 0,
     // Allow unused variable with prefix `_`

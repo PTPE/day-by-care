@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { addDynamicIconSelectors } from '@iconify/tailwind';
 
 const config: Config = {
@@ -185,6 +186,9 @@ const config: Config = {
             DEFAULT: 'hsla(var(--accent-button-background))',
           },
         },
+        line: {
+          DEFAULT: 'hsla(var(--line-background))',
+        },
       },
 
       keyframes: {
@@ -213,6 +217,7 @@ const config: Config = {
       },
     },
   },
+  // eslint-disable-next-line global-require
   plugins: [addDynamicIconSelectors(), require('tailwindcss-animate')],
 };
 export default config;

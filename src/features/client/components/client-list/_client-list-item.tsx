@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import Button from '@/ui/button/button';
 import { ClientPreview } from '@/features/client/types/client';
 
@@ -20,7 +22,7 @@ export default function ClientListItem({ client }: Props) {
 
       <div className="flex w-full gap-3">
         <Button variant="outline" className="flex-1">
-          查看
+          <Link href={`/dashboard/clients/${client.id}`}>查看</Link>
         </Button>
         <Button variant="outline" className="flex-1">
           製作班表
