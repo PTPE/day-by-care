@@ -128,8 +128,8 @@ const config: Config = {
           DEFAULT: 'hsla(var(--accent))',
           foreground: 'hsla(var(--accent-foreground))',
         },
-        warning: 'rgb(var(--color-warning))',
-        line: 'rgb(var(--color-line))',
+        warning: 'hsla(var(--color-warning))',
+        line: 'hsla(var(--line))',
         background: {
           primary: {
             DEFAULT: 'hsla(var(--primary-background))',
@@ -171,19 +171,25 @@ const config: Config = {
         primary: {
           DEFAULT: 'hsla(var(--primary-background))',
           button: {
-            DEFAULT: 'hsla(var(--primary-button-background))',
+            DEFAULT: 'hsla(var(--primary))',
           },
         },
         secondary: {
           DEFAULT: 'hsla(var(--secondary-background))',
           button: {
-            DEFAULT: 'hsla(var(--secondary-button-background))',
+            DEFAULT: 'hsla(var(--secondary))',
           },
         },
         accent: {
           DEFAULT: 'hsla(var(--accent))',
           button: {
-            DEFAULT: 'hsla(var(--accent-button-background))',
+            DEFAULT: 'hsla(var(--accent))',
+          },
+        },
+        destructive: {
+          DEFAULT: 'hsla(var(--destructive))',
+          button: {
+            DEFAULT: 'hsla(var(--destructive))',
           },
         },
         line: {
