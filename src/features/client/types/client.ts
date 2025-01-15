@@ -1,7 +1,7 @@
 import { ServiceItem } from './service-items';
 
 export type Client = {
-  id: string;
+  client_id: string;
   userId: string;
   clientName: string;
   supervisorName: string;
@@ -18,5 +18,5 @@ export type Client = {
 
 export type ClientPreview = Pick<
   Client,
-  'id' | 'clientName' | 'supervisorName' | 'clientIcon'
+  'client_id' | 'clientName' | 'supervisorName' | 'clientIcon'
 >;

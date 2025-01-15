@@ -11,7 +11,7 @@ export default async function getClientAction(
   const { data, error } = await supabse
     .from('client')
     .select('*')
-    .eq('id', clientId);
+    .eq('client_id', clientId);
 
   const client = (data as Client[])[0];
 
