@@ -22,7 +22,7 @@ export default function ClientListItem({ client }: Props) {
 
       <div className="flex w-full gap-3">
         <Button variant="outline" className="flex-1">
-          <Link href={`/dashboard/clients/${client.id}`}>查看</Link>
+          <Link href={`/dashboard/clients/${client.client_id}`}>查看</Link>
         </Button>
         <Button variant="outline" className="flex-1">
           製作班表

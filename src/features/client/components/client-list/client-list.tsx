@@ -8,7 +8,7 @@ export default async function ClientList() {
   return (
     <div className="grid grid-cols-4 gap-4 place-items-center">
       {clients.map((client) => (
-        <ClientListItem key={client.id} client={client} />
+        <ClientListItem key={client.client_id} client={client} />
       ))}
     </div>
   );

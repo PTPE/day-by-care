@@ -8,7 +8,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import ClientIconSelector from '@/features/client/components/client-icon-selector/client-icon-selector';
 import ServiceItemSelector from '@/features/client/components/service-items-selector';
 import Input from '@/ui/input';
-import Label from '@/ui/label';
 import { createClientFormSchema } from '@/features/client/models/create-client-form-schema';
 import {
   Form,
@@ -20,6 +19,7 @@ import {
 } from '@/ui/form/form';
 import { createClientAction } from '@/features/client/actions/create-client-action';
 import Button from '@/ui/button';
+import { ServiceItem } from '@/features/client/types/service-items';
 
 export default function CreateClient() {
   const router = useRouter();
@@ -28,15 +28,15 @@ export default function CreateClient() {
     resolver: zodResolver(createClientFormSchema),
     defaultValues: {
       clientIcon: '',
-      clientName: '',
-      birthday: new Date().toISOString(),
-      address: '',
-      supervisorName: '',
-      supervisorPhone: '',
-      officePhone: '',
-      emergencyContact: '',
-      emergencyContactPhone: '',
-      serviceItems: [],
+      clientName: '秋津田',
+      birthday: 1736956956,
+      address: 'test',
+      supervisorName: 'test',
+      supervisorPhone: 'test',
+      officePhone: 'test',
+      emergencyContact: 'test',
+      emergencyContactPhone: 'test',
+      serviceItems: [ServiceItem.DressingAndUndressing],
     },
   });
 
@@ -76,10 +76,24 @@ export default function CreateClient() {
             )}
           />
 
-          <div className="grid items-center gap-1.5">
-            <Label htmlFor="birthday">生日</Label>
-            <Input type="birthday" id="birthday" placeholder="生日" />
-          </div>
+          <FormField
+            control={form.control}
+            name="birthday"
+            render={({ field }) => (
+              <FormItem className="grid items-center gap-1.5">
+                <FormLabel htmlFor="birthday">生日</FormLabel>
+                <FormControl>
+                  <Input
+                    type="birthday"
+                    id="birthday"
+                    placeholder="生日"
+                    onChange={(e) => field.onChange(+e)}
+                    value={field.value}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
 
           <FormField
             control={form.control}

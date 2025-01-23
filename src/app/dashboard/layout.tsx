@@ -24,6 +24,10 @@ export default function RootLayout({
               新增案主
             </NavigationItem>
 
+            <NavigationItem href={routes.CreateSchedule()} size="sm">
+              製作班表
+            </NavigationItem>
+
             <NavigationItem href={routes.Reports()} size="sm">
               月結總表
             </NavigationItem>
