@@ -5,7 +5,7 @@ import { ServiceItem } from '@/features/client/types/service-items';
 export const createClientFormSchema = z.object({
   clientIcon: z.string().optional(),
   clientName: z.string().min(1, { message: '請輸入案主姓名' }),
-  birthday: z.number().min(1, { message: '請輸入案主生日' }),
+  birthday: z.string().nullable(),
   address: z.string().min(1, { message: '請輸入地址' }),
   supervisorName: z.string().min(1, { message: '請輸入督導姓名' }),
   supervisorPhone: z.string().min(1, { message: '請輸入督導電話' }),

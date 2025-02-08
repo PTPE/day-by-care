@@ -13,7 +13,7 @@ export default async function getClientAction(
     .select('*')
     .eq('client_id', clientId);
 
-  const client = (data as Client[])[0];
+  const client = ({ ...data } as Client[])[0];
 
   if (error) throw new Error(error.message);
 

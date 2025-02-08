@@ -1,240 +1,132 @@
 'use client';
 
-import { useRef } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { z } from 'zod';
-import { useForm } from 'react-hook-form';
+import { useParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 
-import { Popover, PopoverTrigger, PopoverContent } from '@/ui/popover';
-import DatePicker from '@/ui/date-picker';
+import useGetClient from '@/features/client/hooks/useGetClient';
+import { createClientFormSchema } from '@/features/client/models/create-client-form-schema';
 import Button from '@/ui/button';
 import Input from '@/ui/input';
-import Checkbox from '@/ui/checkbox';
-import { icons } from '@/features/client/const/client-icons';
-import { serviceItems } from '@/features/client/const/service-item';
-import { createClientFormSchema } from '@/features/client/models/create-client-form-schema';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/ui/form/form';
-import { createClientAction } from '@/features/client/actions/create-client-action';
+import useUpdateClient from '@/features/client/hooks/useUpdateClient';
+import ServiceItemSelector from '@/features/client/components/service-items-selector';
+import ClientIconSelector from '@/features/client/components/client-icon-selector';
+import DatePicker from '@/ui/date-picker';
 
-export default function ClientForm() {
-  const formRef = useRef<HTMLFormElement>(null);
-  const router = useRouter();
+type Props = {
+  onHandleExitEditModet: () => void;
+};
 
-  const form = useForm<z.infer<typeof createClientFormSchema>>({
-    resolver: zodResolver(createClientFormSchema),
-    defaultValues: {
-      clientIcon: '',
-      clientName: '',
-      birthday: new Date().toISOString(),
-      address: '',
-      supervisorName: '',
-      supervisorPhone: '',
-      officePhone: '',
-      emergencyContact: '',
-      emergencyContactPhone: '',
-      serviceItems: [],
-    },
+export default function ClientPage({ onHandleExitEditModet }: Props) {
+  const { clientId } = useParams<{ clientId: string }>();
+
+  const { data: client } = useGetClient(clientId);
+
+  const { mutate: updateClient } = useUpdateClient({
+    onSuccessCb: onHandleExitEditModet,
   });
 
-  const onSubmit = async (data: z.infer<typeof createClientFormSchema>) => {
-    await createClientAction(data);
-    router.push('/clients');
-  };
+  const defaultValues = useMemo(
+    () =>
+      client || {
+        clientIcon: '',
+        clientName: '',
+        birthday: 'undefined',
+        address: '',
+        supervisorName: '',
+        supervisorPhone: '',
+        officePhone: '',
+        emergencyContact: '',
+        emergencyContactPhone: '',
+        serviceItems: [],
+      },
+    [client]
+  );
+
+  const { register, handleSubmit, watch, setValue, reset } = useForm({
+    defaultValues,
+    resolver: zodResolver(createClientFormSchema),
+  });
+
+  const onSubmit = (data: z.infer<typeof createClientFormSchema>) =>
+    updateClient({ formData: data, client_id: clientId });
+
+  useEffect(() => reset(defaultValues), [defaultValues, reset]);
+
+  if (!client) return null;
 
   return (
-    <Form {...form}>
-      <form ref={formRef} className="space-y-5 max-w-lg">
-        <div className="flex flex-col w-fit items-center gap-4">
-          <span className={`${form.watch('clientIcon') || ''} text-5xl`} />
-          <div>
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">案主頭像</Button>
-              </PopoverTrigger>
-              <PopoverContent align="start" className="h-52 overflow-auto">
-                {icons.map((icon) => (
-                  <button
-                    type="button"
-                    key={icon}
-                    className={`${icon} cursor-pointer text-3xl`}
-                    onClick={() => form.setValue('clientIcon', icon)}
-                    aria-label={`Select ${icon}`}
-                  />
-                ))}
-              </PopoverContent>
-            </Popover>
+    <form className="flex" onSubmit={handleSubmit(onSubmit)}>
+      <div className="relative flex flex-col m-auto gap-5 min-w-[300px]">
+        <ClientIconSelector
+          selectedIcon={watch('clientIcon')}
+          onSelectIcon={(icon) => setValue('clientIcon', icon)}
+        />
+        <p className="self-center">{client.clientName}</p>
+
+        <div className="flex flex-col gap-5">
+          <p className="font-extrabold">個人資訊</p>
+
+          <div className="flex gap-2 text-sm items-center">
+            <p className=" w-18 flex-shrink-0">地址：</p>
+            <Input {...register('address')} />
           </div>
+
+          <div className="flex gap-2 items-center text-sm">
+            <p className=" w-18 flex-shrink-0">生日：</p>
+            <DatePicker
+              value={new Date(watch('birthday'))}
+              onChange={(birthday) =>
+                setValue('birthday', birthday.toISOString())
+              }
+            />
+          </div>
+
+          <p className="font-extrabold">緊急聯絡人</p>
+
+          <div className="flex gap-2 text-sm items-center">
+            <p className="w-18 flex-shrink-0">姓名：</p>
+            <Input {...register('emergencyContact')} />
+          </div>
+
+          <div className="flex gap-2 text-sm items-center">
+            <p className="w-18 flex-shrink-0">電話：</p>
+            <Input {...register('emergencyContactPhone')} />
+          </div>
+
+          <p className="font-extrabold">服務資訊</p>
+
+          <div className="flex gap-2 text-sm items-center">
+            <p className="w-18 flex-shrink-0">服務項目：</p>
+
+            <ServiceItemSelector
+              selectedServiceItems={watch('serviceItems')}
+              onHandleSelectedServiceItems={(items) =>
+                setValue('serviceItems', items)
+              }
+            />
+          </div>
+
+          <div className="flex gap-2 text-sm items-center">
+            <p className="w-18 flex-shrink-0">督導姓名：</p>
+            <Input {...register('supervisorName')} />
+          </div>
+          <div className="flex gap-2 text-sm items-center">
+            <p className="w-18 flex-shrink-0">督導電話：</p>
+            <Input {...register('supervisorPhone')} />
+          </div>
+
+          <div className="flex gap-2 text-sm items-center">
+            <p className="w-18 flex-shrink-0">辦公室電話：</p>
+            <Input {...register('officePhone')} />
+          </div>
+
+          <Button type="submit">儲存</Button>
         </div>
-
-        <FormField
-          control={form.control}
-          name="clientName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>案主姓名</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="address"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>地址</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="birthday"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>生日</FormLabel>
-              <div>
-                <FormControl>
-                  <DatePicker
-                    onChange={(date) =>
-                      field.onChange(new Date(date).toISOString())
-                    }
-                  />
-                </FormControl>
-              </div>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="serviceItems"
-          render={() => (
-            <FormItem>
-              <FormLabel>服務項目</FormLabel>
-              <div className="flex gap-2 flex-wrap">
-                {serviceItems.map((serviceItem) => (
-                  <FormField
-                    key={serviceItem}
-                    control={form.control}
-                    name="serviceItems"
-                    render={({ field }) => (
-                      <FormItem className="flex items-center space-y-0 gap-1 flex-shrink-0">
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(serviceItem)}
-                            onCheckedChange={(checked) =>
-                              checked
-                                ? field.onChange([...field.value, serviceItem])
-                                : field.onChange(
-                                    field.value?.filter(
-                                      (value) => value !== serviceItem
-                                    )
-                                  )
-                            }
-                          />
-                        </FormControl>
-                        <FormLabel className="cursor-pointer">
-                          {serviceItem}
-                        </FormLabel>
-                      </FormItem>
-                    )}
-                  />
-                ))}
-              </div>
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="supervisorName"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>督導姓名</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="supervisorPhone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>督導電話</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="officePhone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>辦公室電話</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="emergencyContact"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>緊急聯絡人</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="emergencyContactPhone"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>緊急聯絡人電話</FormLabel>
-              <FormControl>
-                <Input {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button onClick={form.handleSubmit(onSubmit)}>儲存</Button>
-      </form>
-    </Form>
+      </div>
+    </form>
   );
 }
