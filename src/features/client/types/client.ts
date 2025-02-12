@@ -13,7 +13,7 @@ export type Client = {
   emergencyContact: string;
   emergencyContactPhone: string;
   clientIcon: string;
-  birthday: string;
+  birthday: string | null;
 };
 
 export type ClientPreview = Pick<

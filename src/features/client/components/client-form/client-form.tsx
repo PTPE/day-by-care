@@ -1,74 +1,64 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 
 import { z } from 'zod';
 import { useParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 
-import useGetClient from '@/features/client/hooks/useGetClient';
+import useCreateClient from '@/features/client/hooks/useCreateClient';
+import useUpdateClient from '@/features/client/hooks/useUpdateClient';
+import ClientIconSelector from '@/features/client/components/client-icon-selector';
+import ServiceItemSelector from '@/features/client/components/service-items-selector';
 import { createClientFormSchema } from '@/features/client/models/create-client-form-schema';
+import useGetClientFormDefaultValues from '@/features/client/hooks/useGetClientFormDefaultValues';
+import DatePicker from '@/ui/date-picker';
 import Button from '@/ui/button';
 import Input from '@/ui/input';
-import useUpdateClient from '@/features/client/hooks/useUpdateClient';
-import ServiceItemSelector from '@/features/client/components/service-items-selector';
-import ClientIconSelector from '@/features/client/components/client-icon-selector';
-import DatePicker from '@/ui/date-picker';
 
 type Props = {
-  onHandleExitEditModet: () => void;
+  onHandleExitEditModet?: () => void;
 };
 
 export default function ClientPage({ onHandleExitEditModet }: Props) {
   const { clientId } = useParams<{ clientId: string }>();
 
-  const { data: client } = useGetClient(clientId);
+  const { defaultValues } = useGetClientFormDefaultValues();
 
   const { mutate: updateClient } = useUpdateClient({
     onSuccessCb: onHandleExitEditModet,
   });
 
-  const defaultValues = useMemo(
-    () =>
-      client || {
-        clientIcon: '',
-        clientName: '',
-        birthday: 'undefined',
-        address: '',
-        supervisorName: '',
-        supervisorPhone: '',
-        officePhone: '',
-        emergencyContact: '',
-        emergencyContactPhone: '',
-        serviceItems: [],
-      },
-    [client]
-  );
+  const { mutate: createClient } = useCreateClient();
 
   const { register, handleSubmit, watch, setValue, reset } = useForm({
     defaultValues,
     resolver: zodResolver(createClientFormSchema),
   });
 
-  const onSubmit = (data: z.infer<typeof createClientFormSchema>) =>
-    updateClient({ formData: data, client_id: clientId });
+  const onSubmit = (data: z.infer<typeof createClientFormSchema>) => {
+    if (!clientId) createClient(data);
+    else updateClient({ formData: data, client_id: clientId });
+  };
 
   useEffect(() => reset(defaultValues), [defaultValues, reset]);
-
-  if (!client) return null;
 
   return (
     <form className="flex" onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex flex-col m-auto gap-5 min-w-[300px]">
         <ClientIconSelector
-          selectedIcon={watch('clientIcon')}
+          selectedIcon={watch('clientIcon') || ''}
           onSelectIcon={(icon) => setValue('clientIcon', icon)}
         />
-        <p className="self-center">{client.clientName}</p>
 
         <div className="flex flex-col gap-5">
           <p className="font-extrabold">個人資訊</p>
+
+          <div className="flex gap-2 text-sm items-center">
+            <p className=" w-18 flex-shrink-0">姓名：</p>
+            <Input {...register('clientName')} />
+          </div>
 
           <div className="flex gap-2 text-sm items-center">
             <p className=" w-18 flex-shrink-0">地址：</p>
@@ -78,7 +68,9 @@ export default function ClientPage({ onHandleExitEditModet }: Props) {
           <div className="flex gap-2 items-center text-sm">
             <p className=" w-18 flex-shrink-0">生日：</p>
             <DatePicker
-              value={new Date(watch('birthday'))}
+              value={
+                watch('birthday') ? new Date(watch('birthday')!) : new Date()
+              }
               onChange={(birthday) =>
                 setValue('birthday', birthday.toISOString())
               }
@@ -103,7 +95,7 @@ export default function ClientPage({ onHandleExitEditModet }: Props) {
             <p className="w-18 flex-shrink-0">服務項目：</p>
 
             <ServiceItemSelector
-              selectedServiceItems={watch('serviceItems')}
+              selectedServiceItems={watch('serviceItems') || []}
               onHandleSelectedServiceItems={(items) =>
                 setValue('serviceItems', items)
               }

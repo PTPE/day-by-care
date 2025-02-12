@@ -7,6 +7,7 @@ export default function useGetClient(clientId: string) {
   const { data, error, isLoading } = useQuery({
     queryFn: () => getClientAction(clientId),
     queryKey: [QUERY_KEYS.CLIENT, clientId],
+    enabled: !!clientId,
   });
 
   return { data, error, isLoading };
