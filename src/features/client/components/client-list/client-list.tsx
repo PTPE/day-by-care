@@ -6,7 +6,7 @@ export default async function ClientList() {
   const clients = await getClientsAction();
 
   return (
-    <div className="grid grid-cols-4 gap-4 place-items-center">
+    <div className="flex flex-wrap gap-5">
       {clients.map((client) => (
         <ClientListItem key={client.client_id} client={client} />
       ))}
