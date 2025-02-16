@@ -1,10 +1,11 @@
 'use client';
 
+import { Fragment } from 'react';
+
 import { z } from 'zod';
 import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import CalendarCell from '@/features/schedule/components/calendar-cell';
 import SelectShiftTimeDialog from '@/features/schedule/components/select-shift-time-dialog/select-shift-time-dialog';
 import { createScheduleFormSchema } from '@/features/schedule/models/create-schedule-form-schema';
 import SelectScheduleYearMonth from '@/features/schedule/components/select-schedule-year-month';
@@ -71,31 +72,34 @@ export default function CreateSchedule() {
             <ImportClientDialog />
 
             {weekdays.map((weekday) => (
-              <CalendarCell key={weekday.value}>{weekday.label}</CalendarCell>
+              <div
+                className="rounded bg-secondary shadow-md px-6 py-3 h-full"
+                key={weekday.value}
+              >
+                {weekday.label}
+              </div>
+            ))}
+
+            {importedClients.map((client, cliendIndex) => (
+              <Fragment key={client.client_id}>
+                <div className="flex flex-col items-center rounded bg-secondary shadow-md px-6 py-3 h-full">
+                  <span className="icon-[streamline-emojis--old-man-2] text-5xl" />
+                  <p>{client.clientName}</p>
+                </div>
+
+                {weekdays.map((weekday, index) => (
+                  <SelectShiftTimeDialog
+                    key={weekday.value}
+                    clientIndex={cliendIndex}
+                    dayIndex={index}
+                    day={weekday.value}
+                  />
+                ))}
+              </Fragment>
             ))}
           </div>
-
-          {importedClients.map((client, cliendIndex) => (
-            <div
-              className="grid grid-cols-8 items-center gap-5"
-              key={client.client_id}
-            >
-              <CalendarCell className="flex flex-col items-center">
-                <span className="icon-[streamline-emojis--old-man-2] text-5xl" />
-                <p>{client.clientName}</p>
-              </CalendarCell>
-
-              {weekdays.map((weekday, index) => (
-                <SelectShiftTimeDialog
-                  key={weekday.value}
-                  clientIndex={cliendIndex}
-                  dayIndex={index}
-                  day={weekday.value}
-                />
-              ))}
-            </div>
-          ))}
         </div>
+
         <Button type="submit">儲存</Button>
       </form>
     </FormProvider>
