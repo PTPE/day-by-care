@@ -19,4 +19,6 @@ export type Client = {
 export type ClientPreview = Pick<
   Client,
   'client_id' | 'clientName' | 'supervisorName' | 'clientIcon'
->;
+> & {
+  schedule: { schedule_id: string; year: number; month: number }[];
+};

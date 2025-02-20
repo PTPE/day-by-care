@@ -6,7 +6,7 @@ import {
   clientScheduleSchema,
   createScheduleFormSchema,
 } from '@/features/schedule/models/create-schedule-form-schema';
-import { ParamsCreateSchedule } from '@/features/schedule/actions/create-schedule-action';
+import { ParamsCreateSchedule } from '@/features/schedule/actions/create-client-schedule-action';
 
 type TransformFormTimeDataProps = {
   year: number;

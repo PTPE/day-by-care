@@ -10,7 +10,7 @@ import SelectShiftTimeDialog from '@/features/schedule/components/select-shift-t
 import { createScheduleFormSchema } from '@/features/schedule/models/create-schedule-form-schema';
 import SelectScheduleYearMonth from '@/features/schedule/components/select-schedule-year-month';
 import ImportClientDialog from '@/features/schedule/components/import-client-dialog';
-import useGetClients from '@/features/client/hooks/useGetClients';
+import { useGetClientsForClient } from '@/features/client/hooks/useGetClients';
 import Button from '@/ui/button';
 import transFormData from '@/features/client/utils/transform-form-time-data';
 import useCreateSchedule from '@/features/schedule/hooks/useCreateSchedule';
@@ -48,13 +48,13 @@ export default function CreateSchedule() {
     // );
   };
 
-  const { data: clients } = useGetClients();
+  const { data: clients } = useGetClientsForClient();
 
   const importedClients =
     clients?.filter((client) =>
       methods
         .watch('schedules')
-        .some((field) => field.client_id === client.client_id)
+        ?.some((field) => field.client_id === client.client_id)
     ) || [];
 
   return (

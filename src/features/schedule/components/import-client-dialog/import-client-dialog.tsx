@@ -3,7 +3,7 @@
 import { useFieldArray, useFormContext } from 'react-hook-form';
 import { z } from 'zod';
 
-import useGetClients from '@/features/client/hooks/useGetClients';
+import { useGetClientsForClient } from '@/features/client/hooks/useGetClients';
 import Badge from '@/ui/badge';
 import Button from '@/ui/button';
 import {
@@ -19,7 +19,7 @@ import Checkbox from '@/ui/checkbox';
 import { createScheduleFormSchema } from '@/features/schedule/models/create-schedule-form-schema';
 
 export default function ImportClientDialog() {
-  const { data } = useGetClients();
+  const { data } = useGetClientsForClient();
   const { watch } = useFormContext<z.infer<typeof createScheduleFormSchema>>();
   const { append, remove } = useFieldArray({
     name: 'schedules',
@@ -45,7 +45,7 @@ export default function ImportClientDialog() {
             <Badge
               key={client.client_id}
               variant={
-                watch('schedules').some(
+                watch('schedules')?.some(
                   (field) => field.client_id === client.client_id
                 )
                   ? 'default'

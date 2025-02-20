@@ -8,7 +8,9 @@ export default async function getClientsAction(): Promise<ClientPreview[]> {
 
   const { data, error } = await supabase
     .from('client')
-    .select('supervisorName, clientName, clientIcon, client_id');
+    .select(
+      'supervisorName, clientName, clientIcon, client_id, schedule ( schedule_id, year, month )'
+    );
 
   if (error) throw new Error(error.message);
 
