@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 
+import { useRouter } from 'next/navigation';
+
 import Button from '@/ui/button';
 import {
   Dialog,
@@ -17,6 +19,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select';
+import routes from '@/const/routes';
 
 type Props = {
   open: boolean;
@@ -33,6 +36,7 @@ export default function ExportScheduleTimeSelector({
   onOpenChange,
   clientSchedule,
 }: Props) {
+  const router = useRouter();
   const [year, setYear] = useState<number>();
   const [month, setMonth] = useState<number>();
   const [monthOptions, setMonthOptions] = useState<number[]>([]);
@@ -50,7 +54,6 @@ export default function ExportScheduleTimeSelector({
     new Set(clientSchedule.map((schedule) => schedule.year))
   );
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const selectedScheduleId = clientSchedule.find(
     (schedule) => schedule.year === year && schedule.month === month
   )?.schedule_id;
@@ -93,7 +96,15 @@ export default function ExportScheduleTimeSelector({
               </SelectContent>
             </Select>
 
-            <Button variant="default">下載</Button>
+            <Button
+              variant="default"
+              onClick={() =>
+                selectedScheduleId &&
+                router.push(routes.Schedule({ id: selectedScheduleId }))
+              }
+            >
+              下載
+            </Button>
           </div>
         </div>
       </DialogContent>

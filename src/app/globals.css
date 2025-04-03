@@ -20,6 +20,12 @@ body {
   background-color: hsl(var(--primary-background));
 }
 
+td,
+th {
+  border: 1px solid black;
+  padding: 8px 16px;
+}
+
 @layer base {
   :root {
     --primary-background: 48, 60%, 95%;
