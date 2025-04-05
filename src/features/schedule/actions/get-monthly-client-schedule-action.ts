@@ -42,7 +42,7 @@ function formatTimeSlots(time_slots: { start: string; end: string }[]) {
   });
 }
 
-export default async function getMonthlyClientSchedule(
+export default async function getMonthlyClientScheduleAction(
   schedule_id: string
 ): Promise<MonthlyClientSchedule> {
   const supabase = createClient();

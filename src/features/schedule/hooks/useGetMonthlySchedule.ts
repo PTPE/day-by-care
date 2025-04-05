@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import getMonthlyClientSchedule from '@/features/schedule/actions/get-monthly-client-schedule';
+import getMonthlyClientScheduleAction from '@/features/schedule/actions/get-monthly-client-schedule-action';
 
 type Props = {
   scheduleId: string;
@@ -9,7 +9,7 @@ type Props = {
 export default function useGetMonthlyClientSchedule({ scheduleId }: Props) {
   const { data, isLoading, error } = useQuery({
     queryKey: ['monthly-client-schedule'],
-    queryFn: () => getMonthlyClientSchedule(scheduleId),
+    queryFn: () => getMonthlyClientScheduleAction(scheduleId),
   });
 
   return { data, isLoading, error };
