@@ -37,7 +37,7 @@ export default function ClientListItem({ client }: Props) {
           className="flex-1"
           onClick={() => setOpen(true)}
         >
-          製作班表
+          下載班表
         </Button>
 
         <ExportScheduleTimeSelector
