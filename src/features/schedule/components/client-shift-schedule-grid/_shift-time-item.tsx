@@ -20,7 +20,7 @@ export default function ShiftTimeItem({ clientIndex, index, dayIndex }: Props) {
   return (
     <div className="flex items-center gap-2 w-full">
       <FormField
-        name={`schedules.${clientIndex}.timeSlots.${dayIndex}.workTime.${index}.start.hour`}
+        name={`schedules.${clientIndex}.time_slots.${dayIndex}.time_range.${index}.start.hour`}
         render={({ field: f }) => (
           <FormItem>
             <Select
@@ -45,7 +45,7 @@ export default function ShiftTimeItem({ clientIndex, index, dayIndex }: Props) {
       <span>：</span>
 
       <FormField
-        name={`schedules.${clientIndex}.timeSlots.${dayIndex}.workTime.${index}.start.minute`}
+        name={`schedules.${clientIndex}.time_slots.${dayIndex}.time_range.${index}.start.minute`}
         render={({ field: f }) => (
           <Select
             onValueChange={(e) => f.onChange(+e)}
@@ -68,7 +68,7 @@ export default function ShiftTimeItem({ clientIndex, index, dayIndex }: Props) {
       <span>－</span>
 
       <FormField
-        name={`schedules.${clientIndex}.timeSlots.${dayIndex}.workTime.${index}.end.hour`}
+        name={`schedules.${clientIndex}.time_slots.${dayIndex}.time_range.${index}.end.hour`}
         render={({ field: f }) => (
           <Select
             onValueChange={(e) => f.onChange(+e)}
@@ -91,7 +91,7 @@ export default function ShiftTimeItem({ clientIndex, index, dayIndex }: Props) {
       <span>：</span>
 
       <FormField
-        name={`schedules.${clientIndex}.timeSlots.${dayIndex}.workTime.${index}.end.minute`}
+        name={`schedules.${clientIndex}.time_slots.${dayIndex}.time_range.${index}.end.minute`}
         render={({ field: f }) => (
           <Select
             onValueChange={(e) => f.onChange(+e)}

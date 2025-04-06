@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { useFormContext } from 'react-hook-form';
 
 import { useGetClientsForClient } from '@/features/client/hooks/useGetClients';
-import { createScheduleFormSchema } from '@/features/schedule/models/create-schedule-form-schema';
+import { scheduleFormSchema } from '@/features/schedule/models/schedule-form-schema';
 
 import ImportClientDialog from './_import-client-dialog';
 import SelectShiftTimeDialog from './_select-shift-time-dialog';
@@ -20,7 +20,7 @@ const weekdays = [
 ];
 
 export default function ClientShiftScheduleGrid() {
-  const { watch } = useFormContext<z.infer<typeof createScheduleFormSchema>>();
+  const { watch } = useFormContext<z.infer<typeof scheduleFormSchema>>();
 
   const { data: clients } = useGetClientsForClient();
 

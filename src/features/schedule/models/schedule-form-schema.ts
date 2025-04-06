@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const timeSlotsSchema = z.array(
   z.object({
     day: z.number(),
-    workTime: z.array(
+    time_range: z.array(
       z.object({
         start: z.object({
           hour: z.number(),
@@ -20,11 +20,17 @@ export const timeSlotsSchema = z.array(
 
 export const clientScheduleSchema = z.object({
   client_id: z.string(),
-  timeSlots: timeSlotsSchema,
+  time_slots: timeSlotsSchema,
 });
 
-export const createScheduleFormSchema = z.object({
+export const scheduleFormSchema = z.object({
   schedules: z.array(clientScheduleSchema),
-  year: z.number(),
-  month: z.number(),
+  year: z
+    .number()
+    .optional()
+    .refine((val) => !!val, { message: '請選擇月份' }),
+  month: z
+    .number()
+    .optional()
+    .refine((val) => !!val, { message: '請選擇月份' }),
 });

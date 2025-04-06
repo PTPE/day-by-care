@@ -16,7 +16,7 @@ import {
 } from '@/ui/dialog';
 import Label from '@/ui/label';
 import Checkbox from '@/ui/checkbox';
-import { createScheduleFormSchema } from '@/features/schedule/models/create-schedule-form-schema';
+import { createScheduleFormSchema } from '@/features/schedule/models/schedule-form-schema';
 
 export default function ImportClientDialog() {
   const { data } = useGetClientsForClient();

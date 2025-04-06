@@ -4,20 +4,20 @@ import { formatInTimeZone } from 'date-fns-tz';
 
 import {
   clientScheduleSchema,
-  createScheduleFormSchema,
-} from '@/features/schedule/models/create-schedule-form-schema';
-import { ParamsCreateSchedule } from '@/features/schedule/actions/create-client-schedule-action';
+  scheduleFormSchema,
+} from '@/features/schedule/models/schedule-form-schema';
+import { ParamsCreateSchedule } from '@/features/schedule/actions/create-schedule-action';
 
 type TransformFormTimeDataProps = {
   year: number;
   month: number;
-  timeSlots: z.infer<typeof clientScheduleSchema>['timeSlots'];
+  time_slots: z.infer<typeof clientScheduleSchema>['time_slots'];
 };
 
 export function transformFormTimeData({
   year,
   month,
-  timeSlots,
+  time_slots,
 }: TransformFormTimeDataProps) {
   const daysInMonth = new Date(year, month, 0).getDate();
 
@@ -25,10 +25,10 @@ export function transformFormTimeData({
     const date = new Date(year, month - 1, dayIndex + 1);
     const dayOfWeek = date.getDay() + 1; // 1 to 7 (1 = Sunday, 7 = Saturday)
 
-    return timeSlots
+    return time_slots
       .filter((timeSlot) => timeSlot.day === dayOfWeek)
-      .flatMap(({ workTime }) =>
-        workTime.map(({ start, end }) => {
+      .flatMap(({ time_range }) =>
+        time_range.map(({ start, end }) => {
           const startDate = set(date, {
             hours: start.hour,
             minutes: start.minute,
@@ -63,7 +63,7 @@ export function transformFormTimeData({
 type TransFormDataProps = {
   year: number;
   month: number;
-  data: z.infer<typeof createScheduleFormSchema>;
+  data: z.infer<typeof scheduleFormSchema>;
 };
 
 export default function transFormData({
@@ -78,7 +78,7 @@ export default function transFormData({
     timeSlots: transformFormTimeData({
       year,
       month,
-      timeSlots: schedule.timeSlots,
+      time_slots: schedule.time_slots,
     }),
   }));
 }

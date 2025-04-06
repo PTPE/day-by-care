@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from '@/ui/dialog';
 import Button from '@/ui/button';
-import { createScheduleFormSchema } from '@/features/schedule/models/create-schedule-form-schema';
+import { scheduleFormSchema } from '@/features/schedule/models/schedule-form-schema';
 
 import ShiftTimeItem from './_shift-time-item';
 
@@ -28,26 +28,26 @@ export default function SelectShiftTimeDialog({
   day,
 }: Props) {
   const { fields, append, remove } = useFieldArray({
-    name: `schedules.${clientIndex}.timeSlots.${dayIndex}.workTime`,
+    name: `schedules.${clientIndex}.time_slots.${dayIndex}.time_range`,
   });
 
   const { setValue, watch } =
-    useFormContext<z.infer<typeof createScheduleFormSchema>>();
+    useFormContext<z.infer<typeof scheduleFormSchema>>();
 
   useEffect(() => {
-    setValue(`schedules.${clientIndex}.timeSlots.${dayIndex}.day`, day);
+    setValue(`schedules.${clientIndex}.time_slots.${dayIndex}.day`, day);
   }, [setValue, day, clientIndex, dayIndex]);
 
   useEffect(() => {
     if (fields.length === 0) {
-      setValue(`schedules.${clientIndex}.timeSlots.${dayIndex}.workTime`, [
+      setValue(`schedules.${clientIndex}.time_slots.${dayIndex}.time_range`, [
         { start: { hour: 0, minute: 0 }, end: { hour: 0, minute: 0 } },
       ]);
     }
   }, [fields, setValue, clientIndex, dayIndex]);
 
   const selectedTime =
-    watch(`schedules.${clientIndex}.timeSlots.${dayIndex}.workTime`)
+    watch(`schedules.${clientIndex}.time_slots.${dayIndex}.time_range`)
       ?.filter(
         ({ start, end }) =>
           end.hour * 60 + end.minute > start.hour * 60 + start.minute
