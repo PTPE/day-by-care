@@ -32,8 +32,8 @@ export async function getMonthlyClientsScheduleAction({
     .from('client')
     .select('client_id, user_id, schedule(year, month, time_slots(start, end))')
     .eq('user_id', userId)
-    .eq('schedule.year', 2025)
-    .eq('schedule.month', 1);
+    .eq('schedule.year', year)
+    .eq('schedule.month', month);
 
   if (error) throw new Error(error.message);
 
