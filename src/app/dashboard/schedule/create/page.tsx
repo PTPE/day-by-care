@@ -52,7 +52,7 @@ export default function CreateSchedule() {
         ) : null}
 
         {methods.watch('schedules')?.length ? (
-          <Button type="submit" className="w-4/6">
+          <Button type="submit" className="w-[100px]">
             儲存
           </Button>
         ) : null}
