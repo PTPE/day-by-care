@@ -28,6 +28,10 @@ export default function RootLayout({
               製作班表
             </NavigationItem>
 
+            <NavigationItem href={routes.DownloadSchedule()} size="sm">
+              下載班表
+            </NavigationItem>
+
             <NavigationItem href={routes.Reports()} size="sm">
               月結總表
             </NavigationItem>
