@@ -6,6 +6,7 @@ import useGetAvailableYearMonthSchedule from '@/features/download-schedule/hooks
 import YearMonthSelect from '@/features/download-schedule/components/year-month-select';
 import ClientItem from '@/features/download-schedule/components/client-item';
 import Button from '@/ui/button';
+import SchedulePreview from '@/features/download-schedule/components/schedule-preview';
 
 export default function Page() {
   const [monthOptions, setMonthOptions] = useState<number[]>([]);
@@ -83,7 +84,10 @@ export default function Page() {
       />
 
       <div className="space-x-5">
-        <Button disabled={!selectedSchedules.length}>預覽班表</Button>
+        <SchedulePreview
+          disabled={!selectedSchedules.length}
+          selectedSchedules={selectedSchedules}
+        />
         <Button disabled={!selectedSchedules.length}>下載pdf</Button>
         <Button disabled={!selectedSchedules.length}>至ibon列印</Button>
       </div>

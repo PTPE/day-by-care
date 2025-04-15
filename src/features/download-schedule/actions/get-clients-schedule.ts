@@ -1,22 +1,29 @@
 'use server';
 
+import { ServiceItem } from '@/features/client/types/service-items';
+import { MonthlyClientSchedule } from '@/features/schedule/types/monthly-client-schedule';
 import { createClient } from '@/utils/supabase/server';
-import { MonthlyClientsSchedule } from '@/features/schedule/types/monthly-clients-schedule';
 
-export type ParamsGetMonthlyClientsSchedule = {
+export type ParamsGetClientsSchedules = {
+  scheduleIds: string[];
+};
+
+type TimeSlot = {
+  schedule_id: string;
+  client_id: string;
+  client: {
+    address: string;
+    clientIcon: string;
+    clientName: string;
+    serviceItems: ServiceItem[];
+  };
+  time_slots: {
+    start: string;
+    end: string;
+  }[];
   year: number;
   month: number;
 };
-
-type RawData = {
-  client_id: string;
-  schedule: {
-    time_slots: {
-      start: string;
-      end: string;
-    }[];
-  }[];
-}[];
 
 function formatTimeSlots(time_slots: { start: string; end: string }[]) {
   return time_slots.map((slot) => {
@@ -38,83 +45,30 @@ function formatTimeSlots(time_slots: { start: string; end: string }[]) {
   });
 }
 
-export async function getMonthlyClientsScheduleAction({
-  year,
-  month,
-}: ParamsGetMonthlyClientsSchedule): Promise<MonthlyClientsSchedule | null> {
+export default async function getClientsSchedulesAction({
+  scheduleIds,
+}: ParamsGetClientsSchedules): Promise<MonthlyClientSchedule[]> {
   const supabase = createClient();
-
-  const userId = (await supabase.auth.getUser()).data.user?.id;
-
-  if (!userId) return null;
-
   const { data, error } = await supabase
-    .from('client')
-    .select('client_id, user_id, schedule(year, month, time_slots(start, end))')
-    .eq('user_id', userId)
-    .eq('schedule.year', year)
-    .eq('schedule.month', month);
+    .from('schedule')
+    .select(
+      'schedule_id, client_id, year, month, client(clientName, clientIcon, address, serviceItems), time_slots(start, end)'
+    )
+    .in('schedule_id', scheduleIds);
 
   if (error) throw new Error(error.message);
 
-  const formattedData = {
-    year,
-    month,
-    schedules: (data as RawData)
-      .filter((client) => client.schedule.length)
-      .flatMap((client) =>
-        client.schedule.flatMap((schedule) => {
-          const emptyDays = Array.from({ length: 7 }, (_, i) => ({
-            day: i,
-            time_range: [] as {
-              start: { hour: number; minute: number };
-              end: { hour: number; minute: number };
-            }[],
-          }));
+  const dataWithType = data as unknown as TimeSlot[];
 
-          // eslint-disable-next-line @typescript-eslint/naming-convention
-          const time_slots = schedule.time_slots.reduce(
-            (acc, time_slot) => {
-              const day = new Date(time_slot.start).getDay();
-
-              // eslint-disable-next-line @typescript-eslint/naming-convention
-              const time_range = {
-                start: {
-                  hour: new Date(time_slot.start).getHours(),
-                  minute: new Date(time_slot.start).getMinutes(),
-                },
-                end: {
-                  hour: new Date(time_slot.end).getHours(),
-                  minute: new Date(time_slot.end).getMinutes(),
-                },
-              };
-
-              const existingDay = acc.find((item) => item.day === day);
-              if (existingDay) {
-                const isDuplicate = existingDay.time_range.some(
-                  (range) =>
-                    range.start.hour === time_range.start.hour &&
-                    range.start.minute === time_range.start.minute &&
-                    range.end.hour === time_range.end.hour &&
-                    range.end.minute === time_range.end.minute
-                );
-                if (!isDuplicate) {
-                  existingDay.time_range.push(time_range);
-                }
-              }
-
-              return acc;
-            },
-            [...emptyDays]
-          );
-
-          return {
-            client_id: client.client_id,
-            time_slots,
-          };
-        })
-      ),
-  };
+  const formattedData = dataWithType.map((schedule) => ({
+    schedule_id: schedule.schedule_id,
+    client_name: schedule.client.clientName,
+    address: schedule.client.address,
+    service_items: schedule.client.serviceItems,
+    year: schedule.year,
+    month: schedule.month,
+    time_slots: formatTimeSlots(schedule.time_slots),
+  }));
 
   return formattedData;
 }
