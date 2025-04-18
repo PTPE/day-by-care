@@ -5,13 +5,14 @@ import SecondHalfMonth from './_second-half-month';
 
 type Props = {
   schedule: MonthlyClientSchedule;
+  type: 'preview' | 'download';
 };
 
-export default function ScheduleTemplate({ schedule }: Props) {
+export default function ScheduleTemplate({ schedule, type }: Props) {
   return (
     <div>
-      <FirstHalfMonth schedule={schedule} />
-      <SecondHalfMonth schedule={schedule} />
+      <FirstHalfMonth type={type} schedule={schedule} />
+      <SecondHalfMonth type={type} schedule={schedule} />
     </div>
   );
 }

@@ -1,16 +1,21 @@
 import { useQuery } from '@tanstack/react-query';
 
-import getClientsSchedulesAction, {
-  ParamsGetClientsSchedules,
-} from '@/features/download-schedule/actions/get-clients-schedule';
+import getClientsSchedulesAction from '@/features/download-schedule/actions/get-clients-schedule';
 
-export default function useGetClientsMonthluSchedule(
-  props: ParamsGetClientsSchedules
-) {
-  const { data, error, isLoading } = useQuery({
-    queryFn: () => getClientsSchedulesAction(props),
-    queryKey: ['get-clients-schedules', props],
+type Props = {
+  scheduleIds: string[];
+  enabled?: boolean;
+};
+
+export default function useGetClientsMonthluSchedule({
+  scheduleIds,
+  enabled,
+}: Props) {
+  const { data, error, isLoading, refetch } = useQuery({
+    queryFn: () => getClientsSchedulesAction({ scheduleIds }),
+    queryKey: ['get-clients-schedules', scheduleIds, enabled],
+    enabled: enabled && scheduleIds.length > 0,
   });
 
-  return { data, error, isLoading };
+  return { data, error, isLoading, refetch };
 }

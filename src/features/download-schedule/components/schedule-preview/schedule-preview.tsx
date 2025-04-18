@@ -24,7 +24,11 @@ export default function SchedulePreview({
       <DialogContent className="overflow-auto h-[80%] min-w-[90%]">
         <div>
           {schedules?.map((schedule) => (
-            <ScheduleTemplate schedule={schedule} key={schedule.schedule_id} />
+            <ScheduleTemplate
+              type="preview"
+              schedule={schedule}
+              key={schedule.schedule_id}
+            />
           ))}
         </div>
       </DialogContent>

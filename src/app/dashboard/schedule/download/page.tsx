@@ -7,6 +7,7 @@ import YearMonthSelect from '@/features/download-schedule/components/year-month-
 import ClientItem from '@/features/download-schedule/components/client-item';
 import Button from '@/ui/button';
 import SchedulePreview from '@/features/download-schedule/components/schedule-preview';
+import DownloadPdf from '@/features/download-schedule/components/download-pdf';
 
 export default function Page() {
   const [monthOptions, setMonthOptions] = useState<number[]>([]);
@@ -83,12 +84,12 @@ export default function Page() {
         onHandleSelectedMonth={handleSelectedMonth}
       />
 
-      <div className="space-x-5">
+      <div className="space-x-5 flex">
         <SchedulePreview
           disabled={!selectedSchedules.length}
           selectedSchedules={selectedSchedules}
         />
-        <Button disabled={!selectedSchedules.length}>下載pdf</Button>
+        <DownloadPdf selectedSchedules={selectedSchedules} />
         <Button disabled={!selectedSchedules.length}>至ibon列印</Button>
       </div>
 
