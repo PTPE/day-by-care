@@ -4,21 +4,17 @@ import useGetClientsMonthluSchedule from '@/features/download-schedule/hooks/use
 import ScheduleTemplate from '@/features/download-schedule/components/schedule-template';
 
 type Props = {
-  disabled?: boolean;
   selectedSchedules: string[];
 };
 
-export default function SchedulePreview({
-  disabled,
-  selectedSchedules,
-}: Props) {
+export default function SchedulePreview({ selectedSchedules }: Props) {
   const { data: schedules } = useGetClientsMonthluSchedule({
     scheduleIds: selectedSchedules,
   });
 
   return (
     <Dialog>
-      <DialogTrigger asChild disabled={disabled}>
+      <DialogTrigger asChild disabled={selectedSchedules.length === 0}>
         <Button>預覽班表</Button>
       </DialogTrigger>
       <DialogContent className="overflow-auto h-[80%] min-w-[90%]">

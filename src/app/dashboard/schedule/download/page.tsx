@@ -5,9 +5,9 @@ import { useState } from 'react';
 import useGetAvailableYearMonthSchedule from '@/features/download-schedule/hooks/useGetAvailableYearMonthSchedule';
 import YearMonthSelect from '@/features/download-schedule/components/year-month-select';
 import ClientItem from '@/features/download-schedule/components/client-item';
-import Button from '@/ui/button';
 import SchedulePreview from '@/features/download-schedule/components/schedule-preview';
 import DownloadPdf from '@/features/download-schedule/components/download-pdf';
+import IbonPrint from '@/features/download-schedule/components/ibon-print';
 
 export default function Page() {
   const [monthOptions, setMonthOptions] = useState<number[]>([]);
@@ -85,12 +85,11 @@ export default function Page() {
       />
 
       <div className="space-x-5 flex">
-        <SchedulePreview
-          disabled={!selectedSchedules.length}
-          selectedSchedules={selectedSchedules}
-        />
+        <SchedulePreview selectedSchedules={selectedSchedules} />
+
         <DownloadPdf selectedSchedules={selectedSchedules} />
-        <Button disabled={!selectedSchedules.length}>至ibon列印</Button>
+
+        <IbonPrint selectedSchedules={selectedSchedules} />
       </div>
 
       <div className="flex gap-5">
@@ -105,8 +104,6 @@ export default function Page() {
           />
         ))}
       </div>
-
-      <div></div>
     </div>
   );
 }

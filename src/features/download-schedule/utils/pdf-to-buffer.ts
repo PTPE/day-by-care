@@ -1,16 +1,18 @@
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
-export default async function downloadPdf(ids: string[]) {
+export default async function pdfToBuffer(
+  ids: string[]
+): Promise<string | null> {
   // eslint-disable-next-line new-cap
   const pdf = new jsPDF('l', 'mm', 'a4');
 
   for (let i = 0; i < ids.length; i += 1) {
     const input = document.getElementById(ids[i]);
-    if (!input) return;
+    if (!input) return null;
 
     // eslint-disable-next-line no-await-in-loop
-    const canvas = await html2canvas(input);
+    const canvas = await html2canvas(input, { scale: 0.7 });
     const imgData = canvas.toDataURL('image/jpeg', 0.7);
 
     const imgProps = {
@@ -39,5 +41,7 @@ export default async function downloadPdf(ids: string[]) {
     }
   }
 
-  pdf.save('table.pdf');
+  const base64 = pdf.output('datauristring').split(',')[1];
+
+  return base64;
 }

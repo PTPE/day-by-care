@@ -16,7 +16,7 @@ type IbonPinCodeResponse = {
   };
 };
 
-async function getIbonTokens() {
+export async function getIbonTokens() {
   const { disposableId, key, t1 } = generateDisposableSet();
   const response = await fetch(
     'https://print-api.ibon.com.tw/api/BaseEntry/GetEntry',
@@ -84,7 +84,7 @@ function getFormattedTimestamp(): string {
   const pad = (num: number, size: number) => num.toString().padStart(size, '0');
 
   const year = now.getFullYear();
-  const month = pad(now.getMonth() + 1, 2); // 月份是從 0 開始
+  const month = pad(now.getMonth() + 1, 2);
   const day = pad(now.getDate(), 2);
   const hour = pad(now.getHours(), 2);
   const minute = pad(now.getMinutes(), 2);
@@ -94,48 +94,111 @@ function getFormattedTimestamp(): string {
   return `${year}${month}${day}${hour}${minute}${second}${millisecond}`;
 }
 
-type ParamsUploadFile = {
-  fileName: string;
-  fileSize: number;
-  buffer: string;
-};
-
 export async function uploadFile({
+  bufferArr,
   fileName,
-  fileSize,
-  buffer,
-}: ParamsUploadFile) {
-  const { key, token } = await getIbonTokens();
-  const { pincode } = await getPinCode();
+  pincode,
+}: {
+  bufferArr: string[];
+  fileName: string;
+  token: string;
+  key: string;
+  pincode: string;
+}) {
+  const responses = await Promise.all(
+    bufferArr.map((buffer, index) =>
+      fetch('https://www.ibon.com.tw/qwsapi2/api/Upload', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          ExtParameter: {
+            fileName,
+            fileSerial: index + 1,
+            filesize: Buffer.from(buffer, 'base64').length,
+            isMultiFile: bufferArr.length > 1,
+            pincode,
+            note1: null,
+            note2: null,
+            note3: null,
+            uploadTime: getFormattedTimestamp(),
+            useMode: 'API',
+          },
+          buffer,
+          offset: 0,
+        }),
+      })
+    )
+  );
 
-  const response = await fetch('https://www.ibon.com.tw/qwsapi2/api/Upload', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: token,
-      FV: '2.2.1',
-      Key: key,
-    },
-    body: JSON.stringify({
-      ExtParameter: {
-        fileName,
-        fileSerial: 1,
-        fileSize,
-        isMultipleFile: false,
-        pincode,
-        updateTime: getFormattedTimestamp(),
-        useMode: 'API',
+  const hasError = responses.some((res) => !res.ok);
+
+  if (hasError) {
+    throw new Error('Failed to upload file');
+  }
+
+  const data = await Promise.all(responses.map((res) => res.json()));
+
+  return data;
+}
+
+export async function sendNotifyEmail({
+  pincode,
+  token,
+  key,
+}: {
+  pincode: string;
+  token: string;
+  key: string;
+}) {
+  const response = await fetch(
+    'https://print-api.ibon.com.tw/api/IbonUpload/SendNotifyMail',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: token,
+        FV: '2.2.1',
+        Key: key,
       },
-      buffer,
-      offset: 0,
-    }),
-  });
+      body: JSON.stringify({
+        Data: {
+          pincode,
+          selectType: 'FNOMAL',
+        },
+      }),
+    }
+  );
 
   if (!response.ok) {
-    throw new Error('Failed to upload file');
+    throw new Error('Failed to send notify email');
   }
 
   const data = await response.json();
 
   return data;
+}
+
+export async function uploadFileToIbonAndSendNotifyEmail({
+  bufferArr,
+  fileName,
+}: {
+  bufferArr: string[];
+  fileName: string;
+}) {
+  const { key, token } = await getIbonTokens();
+  const { pincode } = await getPinCode();
+
+  await uploadFile({
+    bufferArr,
+    fileName,
+    token,
+    key,
+    pincode,
+  });
+
+  await sendNotifyEmail({ pincode, token, key });
+
+  return { pincode };
 }
