@@ -1,5 +1,7 @@
 'use server';
 
+import { format, addDays } from 'date-fns';
+
 import { generateDisposableSet } from '@/features/download-schedule/utils/generate-disposable-id';
 
 type IbonTokensResponse = {
@@ -78,32 +80,18 @@ export async function getPinCode() {
   return { pincode: data.result.pincode, deadline: data.result.deadline };
 }
 
-function getFormattedTimestamp(): string {
-  const now = new Date();
-
-  const pad = (num: number, size: number) => num.toString().padStart(size, '0');
-
-  const year = now.getFullYear();
-  const month = pad(now.getMonth() + 1, 2);
-  const day = pad(now.getDate(), 2);
-  const hour = pad(now.getHours(), 2);
-  const minute = pad(now.getMinutes(), 2);
-  const second = pad(now.getSeconds(), 2);
-  const millisecond = pad(now.getMilliseconds(), 3);
-
-  return `${year}${month}${day}${hour}${minute}${second}${millisecond}`;
-}
-
 export async function uploadFile({
   bufferArr,
   fileName,
   pincode,
+  uploadTime,
 }: {
   bufferArr: string[];
   fileName: string;
   token: string;
   key: string;
   pincode: string;
+  uploadTime: string;
 }) {
   const responses = await Promise.all(
     bufferArr.map((buffer, index) =>
@@ -122,7 +110,7 @@ export async function uploadFile({
             note1: null,
             note2: null,
             note3: null,
-            uploadTime: getFormattedTimestamp(),
+            uploadTime,
             useMode: 'API',
           },
           buffer,
@@ -189,6 +177,11 @@ export async function uploadFileToIbonAndSendNotifyEmail({
 }) {
   const { key, token } = await getIbonTokens();
   const { pincode } = await getPinCode();
+  const now = new Date();
+
+  const uploadTime = format(now, 'yyyyMMddHHmmssSSS');
+
+  const deadline = format(addDays(now, 2), 'yyyy/MM/dd HH:mm:ss');
 
   await uploadFile({
     bufferArr,
@@ -196,9 +189,10 @@ export async function uploadFileToIbonAndSendNotifyEmail({
     token,
     key,
     pincode,
+    uploadTime,
   });
 
   await sendNotifyEmail({ pincode, token, key });
 
-  return { pincode };
+  return { pincode, deadline };
 }

@@ -6,7 +6,9 @@ import Button from '@/ui/button';
 import ScheduleTemplate from '@/features/download-schedule/components/schedule-template';
 import useGetClientsMonthluSchedule from '@/features/download-schedule/hooks/useGetClientsMonthlySchedule';
 import pdfToBuffer from '@/features/download-schedule/utils/pdf-to-buffer';
-import { uploadFileToIbonAndSendNotifyEmail } from '@/features/download-schedule/actions/get-ibon-tokens';
+import useUploadFileToIbonAndSendNotifyEmail from '@/features/download-schedule/hooks/useUploadFileToIbonAndSendNotifyEmail';
+
+import UploadFileNotificationDialog from './_upload-file-notification-dialog';
 
 type Props = {
   selectedSchedules: string[];
@@ -15,10 +17,26 @@ type Props = {
 export default function IbonPrint({ selectedSchedules }: Props) {
   const [shouldDownload, setShouldDownload] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [pincode, setPincode] = useState<string>('');
+  const [expirationDate, setExpirationDate] = useState<string>('');
+  const [
+    openUploadFileNotificationDialog,
+    setOpenUploadFileNotificationDialog,
+  ] = useState(false);
+
   const { data: schedules, refetch } = useGetClientsMonthluSchedule({
     scheduleIds: selectedSchedules,
     enabled: false,
   });
+
+  const { mutate: uploadFileToIbonAndSendNotifyEmail } =
+    useUploadFileToIbonAndSendNotifyEmail({
+      onSuccessCb: (data) => {
+        setPincode(data.pincode);
+        setExpirationDate(data.deadline);
+        setOpenUploadFileNotificationDialog(true);
+      },
+    });
 
   const handleIbonPrint = async () => {
     try {
@@ -27,9 +45,6 @@ export default function IbonPrint({ selectedSchedules }: Props) {
       await refetch();
     } catch (error) {
       throw new Error('獲取班表失敗');
-    } finally {
-      setIsLoading(false);
-      setShouldDownload(false);
     }
   };
 
@@ -53,7 +68,7 @@ export default function IbonPrint({ selectedSchedules }: Props) {
           })
         );
 
-        await uploadFileToIbonAndSendNotifyEmail({
+        uploadFileToIbonAndSendNotifyEmail({
           bufferArr: buffers,
           fileName: 'schedule.pdf',
         });
@@ -64,7 +79,12 @@ export default function IbonPrint({ selectedSchedules }: Props) {
         setShouldDownload(false);
       }
     })();
-  }, [selectedSchedules, shouldDownload, schedules?.length]);
+  }, [
+    selectedSchedules,
+    shouldDownload,
+    schedules?.length,
+    uploadFileToIbonAndSendNotifyEmail,
+  ]);
 
   return (
     <div>
@@ -82,6 +102,13 @@ export default function IbonPrint({ selectedSchedules }: Props) {
           schedule={schedule}
         />
       ))}
+
+      <UploadFileNotificationDialog
+        open={openUploadFileNotificationDialog}
+        onClose={() => setOpenUploadFileNotificationDialog(false)}
+        pincode={pincode}
+        expirationDate={expirationDate}
+      />
     </div>
   );
 }
