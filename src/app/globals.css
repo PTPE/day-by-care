@@ -35,13 +35,13 @@ th {
 
     /* 按鈕與語意色系 */
     --primary: 27, 40%, 50%;
-    --primary-foreground: 210, 10%, 20%;
+    --primary-foreground: 30, 30%, 96%;
 
     --secondary: 42, 27%, 90%; /* 淺灰色系，稍微減少飽和度 */
     --secondary-foreground: 210, 10%, 20%;
 
     --accent: 105, 30%, 65%; /* #A9C9A4 - 柔和抹茶綠 */
-    --accent-foreground: 210, 10%, 20%;
+    --accent-foreground: 27, 25%, 25%;
 
     --destructive: 0, 65%, 55%; /* 柔和紅色 */
     --destructive-foreground: 0 0% 100%;
