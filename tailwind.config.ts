@@ -141,7 +141,7 @@ const config: Config = {
             DEFAULT: 'hsla(var(--accent))',
           },
         },
-        foreground: 'hsla(var(--primary-foreground))',
+        foreground: 'hsla(var(--foreground))',
         card: {
           DEFAULT: 'hsla(var(--card))',
           foreground: 'hsla(var(--card-foreground))',

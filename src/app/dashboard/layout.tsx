@@ -1,10 +1,8 @@
 'use client';
 
 import Header from '@/ui/header';
-import signOut from '@/actions/signOut';
-import Button from '@/ui/button/button';
-import NavigationItem from '@/ui/navigation-item';
-import routes from '@/const/routes';
+import Navigation from '@/ui/navigation';
+import ThemeToggler from '@/ui/themeToggler';
 
 export default function RootLayout({
   children,
@@ -12,36 +10,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="flex flex-col m-auto">
-      <Header
-        endChildren={
-          <ul className="flex gap-1">
-            <NavigationItem href={routes.Clients()} size="sm">
-              案主列表
-            </NavigationItem>
+    <div className="flex flex-col min-h-screen bg-secondary">
+      <div className="lg:mx-20 lg:my-8">
+        <Header />
 
-            <NavigationItem href={routes.NewClients()} size="sm">
-              新增案主
-            </NavigationItem>
+        <main className="flex-1 py-10 max-w-[1190px] px-2 mx-auto w-full">
+          {children}
+        </main>
+      </div>
 
-            <NavigationItem href={routes.CreateSchedule()} size="sm">
-              製作班表
-            </NavigationItem>
+      <ThemeToggler />
 
-            <NavigationItem href={routes.DownloadSchedule()} size="sm">
-              下載班表
-            </NavigationItem>
-
-            <NavigationItem href={routes.Reports()} size="sm">
-              月結總表
-            </NavigationItem>
-
-            <Button onClick={async () => signOut()}>登出</Button>
-          </ul>
-        }
-      />
-
-      <div className="py-10 max-w-[1190px] px-2 mx-auto w-full">{children}</div>
+      <footer className="relative mt-auto lg:hidden">
+        <Navigation />
+      </footer>
     </div>
   );
 }

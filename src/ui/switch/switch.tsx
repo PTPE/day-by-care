@@ -52,18 +52,18 @@ const Switch = forwardRef<HTMLDivElement, Props>(
     const leftOptionColor = {
       switchBgColor: rightOption?.color
         ? `${rightOption?.color}/20`
-        : 'bg-accent-button/20',
+        : 'bg-button-accent/20',
       toggleColor: rightOption?.color
         ? `${rightOption?.color}`
-        : 'bg-accent-button',
+        : 'bg-button-accent',
     };
     const rightOptionColor = {
       switchBgColor: leftOption?.color
         ? `${leftOption?.color}/20`
-        : 'bg-primary-button/20',
+        : 'bg-button-primary/20',
       toggleColor: leftOption?.color
         ? `${leftOption?.color}`
-        : 'bg-primary-button',
+        : 'bg-button-primary',
     };
 
     return (

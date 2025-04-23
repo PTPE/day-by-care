@@ -8,6 +8,7 @@ export const routes = {
   CreateSchedule: () => '/dashboard/schedule/create',
   DownloadSchedule: () => '/dashboard/schedule/download',
   Schedule: ({ id }: { id: string }) => `/dashboard/schedule/${id}`,
+  Settings: () => '/dashboard/settings',
 };
 
 export default routes;

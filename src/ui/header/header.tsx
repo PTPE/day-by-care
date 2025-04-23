@@ -1,24 +1,20 @@
 import Link from 'next/link';
 
-import ThemeToggler from '@/ui/themeToggler';
 import Logo from '@/ui/logo';
+import Navigation from '@/ui/navigation';
 
-type Props = {
-  middleChildren?: React.ReactNode;
-  endChildren?: React.ReactNode;
-};
-
-export default function Header({ middleChildren, endChildren }: Props) {
+export default function Header() {
   return (
-    <div className="flex flex-col gap-1 bg-secondary shadow-[0_5px_15px_0px_rgba(17,17,26,0.1)] p-2">
-      <div className="flex items-center justify-between max-w-[1190px] w-full flex-grow mx-auto">
+    <div className="flex lg:bg-primary lg:shadow-[0_5px_15px_0px_rgba(17,17,26,0.1)] rounded-lg">
+      <div className="flex items-center gap-14 w-full flex-grow mx-aut px-10 py-3 justify-between">
         <Link href="/">
           <Logo size="md" className="cursor-pointer" />
         </Link>
-        {middleChildren}
-        <div className="flex items-center gap-2">
-          {endChildren}
-          <ThemeToggler />
+
+        <div>
+          <div className="hidden lg:flex lg:flex-1">
+            <Navigation />
+          </div>
         </div>
       </div>
     </div>
