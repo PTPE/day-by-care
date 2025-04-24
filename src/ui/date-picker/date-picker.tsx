@@ -110,10 +110,9 @@ export function DatePicker({
           </Select>
         </div>
         <Calendar
-          selected={date}
           mode="single"
+          selected={date}
           onSelect={handleSelect}
-          initialFocus
           month={date}
           onMonthChange={setDate}
         />

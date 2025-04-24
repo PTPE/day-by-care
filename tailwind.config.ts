@@ -124,6 +124,10 @@ const config: Config = {
           DEFAULT: 'hsla(var(--secondary))',
           foreground: 'hsla(var(--secondary-foreground))',
         },
+        tertiary: {
+          DEFAULT: 'hsla(var(--tertiary))',
+          foreground: 'hsla(var(--tertiary-foreground))',
+        },
         accent: {
           DEFAULT: 'hsla(var(--accent))',
           foreground: 'hsla(var(--accent-foreground))',
@@ -176,6 +180,9 @@ const config: Config = {
         },
         secondary: {
           DEFAULT: 'hsla(var(--secondary-background))',
+        },
+        tertiary: {
+          DEFAULT: 'hsla(var(--tertiary-background))',
         },
       },
 

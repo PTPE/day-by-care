@@ -28,6 +28,7 @@ th {
     /* 背景與結構色 */
     --primary-background: 36, 33%, 97%; /* #F2EFEA - 柔和米白色 */
     --secondary-background: 38, 24%, 93%; /* 稍微暗一點的米白色 */
+    --tertiary-background: 27, 25%, 85%; /* #D6C5B7 大地暖咖啡 */
     --card: 0 0% 100%;
     --card-foreground: 210, 10%, 20%;
     --popover: 0 0% 100%;
@@ -39,6 +40,9 @@ th {
 
     --secondary: 42, 27%, 90%; /* 淺灰色系，稍微減少飽和度 */
     --secondary-foreground: 210, 10%, 20%;
+
+    --tertiary: 27, 25%, 85%;
+    --tertiary-foreground: 27, 25%, 25%;
 
     --accent: 105, 30%, 65%; /* #A9C9A4 - 柔和抹茶綠 */
     --accent-foreground: 27, 25%, 25%;

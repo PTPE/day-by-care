@@ -29,7 +29,7 @@ type Props = DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> &
 const Logo = forwardRef<HTMLDivElement, Props>(({ size, className }, ref) => (
   <div ref={ref} className={cn(logoVariants({ size, className }))}>
     <Dog className="h-full grow" />
-    <p className="flex-shrink-0 text-lg md:text-xl">寵愛照護表</p>
+    <p className="flex-shrink-0 text-xl">寵愛照護表</p>
   </div>
 ));
 
