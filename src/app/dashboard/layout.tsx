@@ -14,7 +14,9 @@ export default function RootLayout({
       <div className="px-5 lg:mx-20 lg:my-8">
         <Header />
 
-        <main className="flex-1 mx-auto w-full mb-20 lg:mb-0">{children}</main>
+        <main className="flex-1 mx-auto w-full mb-20 lg:mb-0 lg:mt-10">
+          {children}
+        </main>
       </div>
 
       <ThemeToggler />
