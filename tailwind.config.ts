@@ -186,36 +186,6 @@ const config: Config = {
         },
       },
 
-      // backgroundColor: {
-      //   primary: {
-      //     DEFAULT: 'hsla(var(--primary-background))',
-      //     button: {
-      //       DEFAULT: 'hsla(var(--primary))',
-      //     },
-      //   },
-      //   secondary: {
-      //     DEFAULT: 'hsla(var(--secondary-background))',
-      //     button: {
-      //       DEFAULT: 'hsla(var(--secondary))',
-      //     },
-      //   },
-      //   accent: {
-      //     DEFAULT: 'hsla(var(--accent))',
-      //     button: {
-      //       DEFAULT: 'hsla(var(--accent))',
-      //     },
-      //   },
-      //   destructive: {
-      //     DEFAULT: 'hsla(var(--destructive))',
-      //     button: {
-      //       DEFAULT: 'hsla(var(--destructive))',
-      //     },
-      //   },
-      //   line: {
-      //     DEFAULT: 'hsla(var(--line-background))',
-      //   },
-      // },
-
       keyframes: {
         ripple: {
           '0%': {
@@ -231,9 +201,20 @@ const config: Config = {
             opacity: '0',
           },
         },
+
+        'collapsible-down': {
+          from: { height: '0' },
+          to: { height: 'var(--radix-collapsible-content-height)' },
+        },
+        'collapsible-up': {
+          from: { height: 'var(--radix-collapsible-content-height)' },
+          to: { height: '0' },
+        },
       },
       animation: {
         ripple: 'ripple 0.9s ease',
+        'collapsible-down': 'collapsible-down 0.2s ease-in-out',
+        'collapsible-up': 'collapsible-up 0.2s ease-in-out',
       },
       borderRadius: {
         lg: 'var(--radius)',
