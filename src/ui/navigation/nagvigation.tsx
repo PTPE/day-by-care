@@ -18,8 +18,14 @@ export default function Navigation() {
       />
 
       <NavigationItem
+        href={routes.Schedule()}
+        icon="icon-[uil--schedule]"
+        label="班表"
+      />
+
+      <NavigationItem
         href={routes.Reports()}
-        icon="icon-[mingcute--calendar-fill]"
+        icon="icon-[icon-park-outline--chart-histogram-one]"
         label="時數"
       />
 

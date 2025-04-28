@@ -7,7 +7,7 @@ export const routes = {
   Client: ({ id }: { id: string }) => `/dashboard/clients/${id}`,
   CreateSchedule: () => '/dashboard/schedule/create',
   DownloadSchedule: () => '/dashboard/schedule/download',
-  Schedule: ({ id }: { id: string }) => `/dashboard/schedule/${id}`,
+  Schedule: () => `/dashboard/schedule`,
   Settings: () => '/dashboard/settings',
 };
 
