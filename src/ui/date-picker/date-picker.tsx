@@ -21,6 +21,7 @@ type Props = {
   endYear?: number;
   onChange?: (date: Date) => void;
   value?: Date;
+  className?: string;
 };
 
 const months = [
@@ -43,6 +44,7 @@ export function DatePicker({
   endYear = getYear(new Date()) + 100,
   onChange,
   value,
+  className,
 }: Props) {
   const [date, setDate] = React.useState<Date>(value || new Date());
 
@@ -71,7 +73,7 @@ export function DatePicker({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button variant="outline">
+        <Button variant="outline" className={className}>
           <CalendarIcon />
           {date ? format(date, 'PPP') : <span>Pick a date</span>}
         </Button>

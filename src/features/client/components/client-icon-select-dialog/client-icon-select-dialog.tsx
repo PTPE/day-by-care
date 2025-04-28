@@ -1,6 +1,7 @@
+import { useState } from 'react';
+
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -14,15 +15,17 @@ type Props = {
   onSelectIcon: (icon: string) => void;
 };
 
-export default function ClientIconSelector({
+export default function ClientIconSelectDialog({
   selectedIcon,
   onSelectIcon,
 }: Props) {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger className="flex flex-col items-center justify-center gap-5">
         {selectedIcon && (
-          <div className="w-20 h-20 p-3 shadow-[0_5px_15px_0px_rgba(17,17,26,0.1)] rounded-full bg-secondary flex items-center justify-center cursor-pointer">
+          <div className="w-20 h-20 p-3 shadow-[0_5px_15px_0px_rgba(17,17,26,0.1)] rounded-full bg-card flex items-center justify-center cursor-pointer">
             <span className={`${selectedIcon} cursor-pointer text-6xl`} />
           </div>
         )}
@@ -34,21 +37,23 @@ export default function ClientIconSelector({
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-center mb-5">請選擇案主頭像</DialogTitle>
-          <DialogDescription>
-            <DialogClose asChild>
-              <div className="flex flex-wrap gap-6">
-                {icons.map((icon: string) => (
-                  <button
-                    type="button"
-                    key={icon}
-                    className={`${icon} cursor-pointer text-3xl`}
-                    onClick={() => onSelectIcon(icon)}
-                    aria-label={`Select ${icon}`}
-                  />
-                ))}
-              </div>
-            </DialogClose>
-          </DialogDescription>
+          <DialogDescription />
+          <DialogContent className="w-[95%] h-[95%] overflow-auto">
+            <div className="flex flex-wrap gap-6">
+              {icons.map((icon: string) => (
+                <button
+                  type="button"
+                  key={icon}
+                  className={`${icon} cursor-pointer text-3xl`}
+                  onClick={() => {
+                    onSelectIcon(icon);
+                    setOpen(false);
+                  }}
+                  aria-label={`Select ${icon}`}
+                />
+              ))}
+            </div>
+          </DialogContent>
         </DialogHeader>
       </DialogContent>
     </Dialog>
