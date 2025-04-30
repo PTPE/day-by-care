@@ -1,10 +1,11 @@
 'use server';
 
-import { createClient } from '@/utils/supabase/server';
-import { ClientPreview } from '@/features/client/types/client';
+import { createClient } from '@/utils/supabase/supabase-server';
 
-export default async function getClientsAction(): Promise<ClientPreview[]> {
+export default async function getClientsAction() {
   const supabase = createClient();
+
+  const { data: user } = await supabase.auth.getUser();
 
   const { data, error } = await supabase
     .from('client')
@@ -14,5 +15,5 @@ export default async function getClientsAction(): Promise<ClientPreview[]> {
 
   if (error) throw new Error(error.message);
 
-  return data as ClientPreview[];
+  return data;
 }

@@ -1,7 +1,7 @@
 'use server';
 
 import { ServiceItem } from '@/features/client/types/service-items';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/supabase-server';
 import { MonthlyClientSchedule } from '@/features/schedule/types/monthly-client-schedule';
 
 type TimeSlot = {

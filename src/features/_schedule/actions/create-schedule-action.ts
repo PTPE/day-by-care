@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/supabase-server';
 
 export type ParamsCreateSchedule = {
   client_id: string;

@@ -3,7 +3,7 @@
 import { z } from 'zod';
 
 import { createClientFormSchema } from '@/features/client/models/create-client-form-schema';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/supabase-server';
 
 type ParamsUpdateClient = {
   formData: z.infer<typeof createClientFormSchema>;

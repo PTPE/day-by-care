@@ -1,10 +1,12 @@
-import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
+import { createServerClient } from '@supabase/ssr';
 
-export function createClient() {
-  const cookieStore = cookies();
+import { Database } from './database.types';
 
-  return createServerClient(
+export default function useSupabaseServer(
+  cookieStore: ReturnType<typeof cookies>
+) {
+  return createServerClient<Database>(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
     {

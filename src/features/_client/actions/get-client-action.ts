@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/supabase-server';
 import { Client } from '@/features/client/types/client';
 
 export default async function getClientAction(

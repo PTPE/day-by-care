@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/supabase-server';
 import signUpSchema from '@/modules/signUp';
 
 export default async function signUp(data: z.infer<typeof signUpSchema>) {

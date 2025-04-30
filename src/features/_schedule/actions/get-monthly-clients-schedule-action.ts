@@ -1,6 +1,6 @@
 'use server';
 
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/supabase-server';
 import { MonthlyClientsSchedule } from '@/features/schedule/types/monthly-clients-schedule';
 
 export type ParamsGetMonthlyClientsSchedule = {

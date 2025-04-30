@@ -2,7 +2,7 @@
 
 import { ServiceItem } from '@/features/client/types/service-items';
 import { MonthlyClientSchedule } from '@/features/schedule/types/monthly-client-schedule';
-import { createClient } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/supabase-server';
 
 export type ParamsGetClientsSchedules = {
   scheduleIds: string[];

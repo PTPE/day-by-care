@@ -4,23 +4,44 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/ui/collapsible';
+import { Client } from '@/features/client/types';
 
 import ClientDetail from './_client-detail';
 
-export default function ClientExpandableCard() {
+type Props = {
+  client: Client;
+};
+
+export default function ClientExpandableCard({ client }: Props) {
+  const clientDetail = {
+    address: client.address,
+    birthday: client.birthday,
+    emergency_contact: client.emergency_contact,
+    emergency_contact_phone: client.emergency_contact_phone,
+    supervisor_name: client.supervisor_name,
+    supervisor_phone: client.supervisor_phone,
+    office_phone: client.office_phone,
+  };
+
   return (
     <div className="flex flex-col gap-3 bg-card p-4 rounded-lg lg:p-8">
       <div className="flex items-center gap-3">
         <div className="w-16 aspect-square rounded-full flex items-center justify-center p-2 shadow-[0_7px_29px_0px_rgba(100,100,111,0.2)]">
-          <div className="icon-[twemoji--old-man-light-skin-tone] w-full h-full" />
+          {client.client_icon ? (
+            <div className={`${client.client_icon} w-full h-full`} />
+          ) : (
+            <div className="text-2xl font-bold">{client.client_name[0]}</div>
+          )}
         </div>
 
         <div>
-          <div className="text-xl font-extrabold tracking-widest">秋津田</div>
+          <div className="text-xl font-extrabold tracking-widest">
+            {client.client_name}
+          </div>
 
           <div className="flex items-center gap-2">
             <span className="icon-[material-symbols--call]" />
-            <div>090-1234-5678</div>
+            <div>{client.emergency_contact_phone}</div>
           </div>
         </div>
       </div>
@@ -35,7 +56,7 @@ export default function ClientExpandableCard() {
       </div>
 
       <div className="hidden md:block md:mt-2">
-        <ClientDetail />
+        <ClientDetail clientDetail={clientDetail} />
         <Button
           className="col-span-2 border-accent text-accent w-full mt-4"
           variant="outline"
@@ -57,7 +78,7 @@ export default function ClientExpandableCard() {
 
         <CollapsibleContent>
           <div className="tracking-wide flex flex-col gap-2 text-sm">
-            <ClientDetail />
+            <ClientDetail clientDetail={clientDetail} />
 
             <Button
               className="col-span-2 border-accent text-accent"
