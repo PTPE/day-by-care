@@ -1,16 +1,46 @@
+import { useState } from 'react';
+
 import Button from '@/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger } from '@/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/ui/select';
 import { serviceItems } from '@/const/service-items';
+import { ServiceItemId } from '@/features/client/types';
 
 import ServiceChip from './_service-chip';
 
-export default function ClientServiceSelect() {
+type Props = {
+  onChange: (value: ServiceItemId[]) => void;
+  serviceItemsIds: ServiceItemId[];
+};
+
+export default function ClientServiceSelect({
+  onChange,
+  serviceItemsIds,
+}: Props) {
+  const [selectedServiceItems, setSelectedServiceItems] =
+    useState<ServiceItemId[]>(serviceItemsIds);
+
+  const handleSelectChange = (value: ServiceItemId) => {
+    setSelectedServiceItems((prev) => [...prev, value]);
+  };
+
   return (
     <div>
-      <Select>
+      <Select onValueChange={handleSelectChange}>
         <div className="flex items-center gap-2">
-          <SelectTrigger className="bg-secondary">新增服務項目</SelectTrigger>
-          <Button variant="outline" className="aspect-square p-0 text-accent">
+          <SelectTrigger className="bg-secondary">
+            <SelectValue placeholder="新增服務項目" />
+          </SelectTrigger>
+          <Button
+            variant="outline"
+            className="aspect-square p-0 text-accent"
+            onClick={() => onChange(selectedServiceItems)}
+          >
             ＋
           </Button>
         </div>
@@ -25,10 +55,19 @@ export default function ClientServiceSelect() {
       </Select>
 
       <div className="my-3 flex flex-wrap gap-2">
-        <ServiceChip onDelete={() => {}}>服務項目1</ServiceChip>
-        <ServiceChip onDelete={() => {}}>服務項目2</ServiceChip>
-        <ServiceChip onDelete={() => {}}>服務項目3</ServiceChip>
-        <ServiceChip onDelete={() => {}}>服務項目3</ServiceChip>
+        {serviceItemsIds.map((item) => (
+          <ServiceChip
+            key={item}
+            onDelete={() => {
+              setSelectedServiceItems((prev) =>
+                prev.filter((id) => id !== item)
+              );
+              onChange(selectedServiceItems);
+            }}
+          >
+            {serviceItems.find((service) => service.id === item)?.name}
+          </ServiceChip>
+        ))}
       </div>
     </div>
   );

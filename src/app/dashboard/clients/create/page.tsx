@@ -1,7 +1,5 @@
-'use client';
-
 import ClientForm from '@/features/client/components/client-form';
 
-export default function CreateClient() {
+export default function CreateClientPage() {
   return <ClientForm />;
 }
