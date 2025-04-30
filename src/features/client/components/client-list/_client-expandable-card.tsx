@@ -1,3 +1,5 @@
+import { useRouter } from 'next/navigation';
+
 import Button from '@/ui/button';
 import {
   Collapsible,
@@ -5,6 +7,8 @@ import {
   CollapsibleTrigger,
 } from '@/ui/collapsible';
 import { Client } from '@/features/client/types';
+import routes from '@/const/routes';
+import { serviceItems } from '@/const/service-items';
 
 import ClientDetail from './_client-detail';
 
@@ -13,6 +17,8 @@ type Props = {
 };
 
 export default function ClientExpandableCard({ client }: Props) {
+  const router = useRouter();
+
   const clientDetail = {
     address: client.address,
     birthday: client.birthday,
@@ -47,12 +53,11 @@ export default function ClientExpandableCard({ client }: Props) {
       </div>
 
       <div className="flex gap-1 text-tertiary-foreground text-sm md:text-base flex-wrap">
-        <div className="bg-secondary rounded-full px-2 py-1 ">居家服務</div>
-        <div className="bg-secondary rounded-full px-2 py-1">日間照顧</div>
-        <div className="bg-secondary rounded-full px-2 py-1">短期照顧</div>
-        <div className="bg-secondary rounded-full px-2 py-1 ">居家服務</div>
-        <div className="bg-secondary rounded-full px-2 py-1">日間照顧</div>
-        <div className="bg-secondary rounded-full px-2 py-1">短期照顧</div>
+        {client.service_item_ids.map((id) => (
+          <div className="bg-secondary rounded-full px-2 py-1 ">
+            {serviceItems.find((item) => item.id === id)?.name}
+          </div>
+        ))}
       </div>
 
       <div className="hidden md:block md:mt-2">
@@ -83,6 +88,9 @@ export default function ClientExpandableCard({ client }: Props) {
             <Button
               className="col-span-2 border-accent text-accent"
               variant="outline"
+              onClick={() => {
+                router.push(routes.Client({ id: client.client_id }));
+              }}
             >
               <div className="icon-[material-symbols-light--edit-square-rounded]" />
               編輯
