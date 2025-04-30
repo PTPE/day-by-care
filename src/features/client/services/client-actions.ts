@@ -30,3 +30,35 @@ export async function createClient(formData: z.infer<typeof clientFormSchema>) {
     throw new Error(error.message);
   }
 }
+
+type UpdateClientParams = {
+  clientId: string;
+  formData: z.infer<typeof clientFormSchema>;
+};
+
+export async function updateClient({ clientId, formData }: UpdateClientParams) {
+  const cookieStore = cookies();
+
+  const client = useSupabaseServer(cookieStore);
+
+  const { error } = await client
+    .from('client')
+    .update({
+      client_name: formData.clientName,
+      client_icon: formData.clientIcon,
+      birthday: formData.birthday,
+      address: formData.address,
+      emergency_contact: formData.emergencyContact,
+      emergency_contact_phone: formData.emergencyContactPhone,
+      service_item_ids: formData.serviceItems,
+      supervisor_name: formData.supervisorName,
+      supervisor_phone: formData.supervisorPhone,
+      office_phone: formData.officePhone,
+    })
+    .eq('client_id', clientId)
+    .throwOnError();
+
+  if (error) {
+    throw new Error(error.message);
+  }
+}

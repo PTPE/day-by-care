@@ -1,36 +1,33 @@
-'use client';
+import { cookies } from 'next/headers';
 
-import { useState } from 'react';
-
-import { useParams } from 'next/navigation';
-
-import ClientOverview from '@/features/client/components/client-overview';
 import ClientForm from '@/features/client/components/client-form';
-import useGetClient from '@/features/client/hooks/useGetClient';
+import { getClient } from '@/features/client/services/client-apis';
+import useSupabaseServer from '@/utils/supabase/supabase-server';
 
-export default function ClientPage() {
-  const [isEdit, setIsEdit] = useState(false);
+export default async function ClientPage({
+  params,
+}: {
+  params: { clientId: string };
+}) {
+  const { clientId } = params;
 
-  const { clientId } = useParams<{ clientId: string }>();
+  const cookieStore = cookies();
+  const supabase = useSupabaseServer(cookieStore);
 
-  const { data: client } = useGetClient(clientId);
+  const clientData = await getClient(supabase, { clientId });
 
-  const handleExitEditMode = () => setIsEdit(false);
+  const defaultValues = {
+    clientIcon: clientData.client_icon,
+    clientName: clientData.client_name,
+    birthday: clientData.birthday,
+    address: clientData.address,
+    emergencyContact: clientData.emergency_contact,
+    emergencyContactPhone: clientData.emergency_contact_phone,
+    serviceItems: clientData.service_item_ids,
+    supervisorName: clientData.supervisor_name,
+    supervisorPhone: clientData.supervisor_phone,
+    officePhone: clientData.office_phone,
+  };
 
-  if (!client) return null;
-
-  return (
-    <div className="relative flex flex-col gap-5 items-center">
-      <button
-        className="absolute top-0 right-1/2 z-10 translate-x-[115px] icon-[material-symbols--edit-square-outline-rounded] text-2xl cursor-pointer"
-        onClick={() => setIsEdit(true)}
-        type="button"
-      />
-      {isEdit ? (
-        <ClientForm onHandleExitEditModet={handleExitEditMode} />
-      ) : (
-        <ClientOverview />
-      )}
-    </div>
-  );
+  return <ClientForm defaultValues={defaultValues} />;
 }

@@ -30,3 +30,23 @@ export async function getClients(
 
   return data as Client[];
 }
+
+export async function getClient(
+  client: TypedSupabaseClient,
+  { clientId }: { clientId: string }
+) {
+  const { data, error } = await client
+    .from('client')
+    .select(
+      'client_id, client_name, client_icon, supervisor_name, supervisor_phone, office_phone, emergency_contact, emergency_contact_phone, address, birthday, service_item_ids'
+    )
+    .eq('client_id', clientId)
+    .single()
+    .throwOnError();
+
+  if (error) {
+    throw error;
+  }
+
+  return data as Client;
+}

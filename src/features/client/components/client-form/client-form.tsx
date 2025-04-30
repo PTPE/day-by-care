@@ -3,7 +3,7 @@
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 
 import Label from '@/ui/label';
 import Input from '@/ui/input';
@@ -12,24 +12,18 @@ import Button from '@/ui/button';
 import ClientIconSelectDialog from '@/features/client/components/client-icon-select-dialog';
 import ClientServiceSelect from '@/features/client/components/client-service-select';
 import { clientFormSchema } from '@/features/client/modules';
-import { useCreateClient } from '@/features/client/hooks/useClientsQuery.client';
+import {
+  useCreateClient,
+  useUpdateClient,
+} from '@/features/client/hooks/useClientsQuery.client';
 import routes from '@/const/routes';
 import LoadingSpinner from '@/ui/loading-spinner';
 
-const defaultValues = {
-  clientIcon: '',
-  clientName: '',
-  birthday: new Date().toISOString(),
-  address: '',
-  emergencyContact: '',
-  emergencyContactPhone: '',
-  serviceItems: [],
-  supervisorName: '',
-  supervisorPhone: '',
-  officePhone: '',
-} as z.infer<typeof clientFormSchema>;
+type Props = {
+  defaultValues: z.infer<typeof clientFormSchema>;
+};
 
-export default function ClientForm() {
+export default function ClientForm({ defaultValues }: Props) {
   const {
     watch,
     register,
@@ -42,6 +36,8 @@ export default function ClientForm() {
   });
 
   const router = useRouter();
+  const params = useParams();
+  const isEdit = !!params.clientId;
 
   const { mutate: createClient, isPending: isCreating } = useCreateClient({
     onSuccessCb: () => {
@@ -49,13 +45,23 @@ export default function ClientForm() {
     },
   });
 
+  const { mutate: updateClient, isPending: isUpdating } = useUpdateClient({
+    onSuccessCb: () => {
+      router.push(routes.Clients());
+    },
+  });
+
   const onSubmit = async (data: z.infer<typeof clientFormSchema>) => {
-    createClient(data);
+    if (isEdit) {
+      updateClient({ clientId: params.clientId as string, formData: data });
+    } else {
+      createClient(data);
+    }
   };
 
   return (
     <>
-      {isCreating && <LoadingSpinner />}
+      {(isCreating || isUpdating) && <LoadingSpinner />}
       <form
         className="flex flex-col gap-5 rounded-lg"
         onSubmit={handleSubmit(onSubmit)}

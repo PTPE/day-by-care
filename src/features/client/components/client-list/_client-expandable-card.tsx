@@ -54,7 +54,7 @@ export default function ClientExpandableCard({ client }: Props) {
 
       <div className="flex gap-1 text-tertiary-foreground text-sm md:text-base flex-wrap">
         {client.service_item_ids.map((id) => (
-          <div className="bg-secondary rounded-full px-2 py-1 ">
+          <div className="bg-secondary rounded-full px-2 py-1" key={id}>
             {serviceItems.find((item) => item.id === id)?.name}
           </div>
         ))}

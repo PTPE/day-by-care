@@ -5,7 +5,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import useSupabaseBrowser from '@/utils/supabase/supabase-browser';
 import { QUERY_KEYS } from '@/const/QUERY_KEYS';
 import { getClients } from '@/features/client/services/client-apis';
-import { createClient } from '@/features/client/services/client-actions';
+import {
+  createClient,
+  updateClient,
+} from '@/features/client/services/client-actions';
 
 export function useGetClients({
   searchParams,
@@ -30,6 +33,22 @@ export function useCreateClient({
     onSuccess: () => {
       onSuccessCb?.();
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CLIENTS] });
+    },
+  });
+
+  return { mutate, isPending, error };
+}
+
+export function useUpdateClient({
+  onSuccessCb,
+}: { onSuccessCb?: () => void } = {}) {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: updateClient,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.CLIENTS] });
+      onSuccessCb?.();
     },
   });
 
