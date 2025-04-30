@@ -6,11 +6,7 @@ import SearchClient from '@/features/client/components/search-client';
 import { usePrefetchClients } from '@/features/client/hooks/useClientsPrefetch.server';
 import ClientList from '@/features/client/components/client-list/client-list';
 
-export default async function Clients({
-  searchParams,
-}: {
-  searchParams: string;
-}) {
+export default async function Clients() {
   const { queryClient, prefetchClients } = usePrefetchClients();
 
   await prefetchClients();

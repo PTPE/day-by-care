@@ -14,7 +14,7 @@ export default function NavigationItem({ href, icon, label }: Props) {
   const isActive = pathname === href;
 
   return (
-    <Link href={href}>
+    <Link href={href} prefetch>
       <li className="flex flex-col items-center lg:flex-row lg:gap-2 font-semibold">
         <div
           className={`w-[6px] h-[6px] rounded-full transition-all lg:hidden ${isActive ? 'bg-button-primary' : 'bg-transparent group-hover:bg-accent'}`}
