@@ -1,5 +1,7 @@
 import { useRef } from 'react';
 
+import { useAppSelector } from '@/store/hooks';
+
 import CheckInOutDialog, { CheckInOutDialogRef } from './_check-in-out-dialog';
 
 type Props = {
@@ -8,13 +10,12 @@ type Props = {
 
 export default function DayTile({ date }: Props) {
   const checkInOutDialogRef = useRef<CheckInOutDialogRef>(null);
-  const isSelectedDate =
-    date.toLocaleDateString('en-US', {
-      day: 'numeric',
-    }) ===
-    new Date().toLocaleDateString('en-US', {
-      day: 'numeric',
-    });
+
+  const serviceTime = useAppSelector((state) =>
+    state.schedule.monthSchedule.find(
+      (schedule) => schedule.date === date.toLocaleDateString('zh-TW')
+    )
+  )?.serviceTime;
 
   return (
     <>
@@ -29,23 +30,24 @@ export default function DayTile({ date }: Props) {
         role="button"
         tabIndex={0}
       />
-      <div className="flex flex-col gap-1">
-        {isSelectedDate && (
-          <div className="space-y-2">
-            <div className="flex flex-wrap bg-tertiary text-xs p-1 rounded-sm">
-              17:00-19:00
-            </div>
-            <div className="flex flex-wrap bg-tertiary text-xs p-1 rounded-sm">
-              17:00-19:00
-            </div>
-            <div className="flex flex-wrap bg-tertiary text-xs p-1 rounded-sm">
-              17:00-19:00
-            </div>
-          </div>
+      <div className="space-y-2">
+        {serviceTime?.map(
+          (time) =>
+            time.start &&
+            time.end && (
+              <div
+                className="flex flex-wrap bg-accent/30 text-xs p-1 rounded-sm break-normal"
+                key={`${time.start}-${time.end}`}
+              >
+                <span>{time.start}</span>
+                <span>-</span>
+                <span>{time.end}</span>
+              </div>
+            )
         )}
-
-        <CheckInOutDialog ref={checkInOutDialogRef} date={date} />
       </div>
+
+      <CheckInOutDialog ref={checkInOutDialogRef} date={date} />
     </>
   );
 }

@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import ThemeProvider from '@/providers/themeProvider/themeProvider';
 import TanstakeProvider from '@/providers/tanstakeProvider/TanstakeProvider';
+import StoreProvider from '@/providers/store-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -20,9 +21,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.className}`}>
-        <TanstakeProvider>
-          <ThemeProvider attribute="class">{children}</ThemeProvider>
-        </TanstakeProvider>
+        <StoreProvider>
+          <TanstakeProvider>
+            <ThemeProvider attribute="class">{children}</ThemeProvider>
+          </TanstakeProvider>
+        </StoreProvider>
       </body>
     </html>
   );
