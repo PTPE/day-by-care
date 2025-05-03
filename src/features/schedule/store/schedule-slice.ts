@@ -2,6 +2,8 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { DayOfWeek } from '@/features/schedule/types';
 
+type ISODateString = string;
+
 type ScheduleState = {
   year: number;
   month: number;
@@ -11,7 +13,7 @@ type ScheduleState = {
   };
 
   monthSchedule: {
-    date: string;
+    date: ISODateString;
     serviceTime: {
       start: string;
       end: string;
@@ -20,7 +22,7 @@ type ScheduleState = {
 };
 
 function getDatesInMonthByDayOfWeek(year: number, month: number) {
-  const result: Record<DayOfWeek, string[]> = {
+  const result: Record<DayOfWeek, ISODateString[]> = {
     [DayOfWeek.SUNDAY]: [],
     [DayOfWeek.MONDAY]: [],
     [DayOfWeek.TUESDAY]: [],
@@ -45,7 +47,7 @@ function getDatesInMonthByDayOfWeek(year: number, month: number) {
       DayOfWeek.SATURDAY,
     ][jsDay];
 
-    result[dayOfWeek].push(date.toLocaleDateString('zh-TW'));
+    result[dayOfWeek].push(date.toISOString());
     date.setDate(date.getDate() + 1);
   }
 
@@ -89,7 +91,7 @@ const scheduleSlice = createSlice({
       }>
     ) => {
       const monthSchedule: {
-        date: string;
+        date: ISODateString;
         serviceTime: { start: string; end: string }[];
       }[] = [];
 
@@ -109,6 +111,24 @@ const scheduleSlice = createSlice({
 
       state.monthSchedule = monthSchedule;
     },
+
+    setSingleDateServiceTimeToMonthSchedule: (
+      state,
+      action: PayloadAction<{
+        date: ISODateString;
+        serviceTime: { start: string; end: string }[];
+      }>
+    ) => {
+      const index = state.monthSchedule.findIndex(
+        (date) => date.date === action.payload.date
+      );
+
+      if (index === -1) {
+        state.monthSchedule.push(action.payload);
+      } else {
+        state.monthSchedule[index].serviceTime = action.payload.serviceTime;
+      }
+    },
   },
 });
 
@@ -117,6 +137,7 @@ export const {
   setMonth,
   setClient,
   applyWeekScheduleToMonthSchedule,
+  setSingleDateServiceTimeToMonthSchedule,
 } = scheduleSlice.actions;
 
 export default scheduleSlice.reducer;

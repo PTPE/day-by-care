@@ -49,8 +49,6 @@ export default function WeekSchedule() {
   const onSubmit = (data: z.infer<typeof weekScheduleSchema>) => {
     const validServiceTime = getValidServiceTime(data);
 
-    methods.reset(defaultValues);
-
     dispatch(
       applyWeekScheduleToMonthSchedule({
         weekSchedule: validServiceTime,

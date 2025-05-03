@@ -11,11 +11,12 @@ type Props = {
 export default function DayTile({ date }: Props) {
   const checkInOutDialogRef = useRef<CheckInOutDialogRef>(null);
 
-  const serviceTime = useAppSelector((state) =>
-    state.schedule.monthSchedule.find(
-      (schedule) => schedule.date === date.toLocaleDateString('zh-TW')
-    )
-  )?.serviceTime;
+  const thisDayServiceTime =
+    useAppSelector((state) =>
+      state.schedule.monthSchedule.find(
+        (schedule) => schedule.date === date.toISOString()
+      )
+    )?.serviceTime || [];
 
   return (
     <>
@@ -31,7 +32,7 @@ export default function DayTile({ date }: Props) {
         tabIndex={0}
       />
       <div className="space-y-2">
-        {serviceTime?.map(
+        {thisDayServiceTime.map(
           (time) =>
             time.start &&
             time.end && (
@@ -47,7 +48,11 @@ export default function DayTile({ date }: Props) {
         )}
       </div>
 
-      <CheckInOutDialog ref={checkInOutDialogRef} date={date} />
+      <CheckInOutDialog
+        ref={checkInOutDialogRef}
+        date={date}
+        serviceTime={thisDayServiceTime}
+      />
     </>
   );
 }

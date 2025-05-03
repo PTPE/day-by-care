@@ -10,6 +10,38 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      _unused_schedule: {
+        Row: {
+          client_id: string;
+          created_at: string | null;
+          month: number;
+          schedule_id: string;
+          year: number;
+        };
+        Insert: {
+          client_id: string;
+          created_at?: string | null;
+          month: number;
+          schedule_id?: string;
+          year: number;
+        };
+        Update: {
+          client_id?: string;
+          created_at?: string | null;
+          month?: number;
+          schedule_id?: string;
+          year?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'client_schedule_client_id_fkey';
+            columns: ['client_id'];
+            isOneToOne: false;
+            referencedRelation: 'client';
+            referencedColumns: ['client_id'];
+          },
+        ];
+      };
       client: {
         Row: {
           address: string;
@@ -69,30 +101,30 @@ export type Database = {
       schedule: {
         Row: {
           client_id: string;
-          created_at: string | null;
-          month: number;
-          schedule_id: string;
-          year: number;
+          created_at: string;
+          schedule_id: string | null;
+          service_end_time: string | null;
+          service_start_time: string | null;
         };
         Insert: {
-          client_id: string;
-          created_at?: string | null;
-          month: number;
-          schedule_id?: string;
-          year: number;
+          client_id?: string;
+          created_at?: string;
+          schedule_id?: string | null;
+          service_end_time?: string | null;
+          service_start_time?: string | null;
         };
         Update: {
           client_id?: string;
-          created_at?: string | null;
-          month?: number;
-          schedule_id?: string;
-          year?: number;
+          created_at?: string;
+          schedule_id?: string | null;
+          service_end_time?: string | null;
+          service_start_time?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'client_schedule_client_id_fkey';
+            foreignKeyName: 'schedule_client_id_fkey';
             columns: ['client_id'];
-            isOneToOne: false;
+            isOneToOne: true;
             referencedRelation: 'client';
             referencedColumns: ['client_id'];
           },
@@ -140,7 +172,7 @@ export type Database = {
             foreignKeyName: 'time_slots_schedule_id_fkey';
             columns: ['schedule_id'];
             isOneToOne: false;
-            referencedRelation: 'schedule';
+            referencedRelation: '_unused_schedule';
             referencedColumns: ['schedule_id'];
           },
         ];
