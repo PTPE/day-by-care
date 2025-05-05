@@ -7,27 +7,17 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { DayOfWeek as DayOfWeekType } from '@/features/schedule/types';
-import { applyWeekScheduleToMonthSchedule } from '@/features/schedule/store/schedule-slice';
 import { weekScheduleSchema } from '@/features/schedule/modules';
+import {
+  getValidMonthScheduleServiceTime,
+  weekScheduleToMonthSchedule,
+} from '@/features/schedule/utils';
 import Button from '@/ui/button';
-import { useAppDispatch } from '@/store/hooks';
+import { useUpdateSchedule } from '@/features/schedule/hooks/useScheduleQuery.client';
+import LoadingSpinner from '@/ui/loading-spinner';
+import { useScheduleUrlParams } from '@/features/schedule/hooks/useScheduleUrlParams';
 
 import DayOfWeek from './_day-of-week';
-
-function getValidServiceTime(
-  serviceTime: z.infer<typeof weekScheduleSchema>
-): z.infer<typeof weekScheduleSchema> {
-  return Object.entries(serviceTime).reduce(
-    (acc, [day, slots]) => {
-      // eslint-disable-next-line no-param-reassign
-      acc[day as keyof typeof serviceTime] = slots.filter(
-        (slot) => slot.start && slot.end && slot.end > slot.start
-      );
-      return acc;
-    },
-    {} as z.infer<typeof weekScheduleSchema>
-  );
-}
 
 const defaultValues = {
   [DayOfWeekType.MONDAY]: [],
@@ -40,24 +30,39 @@ const defaultValues = {
 };
 
 export default function WeekSchedule() {
-  const dispatch = useAppDispatch();
   const methods = useForm({
     defaultValues,
     resolver: zodResolver(weekScheduleSchema),
   });
 
-  const onSubmit = (data: z.infer<typeof weekScheduleSchema>) => {
-    const validServiceTime = getValidServiceTime(data);
+  const { year, month, clientId } = useScheduleUrlParams();
 
-    dispatch(
-      applyWeekScheduleToMonthSchedule({
-        weekSchedule: validServiceTime,
-      })
-    );
+  const { mutate: updateSchedule, isPending: isUpdating } = useUpdateSchedule({
+    onSuccess: () => {
+      methods.reset(defaultValues);
+    },
+  });
+
+  if (!year || !month || !clientId) return null;
+
+  const onSubmit = (data: z.infer<typeof weekScheduleSchema>) => {
+    const monthSchedule = weekScheduleToMonthSchedule({
+      year: Number(year),
+      month: Number(month),
+      weekSchedule: data,
+    });
+
+    const validMonthSchedule = getValidMonthScheduleServiceTime(monthSchedule);
+
+    updateSchedule({
+      clientId,
+      monthSchedule: validMonthSchedule,
+    });
   };
 
   return (
     <FormProvider {...methods}>
+      {isUpdating && <LoadingSpinner />}
       <form
         className="flex flex-col gap-5"
         onSubmit={methods.handleSubmit(onSubmit)}

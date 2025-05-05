@@ -1,6 +1,7 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
 import {
   Select,
   SelectContent,
@@ -8,24 +9,37 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select';
-import { setClient } from '@/features/schedule/store/schedule-slice';
+import { useGetClients } from '@/features/client/hooks/useClientsQuery.client';
 
 export default function ClientSelect() {
-  const dispatch = useAppDispatch();
-  const client = useAppSelector((state) => state.schedule.client);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const clientId = searchParams.get('clientId') || '';
+  const year = searchParams.get('year') || new Date().getFullYear();
+  const month = searchParams.get('month') || new Date().getMonth() + 1;
+
+  const { data: clients } = useGetClients();
 
   return (
     <Select
-      onValueChange={(value) => dispatch(setClient({ id: value, name: '' }))}
-      value={client.id}
+      onValueChange={(value) => {
+        router.push(
+          `${pathname}?clientId=${value}&year=${year}&month=${month}`
+        );
+      }}
+      value={clientId}
     >
       <SelectTrigger>
         <SelectValue placeholder="選擇案主" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="1">案主1</SelectItem>
-        <SelectItem value="2">案主2</SelectItem>
-        <SelectItem value="3">案主3</SelectItem>
+        {clients?.map((client) => (
+          <SelectItem key={client.client_id} value={client.client_id}>
+            {client.client_name}
+          </SelectItem>
+        ))}
       </SelectContent>
     </Select>
   );

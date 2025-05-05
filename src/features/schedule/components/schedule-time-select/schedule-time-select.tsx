@@ -1,6 +1,7 @@
 'use client';
 
-import { useAppDispatch, useAppSelector } from '@/store/hooks';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
 import {
   Select,
   SelectContent,
@@ -8,12 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select';
-import { setYear, setMonth } from '@/features/schedule/store/schedule-slice';
 
 export default function ScheduleTimeSelect() {
-  const dispatch = useAppDispatch();
-  const year = useAppSelector((state) => state.schedule.year);
-  const month = useAppSelector((state) => state.schedule.month);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
+  const month = searchParams.get('month') || new Date().getMonth() + 1;
+  const year = searchParams.get('year') || new Date().getFullYear();
+  const clientId = searchParams.get('clientId') || '';
 
   const yearOptions = Array.from(
     { length: 10 },
@@ -24,7 +28,11 @@ export default function ScheduleTimeSelect() {
   return (
     <div className="flex gap-2">
       <Select
-        onValueChange={(value) => dispatch(setYear(Number(value)))}
+        onValueChange={(value) =>
+          router.push(
+            `${pathname}?year=${value}&clientId=${clientId}&month=${month}`
+          )
+        }
         value={year.toString()}
       >
         <SelectTrigger>
@@ -40,7 +48,11 @@ export default function ScheduleTimeSelect() {
       </Select>
 
       <Select
-        onValueChange={(value) => dispatch(setMonth(Number(value)))}
+        onValueChange={(value) =>
+          router.push(
+            `${pathname}?year=${year}&clientId=${clientId}&month=${value}`
+          )
+        }
         value={month.toString()}
       >
         <SelectTrigger>

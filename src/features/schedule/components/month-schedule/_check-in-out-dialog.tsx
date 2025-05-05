@@ -19,8 +19,11 @@ import {
   DialogTitle,
 } from '@/ui/dialog';
 import Button from '@/ui/button';
-import { useAppDispatch } from '@/store/hooks';
-import { setSingleDateServiceTimeToMonthSchedule } from '@/features/schedule/store/schedule-slice';
+import { useUpdateSchedule } from '@/features/schedule/hooks/useScheduleQuery.client';
+import { DateString } from '@/features/schedule/types';
+import LoadingSpinner from '@/ui/loading-spinner';
+import { getValidMonthScheduleServiceTime } from '@/features/schedule/utils';
+import { useScheduleUrlParams } from '@/features/schedule/hooks/useScheduleUrlParams';
 
 import TimeSlot from './_time-slot';
 
@@ -49,26 +52,25 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [hasServiceTime, JSON.stringify(serviceTime)]);
 
+    const { mutate: updateSchedule, isPending: isUpdating } = useUpdateSchedule(
+      {
+        onSuccess: () => {
+          setOpen(false);
+        },
+      }
+    );
+
+    const { clientId } = useScheduleUrlParams();
+
     const { control, register, reset, handleSubmit } = useForm<{
       serviceTime: { start: string; end: string }[];
     }>({
       defaultValues,
     });
 
-    const dispatch = useAppDispatch();
-
-    const { fields, remove, update } = useFieldArray({
+    const { fields, remove, update, append } = useFieldArray({
       control,
       name: 'serviceTime',
-    });
-
-    const onSubmit = handleSubmit((data) => {
-      dispatch(
-        setSingleDateServiceTimeToMonthSchedule({
-          date: date.toISOString(),
-          serviceTime: data.serviceTime,
-        })
-      );
     });
 
     useImperativeHandle(ref, () => ({
@@ -80,11 +82,30 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
       reset(defaultValues);
     }, [defaultValues, reset]);
 
-    if (!open) return null;
+    if (!open || !clientId) return null;
+
+    const onSubmit = handleSubmit((data) => {
+      const monthSchedule = data.serviceTime.map((s) => ({
+        date: format(date, 'yyyy-MM-dd') as DateString,
+        service_start_time: s.start,
+        service_end_time: s.end,
+      }));
+
+      const validMonthSchedule =
+        getValidMonthScheduleServiceTime(monthSchedule);
+
+      const params = {
+        clientId,
+        monthSchedule: validMonthSchedule,
+      };
+
+      updateSchedule(params);
+    });
 
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="bg-primary w-[95%] rounded-md">
+          {isUpdating && <LoadingSpinner />}
           <DialogDescription />
 
           <DialogHeader>
@@ -106,7 +127,13 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
             />
           ))}
 
-          <Button variant="outline" className="text-accent">
+          <Button
+            variant="outline"
+            className="text-accent"
+            onClick={() => {
+              append({ start: '', end: '' });
+            }}
+          >
             新增時段
           </Button>
 
@@ -133,7 +160,6 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
               type="submit"
               onClick={() => {
                 onSubmit();
-                setOpen(false);
               }}
             >
               儲存變更

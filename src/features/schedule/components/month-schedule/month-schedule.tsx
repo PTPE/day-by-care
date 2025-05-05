@@ -4,11 +4,17 @@ import { useState } from 'react';
 
 import Calendar from 'react-calendar';
 
+import { useScheduleUrlParams } from '@/features/schedule/hooks/useScheduleUrlParams';
+
 import './calendar.css';
 import DayTile from './_day-tile';
 
 export default function MonthSchedule() {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
+  const { year, month } = useScheduleUrlParams();
+
+  if (!year || !month) return null;
 
   return (
     <>
@@ -27,6 +33,7 @@ export default function MonthSchedule() {
           }
           return '';
         }}
+        activeStartDate={new Date(Number(year), Number(month) - 1, 1)}
         formatShortWeekday={(_, date) =>
           date.toLocaleDateString('zh-TW', { weekday: 'narrow' })
         }

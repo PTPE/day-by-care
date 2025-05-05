@@ -1,6 +1,9 @@
 import { useRef } from 'react';
 
-import { useAppSelector } from '@/store/hooks';
+import { useSearchParams } from 'next/navigation';
+import { format } from 'date-fns';
+
+import { useGetSchedule } from '@/features/schedule/hooks/useScheduleQuery.client';
 
 import CheckInOutDialog, { CheckInOutDialogRef } from './_check-in-out-dialog';
 
@@ -11,12 +14,24 @@ type Props = {
 export default function DayTile({ date }: Props) {
   const checkInOutDialogRef = useRef<CheckInOutDialogRef>(null);
 
+  const searchParams = useSearchParams();
+  const clientId = searchParams.get('clientId') || '';
+  const year = searchParams.get('year') || new Date().getFullYear();
+  const month = searchParams.get('month') || new Date().getMonth() + 1;
+
+  const { data: schedule } = useGetSchedule({
+    clientId,
+    year: Number(year),
+    month: Number(month),
+  });
+
   const thisDayServiceTime =
-    useAppSelector((state) =>
-      state.schedule.monthSchedule.find(
-        (schedule) => schedule.date === date.toISOString()
-      )
-    )?.serviceTime || [];
+    schedule
+      ?.filter((s) => s.date === format(date, 'yyyy-MM-dd'))
+      .map((s) => ({
+        start: s.service_start_time || '',
+        end: s.service_end_time || '',
+      })) || [];
 
   return (
     <>

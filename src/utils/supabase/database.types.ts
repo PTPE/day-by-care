@@ -102,21 +102,24 @@ export type Database = {
         Row: {
           client_id: string;
           created_at: string;
-          schedule_id: string | null;
+          date: string | null;
+          schedule_id: string;
           service_end_time: string | null;
           service_start_time: string | null;
         };
         Insert: {
           client_id?: string;
           created_at?: string;
-          schedule_id?: string | null;
+          date?: string | null;
+          schedule_id?: string;
           service_end_time?: string | null;
           service_start_time?: string | null;
         };
         Update: {
           client_id?: string;
           created_at?: string;
-          schedule_id?: string | null;
+          date?: string | null;
+          schedule_id?: string;
           service_end_time?: string | null;
           service_start_time?: string | null;
         };
@@ -124,7 +127,7 @@ export type Database = {
           {
             foreignKeyName: 'schedule_client_id_fkey';
             columns: ['client_id'];
-            isOneToOne: true;
+            isOneToOne: false;
             referencedRelation: 'client';
             referencedColumns: ['client_id'];
           },
@@ -209,6 +212,19 @@ export type Database = {
           p_year: number;
           p_month: number;
           p_time_slots: Json;
+        };
+        Returns: undefined;
+      };
+      replace_day_schedules: {
+        Args: { p_client_id: string; p_new_schedules: Json };
+        Returns: undefined;
+      };
+      replace_month_schedules: {
+        Args: {
+          p_client_id: string;
+          p_year: number;
+          p_month: number;
+          p_new_service_time: Json;
         };
         Returns: undefined;
       };
