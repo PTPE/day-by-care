@@ -6,6 +6,8 @@ import {
   GetSchedulesParams,
   getServiceSummary,
   GetServiceSummaryParams,
+  getClientsServiceSummary,
+  GetClientsServiceSummaryParams,
 } from '@/features/report/services/report-apis';
 import { QUERY_KEYS } from '@/const/QUERY_KEYS';
 import useSupabaseServer from '@/utils/supabase/supabase-server';
@@ -35,4 +37,18 @@ export function useServiceSummaryPrefetch(params: GetServiceSummaryParams) {
   };
 
   return { prefetchServiceSummary };
+}
+
+export function useClientsServiceSummaryPrefetch(
+  params: GetClientsServiceSummaryParams
+) {
+  const client = useSupabaseServer(cookieStore);
+  const prefetchClientsServiceSummary = async () => {
+    await queryClient.prefetchQuery({
+      queryKey: [QUERY_KEYS.CLIENTS_SERVICE_SUMMARY, params],
+      queryFn: () => getClientsServiceSummary(params, client),
+    });
+  };
+
+  return { prefetchClientsServiceSummary };
 }

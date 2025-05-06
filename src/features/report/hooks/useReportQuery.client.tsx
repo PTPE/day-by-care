@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 
 import useSupabaseBrowser from '@/utils/supabase/supabase-browser';
 import {
+  getClientsServiceSummary,
+  GetClientsServiceSummaryParams,
   getSchedules,
   GetSchedulesParams,
   getServiceSummary,
@@ -27,6 +29,20 @@ export function useGetServiceSummary(params: GetServiceSummaryParams) {
   const { data, isLoading, error } = useQuery({
     queryKey: [QUERY_KEYS.SERVICE_SUMMARY, params],
     queryFn: () => getServiceSummary(params, client),
+    enabled: !!params.year && !!params.month,
+  });
+
+  return { data, isLoading, error };
+}
+
+export function useGetClientsServiceSummary(
+  params: GetClientsServiceSummaryParams
+) {
+  const client = useSupabaseBrowser();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: [QUERY_KEYS.CLIENTS_SERVICE_SUMMARY, params],
+    queryFn: () => getClientsServiceSummary(params, client),
     enabled: !!params.year && !!params.month,
   });
 

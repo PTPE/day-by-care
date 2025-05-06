@@ -1,13 +1,14 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
-import ClientServiceCard from '@/features/report/components/client-service-card';
 import ReportTimeSelect from '@/features/report/components/report-time-select';
 import ServiceSummaryCard from '@/features/report/components/service-summary-card';
 import {
   useSchedulesPrefetch,
   useServiceSummaryPrefetch,
   queryClient,
+  useClientsServiceSummaryPrefetch,
 } from '@/features/report/hooks/useReportPrefetch.server';
+import ClientServiceSummaryList from '@/features/report/components/client-service-summary-list';
 
 export default async function Reports() {
   const thisYear = new Date().getFullYear();
@@ -23,8 +24,14 @@ export default async function Reports() {
     month: thisMonth,
   });
 
+  const { prefetchClientsServiceSummary } = useClientsServiceSummaryPrefetch({
+    year: thisYear,
+    month: thisMonth,
+  });
+
   await prefetchSchedules();
   await prefetchServiceSummary();
+  await prefetchClientsServiceSummary();
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
@@ -33,7 +40,7 @@ export default async function Reports() {
 
         <ServiceSummaryCard />
 
-        <ClientServiceCard />
+        <ClientServiceSummaryList />
       </div>
     </HydrationBoundary>
   );
