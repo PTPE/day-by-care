@@ -7,4 +7,5 @@ export const QUERY_KEYS = {
   SCHEDULES: 'schedules',
   SERVICE_SUMMARY: 'service-summary',
   CLIENTS_SERVICE_SUMMARY: 'clients-service-summary',
+  CLIENT_SERVICE_DETAIL: 'client-service-detail',
 };

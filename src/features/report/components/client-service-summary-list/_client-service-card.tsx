@@ -5,9 +5,9 @@
 
 import { useRef } from 'react';
 
-import ClientServiceRecordDialog, {
-  ClientServiceRecordDialogRef,
-} from '@/features/report/components/client-service-record-dialog';
+import ClientServiceDetailDialog, {
+  ClientServiceDetailDialogRef,
+} from '@/features/report/components/client-service-detail-dialog';
 import { ClientServiceSummary } from '@/features/report/types';
 import { serviceItems } from '@/const/service-items';
 
@@ -16,19 +16,19 @@ type Props = {
 };
 
 export default function ClientServiceCard({ client }: Props) {
-  const clientServiceRecordDialogRef =
-    useRef<ClientServiceRecordDialogRef>(null);
+  const clientServiceDetailDialogRef =
+    useRef<ClientServiceDetailDialogRef>(null);
 
   return (
     <>
       <div
         className="bg-card rounded-lg p-5 grid grid-cols-[2fr_1fr] gap-3 cursor-pointer"
-        onClick={() => clientServiceRecordDialogRef.current?.open()}
+        onClick={() => clientServiceDetailDialogRef.current?.open()}
       >
         <div className="text-lg font-bold">{client.clientName}</div>
 
         <div className="font-bold text-lg text-accent ml-auto">
-          {client.serviceTimeLengthInHours}小時
+          {client.totalServiceHours}小時
         </div>
 
         <div className="flex text-sm gap-2">
@@ -49,7 +49,12 @@ export default function ClientServiceCard({ client }: Props) {
         </div>
       </div>
 
-      <ClientServiceRecordDialog ref={clientServiceRecordDialogRef} />
+      <ClientServiceDetailDialog
+        ref={clientServiceDetailDialogRef}
+        clientId={client.clientId}
+        clientName={client.clientName}
+        totalServiceHours={client.totalServiceHours}
+      />
     </>
   );
 }

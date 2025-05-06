@@ -1,6 +1,9 @@
 import { TypedSupabaseClient } from '@/utils/supabase/types';
 import { calculateServiceTimeLengthInHours } from '@/features/report/utils';
-import { ClientServiceSummary } from '@/features/report/types';
+import {
+  ClientServiceLogPerDay,
+  ClientServiceSummary,
+} from '@/features/report/types';
 
 export type GetSchedulesParams = {
   year: number;
@@ -114,7 +117,7 @@ export async function getClientsServiceSummary(
     const clientIcon = clientServiceLogs?.[0]?.client?.client_icon;
     const serviceItemIds = clientServiceLogs?.[0]?.client?.service_item_ids;
     const serviceItemIdDays = Number(clientServiceLogs?.length);
-    const serviceTimeLengthInHours = clientServiceLogs?.reduce(
+    const totalServiceHours = clientServiceLogs?.reduce(
       (acc, c) =>
         acc +
         calculateServiceTimeLengthInHours(
@@ -130,7 +133,7 @@ export async function getClientsServiceSummary(
       clientName,
       clientIcon,
       serviceItemIds,
-      serviceTimeLengthInHours,
+      totalServiceHours,
       serviceItemIdDays,
     };
   });
@@ -140,4 +143,64 @@ export async function getClientsServiceSummary(
   }
 
   return formattedClientsData as ClientServiceSummary[];
+}
+
+export type GetClientServiceDetailParams = {
+  clientId: string;
+  year: number;
+  month: number;
+};
+
+export async function getClientServiceDetail(
+  supabaseClient: TypedSupabaseClient,
+  params: GetClientServiceDetailParams
+) {
+  const startDate = new Date(params.year, params.month - 1, 1)
+    .toISOString()
+    .split('T')[0];
+  const endDate = new Date(params.year, params.month, 1)
+    .toISOString()
+    .split('T')[0];
+
+  const { data, error } = await supabaseClient
+    .from('schedule')
+    .select('*')
+    .eq('client_id', params.clientId)
+    .gte('date', startDate)
+    .lte('date', endDate);
+
+  const groupedByDate = new Map<string, typeof data>();
+
+  data?.forEach((entry) => {
+    if (!entry.date) return;
+    if (!groupedByDate.has(entry.date)) {
+      groupedByDate.set(entry.date, []);
+    }
+    groupedByDate.get(entry.date)!.push(entry);
+  });
+
+  const formattedData = data?.map((schedule) => {
+    const date = schedule.date ?? '';
+    const dailyService = groupedByDate.get(date) ?? [];
+
+    return {
+      scheduleId: schedule.schedule_id,
+      date,
+      serviceTotalHours: calculateServiceTimeLengthInHours(
+        date,
+        schedule.service_start_time ?? '',
+        schedule.service_end_time ?? ''
+      ),
+      serviceTime: dailyService.map((timeSlot) => ({
+        startTime: timeSlot.service_start_time ?? '',
+        endTime: timeSlot.service_end_time ?? '',
+      })),
+    };
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return formattedData as ClientServiceLogPerDay[];
 }
