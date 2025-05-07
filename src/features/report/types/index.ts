@@ -8,6 +8,8 @@ export type ClientServiceSummary = {
 };
 
 export type ClientServiceLogPerDay = {
+  clientId: string;
+  clientName: string;
   scheduleId: string;
   date: string;
   serviceTotalHours: number;

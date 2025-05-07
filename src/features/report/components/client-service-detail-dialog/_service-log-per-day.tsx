@@ -43,7 +43,7 @@ export default function ServiceLogPerDay({ serviceLog }: Props) {
         編輯時程
       </Button>
 
-      <EditTimeSlotDialog ref={editTimeSlotDialogRef} />
+      <EditTimeSlotDialog ref={editTimeSlotDialogRef} serviceLog={serviceLog} />
     </div>
   );
 }

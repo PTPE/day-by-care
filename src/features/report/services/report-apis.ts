@@ -1,5 +1,8 @@
 import { TypedSupabaseClient } from '@/utils/supabase/types';
-import { calculateServiceTimeLengthInHours } from '@/features/report/utils';
+import {
+  calculateServiceTimeLengthInHours,
+  sumServiceHours,
+} from '@/features/report/utils';
 import {
   ClientServiceLogPerDay,
   ClientServiceSummary,
@@ -67,18 +70,7 @@ export async function getServiceSummary(
     .gte('date', startDate)
     .lte('date', endDate);
 
-  const totalServiceHours =
-    totalSchedules
-      ?.reduce((acc, schedule) => {
-        const serviceHours = calculateServiceTimeLengthInHours(
-          schedule.date ?? '',
-          schedule.service_start_time ?? '',
-          schedule.service_end_time ?? ''
-        );
-
-        return acc + Number(serviceHours);
-      }, 0)
-      .toFixed(1) || 0;
+  const totalServiceHours = sumServiceHours(totalSchedules ?? []);
 
   if (totalSchedulesError) {
     throw new Error(totalSchedulesError.message);
@@ -117,16 +109,7 @@ export async function getClientsServiceSummary(
     const clientIcon = clientServiceLogs?.[0]?.client?.client_icon;
     const serviceItemIds = clientServiceLogs?.[0]?.client?.service_item_ids;
     const serviceItemIdDays = Number(clientServiceLogs?.length);
-    const totalServiceHours = clientServiceLogs?.reduce(
-      (acc, c) =>
-        acc +
-        calculateServiceTimeLengthInHours(
-          c.date ?? '',
-          c.service_start_time ?? '',
-          c.service_end_time ?? ''
-        ),
-      0
-    );
+    const totalServiceHours = sumServiceHours(clientServiceLogs ?? []);
 
     return {
       clientId,
@@ -164,7 +147,7 @@ export async function getClientServiceDetail(
 
   const { data, error } = await supabaseClient
     .from('schedule')
-    .select('*')
+    .select('*, client(client_name)')
     .eq('client_id', params.clientId)
     .gte('date', startDate)
     .lte('date', endDate);
@@ -184,13 +167,15 @@ export async function getClientServiceDetail(
     const dailyService = groupedByDate.get(date) ?? [];
 
     return {
+      clientId: schedule.client_id,
+      clientName: schedule.client?.client_name ?? '',
       scheduleId: schedule.schedule_id,
       date,
-      serviceTotalHours: calculateServiceTimeLengthInHours(
+      serviceTotalHours: calculateServiceTimeLengthInHours({
         date,
-        schedule.service_start_time ?? '',
-        schedule.service_end_time ?? ''
-      ),
+        service_start_time: schedule.service_start_time ?? '',
+        service_end_time: schedule.service_end_time ?? '',
+      }),
       serviceTime: dailyService.map((timeSlot) => ({
         startTime: timeSlot.service_start_time ?? '',
         endTime: timeSlot.service_end_time ?? '',
@@ -203,4 +188,31 @@ export async function getClientServiceDetail(
   }
 
   return formattedData as ClientServiceLogPerDay[];
+}
+
+export type UpdateClientServiceLogParams = {
+  scheduleId: string;
+  serviceTime: {
+    startTime: string;
+    endTime: string;
+  }[];
+};
+
+export async function updateClientServiceLog(
+  supabaseClient: TypedSupabaseClient,
+  params: UpdateClientServiceLogParams
+) {
+  const { data, error } = await supabaseClient
+    .from('schedule')
+    .update({
+      service_start_time: params.serviceTime[0].startTime,
+      service_end_time: params.serviceTime[0].endTime,
+    })
+    .eq('schedule_id', params.scheduleId);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 }
