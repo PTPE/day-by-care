@@ -1,5 +1,7 @@
 'use client';
 
+import { useTransition } from 'react';
+
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import {
@@ -9,8 +11,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select';
+import LoadingSpinner from '@/ui/loading-spinner';
 
 export default function ReportTimeSelect() {
+  const [isPending, startTransition] = useTransition();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -25,42 +30,47 @@ export default function ReportTimeSelect() {
   const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1);
 
   return (
-    <div className="flex gap-2">
-      <Select
-        onValueChange={(value) =>
-          router.push(`${pathname}?year=${value}&month=${month}`)
-        }
-        value={year.toString()}
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="選擇年" />
-        </SelectTrigger>
-        <SelectContent>
-          {yearOptions.map((option) => (
-            <SelectItem key={option} value={option.toString()}>
-              {option}年
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
+    <>
+      {isPending && <LoadingSpinner />}
+      <div className="flex gap-2">
+        <Select
+          onValueChange={(value) =>
+            startTransition(() => {
+              router.push(`${pathname}?year=${value}&month=${month}`);
+            })
+          }
+          value={year.toString()}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="選擇年" />
+          </SelectTrigger>
+          <SelectContent>
+            {yearOptions.map((option) => (
+              <SelectItem key={option} value={option.toString()}>
+                {option}年
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
 
-      <Select
-        onValueChange={(value) =>
-          router.push(`${pathname}?year=${year}&month=${value}`)
-        }
-        value={month.toString()}
-      >
-        <SelectTrigger>
-          <SelectValue placeholder="選擇月" />
-        </SelectTrigger>
-        <SelectContent>
-          {monthOptions.map((option) => (
-            <SelectItem key={option} value={option.toString()}>
-              {option}月
-            </SelectItem>
-          ))}
-        </SelectContent>
-      </Select>
-    </div>
+        <Select
+          onValueChange={(value) =>
+            router.push(`${pathname}?year=${year}&month=${value}`)
+          }
+          value={month.toString()}
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="選擇月" />
+          </SelectTrigger>
+          <SelectContent>
+            {monthOptions.map((option) => (
+              <SelectItem key={option} value={option.toString()}>
+                {option}月
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+    </>
   );
 }
