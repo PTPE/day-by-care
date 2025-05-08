@@ -10,9 +10,16 @@ import {
 } from '@/features/report/hooks/useReportPrefetch.server';
 import ClientServiceSummaryList from '@/features/report/components/client-service-summary-list';
 
-export default async function Reports() {
-  const thisYear = new Date().getFullYear();
-  const thisMonth = new Date().getMonth() + 1;
+export default async function Reports({
+  searchParams,
+}: {
+  searchParams: {
+    year: string;
+    month: string;
+  };
+}) {
+  const thisYear = Number(searchParams.year) || new Date().getFullYear();
+  const thisMonth = Number(searchParams.month) || new Date().getMonth() + 1;
 
   const { prefetchSchedules } = useSchedulesPrefetch({
     year: thisYear,

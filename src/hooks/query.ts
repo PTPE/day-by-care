@@ -25,6 +25,10 @@ export function useUpdateServiceTimeByDay({
         queryKey: [QUERY_KEYS.CLIENTS_SERVICE_SUMMARY],
       });
 
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.CLIENT_SERVICE_DETAIL],
+      });
+
       onSuccessCb?.();
     },
   });

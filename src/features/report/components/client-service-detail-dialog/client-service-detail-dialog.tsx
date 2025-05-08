@@ -8,6 +8,7 @@ import {
 } from '@/ui/dialog';
 import useReportUrlParams from '@/features/report/hooks/useReportUrlParams';
 import { useGetClientServiceDetail } from '@/features/report/hooks/useReportQuery.client';
+import LoadingSpinner from '@/ui/loading-spinner';
 
 import ServiceLogPerDay from './_service-log-per-day';
 
@@ -35,7 +36,7 @@ const ClientServiceDetailDialog = forwardRef<
 
   const { year, month } = useReportUrlParams();
 
-  const { data: serviceLogs } = useGetClientServiceDetail({
+  const { data: serviceLogs, isLoading } = useGetClientServiceDetail({
     params: {
       clientId,
       year: Number(year),
@@ -45,23 +46,26 @@ const ClientServiceDetailDialog = forwardRef<
   });
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogDescription />
-      <DialogContent className="w-[95%] rounded-lg max-h-[90vh] overflow-y-auto">
-        <DialogTitle className="text-primary font-bold text-lg">
-          {clientName}-{year}年{month}月
-        </DialogTitle>
-        <div className="flex justify-between items-center">
-          <div className="font-bold text-lg">服務記錄</div>
-          <div className="bg-accent text-primary-foreground rounded-lg px-2 py-1">
-            總時數：{totalServiceHours}小時
+    <>
+      {isLoading && <LoadingSpinner />}
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogDescription />
+        <DialogContent className="w-[95%] rounded-lg max-h-[90vh] overflow-y-auto">
+          <DialogTitle className="text-primary font-bold text-lg">
+            {clientName}-{year}年{month}月
+          </DialogTitle>
+          <div className="flex justify-between items-center">
+            <div className="font-bold text-lg">服務記錄</div>
+            <div className="bg-accent text-primary-foreground rounded-lg px-2 py-1">
+              總時數：{totalServiceHours}小時
+            </div>
           </div>
-        </div>
-        {serviceLogs?.map((log) => (
-          <ServiceLogPerDay key={log.scheduleId} serviceLog={log} />
-        ))}
-      </DialogContent>
-    </Dialog>
+          {serviceLogs?.map((log) => (
+            <ServiceLogPerDay key={log.scheduleId} serviceLog={log} />
+          ))}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 });
 

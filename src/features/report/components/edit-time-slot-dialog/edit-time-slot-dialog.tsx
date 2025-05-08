@@ -41,9 +41,10 @@ const EditTimeSlotDialog = forwardRef<EditTimeSlotDialogRef, Props>(
       name: 'serviceTime',
     });
 
-    const { mutate: updateServiceTime } = useUpdateServiceTimeByDay({
-      onSuccessCb: () => setOpen(false),
-    });
+    const { mutate: updateServiceTime, isPending: isUpdating } =
+      useUpdateServiceTimeByDay({
+        onSuccessCb: () => setOpen(false),
+      });
 
     useImperativeHandle(ref, () => ({
       open: () => setOpen(true),
@@ -128,7 +129,9 @@ const EditTimeSlotDialog = forwardRef<EditTimeSlotDialogRef, Props>(
               </div>
 
               <div className="flex flex-col gap-2">
-                <Button type="submit">確認更改</Button>
+                <Button type="submit" disabled={isUpdating}>
+                  {isUpdating ? '修改中...' : '確認更改'}
+                </Button>
                 <Button
                   variant="ghost"
                   className="border border-border"
