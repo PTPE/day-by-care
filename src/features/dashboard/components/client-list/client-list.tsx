@@ -1,18 +1,28 @@
-'use  client';
+'use client';
+
+import { ClientList as ClientListType } from '@/features/dashboard/types';
 
 import ClientListItem from './_client-list-item';
 
-export default function ClientList() {
+type ClientListProps = {
+  clientList: ClientListType;
+  selectedClientId: string;
+};
+
+export default function ClientList({
+  clientList,
+  selectedClientId,
+}: ClientListProps) {
   return (
-    <div className="flex gap-5 overflow-y-auto py-3">
-      <ClientListItem selected />
-      <ClientListItem selected={false} />
-      <ClientListItem selected={false} />
-      <ClientListItem selected={false} />
-      <ClientListItem selected={false} />
-      <ClientListItem selected={false} />
-      <ClientListItem selected={false} />
-      <ClientListItem selected={false} />
+    <div className="flex gap-2 overflow-y-auto py-3">
+      {clientList?.map((client) => (
+        <ClientListItem
+          key={client.clientId}
+          clientId={client.clientId}
+          clientName={client.clientName}
+          isSelected={selectedClientId === client.clientId}
+        />
+      ))}
     </div>
   );
 }

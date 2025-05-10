@@ -1,6 +1,52 @@
+'use client';
+
+import { addDays, format } from 'date-fns';
+import { zhTW } from 'date-fns/locale';
+
+import { getThisWeekDateRange } from '@/features/dashboard/utils';
+import { useGetThisWeekServiceTimeOfClient } from '@/features/dashboard/hooks/useDashboardQuery.client';
+
 import DayItem from './day-item';
 
-export default function WeekSchedule() {
+type WeekScheduleProps = {
+  selectedClientId: string;
+};
+
+export default function WeekSchedule({ selectedClientId }: WeekScheduleProps) {
+  const { startOfThisWeek } = getThisWeekDateRange();
+  const { data: serviceTime } = useGetThisWeekServiceTimeOfClient();
+
+  const clientServiceTime = serviceTime?.[selectedClientId];
+
+  const days: {
+    day: string;
+    date: number;
+    time: string[];
+    isToday: boolean;
+  }[] = [];
+
+  for (let i = 0; i < 7; i += 1) {
+    const date = addDays(startOfThisWeek, i);
+    const dateInSQL = format(date, 'yyyy-MM-dd');
+    const isToday = format(new Date(), 'yyyy-MM-dd') === dateInSQL;
+
+    if (clientServiceTime?.[dateInSQL]) {
+      days.push({
+        day: format(date, 'EEEEE', { locale: zhTW }),
+        date: date.getDate(),
+        time: clientServiceTime[dateInSQL].map((item) => item.startTime),
+        isToday,
+      });
+    } else {
+      days.push({
+        day: format(date, 'EEEEE', { locale: zhTW }),
+        date: date.getDate(),
+        time: [],
+        isToday,
+      });
+    }
+  }
+
   return (
     <div className="flex flex-col gap-5 bg-card p-4 rounded-lg lg:p-8">
       <div className="flex items-center gap-2">
@@ -8,12 +54,15 @@ export default function WeekSchedule() {
         <div className="text-xl font-extrabold tracking-widest">本週班表</div>
       </div>
       <div className="flex justify-between">
-        <DayItem day="三" date={23} time="10:00" isSelected={false} />
-        <DayItem day="四" date={24} time="10:00" isSelected={false} />
-        <DayItem day="五" date={25} time="10:00" isSelected />
-        <DayItem day="六" date={26} time="10:00" isSelected={false} />
-        <DayItem day="日" date={27} time="10:00" isSelected={false} />
-        <DayItem day="一" date={28} time="10:00" isSelected={false} />
+        {days.map((day) => (
+          <DayItem
+            key={day.day}
+            day={day.day}
+            date={day.date}
+            time={day.time}
+            isToday={day.isToday}
+          />
+        ))}
       </div>
     </div>
   );
