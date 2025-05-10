@@ -6,9 +6,11 @@ import Button from '@/ui/button';
 import Input from '@/ui/input';
 import Label from '@/ui/label';
 import signInSchema from '@/features/auth/modules/sign-in';
-import useSignIn from '@/features/auth/hooks/useSignIn';
-import useSignInWithGoogle from '@/features/auth/hooks/useSignInWithGoogle';
 import LoadingSpinner from '@/ui/loading-spinner';
+import {
+  useSignIn,
+  useSignInWithGoogle,
+} from '@/features/auth/hooks/useAuthQueries.client';
 
 export default function SignIn() {
   const {

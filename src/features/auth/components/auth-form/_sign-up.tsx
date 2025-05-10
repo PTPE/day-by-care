@@ -11,8 +11,10 @@ import Button from '@/ui/button';
 import SignUpNotificationDialog, {
   SignUpNotificationDialogRef,
 } from '@/features/auth/components/sign-up-notification-dialog';
-import useSignUp from '@/features/auth/hooks/useSignUp';
-import useSignInWithGoogle from '@/features/auth/hooks/useSignInWithGoogle';
+import {
+  useSignInWithGoogle,
+  useSignUp,
+} from '@/features/auth/hooks/useAuthQueries.client';
 import LoadingSpinner from '@/ui/loading-spinner';
 
 export default function SignUp() {
