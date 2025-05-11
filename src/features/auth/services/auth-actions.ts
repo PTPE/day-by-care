@@ -29,7 +29,11 @@ export async function signUp(data: z.infer<typeof signUpSchema>) {
     email: data.email,
     password: data.password,
     options: {
-      emailRedirectTo: 'http://localhost:3000/auth/callback',
+      emailRedirectTo: 'http://localhost:3000/api/auth/callback',
+      data: {
+        firstName: data.firstName,
+        lastName: data.lastName,
+      },
     },
   });
 
@@ -104,4 +108,21 @@ export async function signOut() {
   revalidatePath('/', 'layout');
 
   redirect('/');
+}
+
+export async function updateUser(data: {
+  password?: string;
+  firstName?: string;
+  lastName?: string;
+}) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const supabaseClient = useSupabaseServer(cookies());
+
+  const { error } = await supabaseClient.auth.updateUser({
+    data,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
 }

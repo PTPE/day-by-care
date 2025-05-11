@@ -30,7 +30,7 @@ export default function Navigation() {
       />
 
       <NavigationItem
-        href={routes.Settings()}
+        href={routes.Setting()}
         icon="icon-[material-symbols--settings]"
         label="設定"
       />

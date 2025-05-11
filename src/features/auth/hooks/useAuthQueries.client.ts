@@ -1,11 +1,15 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import {
   signIn,
   signInWithGoogle,
   signOut,
   signUp,
+  updateUser,
 } from '@/features/auth/services/auth-actions';
+import { QUERY_KEYS } from '@/const/QUERY_KEYS';
+import { getUser } from '@/features/auth/services/auth-apis';
+import useSupabaseBrowser from '@/utils/supabase/supabase-browser';
 
 export function useSignIn({
   onSuccessCb,
@@ -49,6 +53,29 @@ export function useSignUp({
   const { mutate, isPending, error } = useMutation({
     mutationFn: signUp,
     onSuccess: onSuccessCb,
+  });
+
+  return { mutate, isPending, error };
+}
+
+export function useGetUser() {
+  const supabaseClient = useSupabaseBrowser();
+  const { data, isPending, error } = useQuery({
+    queryKey: [QUERY_KEYS.USER],
+    queryFn: () => getUser(supabaseClient),
+  });
+
+  return { data, isPending, error };
+}
+
+export function useUpdateUser() {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: updateUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER] });
+    },
   });
 
   return { mutate, isPending, error };

@@ -26,6 +26,13 @@ export default function SignUp() {
     reset,
   } = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
+    defaultValues: {
+      firstName: '宇婕',
+      lastName: '李',
+      email: 'winnie10430@gmail.com',
+      password: '12345678',
+      confirmPassword: '12345678',
+    },
   });
 
   const { mutate: signUp, isPending: isSigningUp } = useSignUp({

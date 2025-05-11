@@ -26,7 +26,7 @@ export default async function Dashboard({
   const { clientList, clientsInfo } =
     await getThisWeekClientsInfo(supabaseClient);
 
-  const selectedClientId = searchParams.clientId || clientList[0].clientId;
+  const selectedClientId = searchParams.clientId || clientList[0]?.clientId;
 
   const { prefetchClientList } = usePrefetchThisWeekClientsInfo();
   const { prefetchServiceTimeByClientIdAndDate } =

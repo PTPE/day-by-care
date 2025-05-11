@@ -1,4 +1,5 @@
 export const QUERY_KEYS = {
+  USER: 'user',
   CLIENTS: 'clients',
   CLIENT: 'client',
   CLIENT_SCHEDULE_YEAR: 'client-schedule-year',
