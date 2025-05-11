@@ -18,7 +18,7 @@ export default function AppIntro() {
           </p>
         </div>
 
-        <div className="w-96 space-y-8">
+        <div className="max-w-96 space-y-8">
           <div className="flex items-center gap-2">
             <span className="icon-[material-symbols--edit-calendar-outline]" />
             輕鬆排班，一目了然
