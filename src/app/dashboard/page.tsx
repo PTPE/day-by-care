@@ -37,6 +37,18 @@ export default async function Dashboard({
   const { prefetchThisWeekServiceTimeOfClient } =
     usePrefetchThisWeekServiceTimeOfClient();
 
+  if (!clientList.length) {
+    return (
+      <div className="flex flex-col items-center justify-center h-full">
+        <h1 className="text-2xl font-bold text-center">
+          尚未建立案主
+          <br />
+          請至案主頁新增
+        </h1>
+      </div>
+    );
+  }
+
   await prefetchClientList();
   await prefetchServiceTimeByClientIdAndDate();
   await prefetchThisWeekServiceTimeOfClient();
