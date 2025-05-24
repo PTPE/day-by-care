@@ -206,6 +206,22 @@ export type Database = {
       [_ in never]: never;
     };
     Functions: {
+      change_password: {
+        Args: {
+          current_password: string;
+          new_password: string;
+          user_id: string;
+        };
+        Returns: string;
+      };
+      changepassword: {
+        Args: {
+          current_password: string;
+          new_password: string;
+          user_id: string;
+        };
+        Returns: string;
+      };
       insert_or_update_schedule: {
         Args: {
           p_client_id: string;

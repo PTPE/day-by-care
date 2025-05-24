@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Input from '@/ui/input';
 import Label from '@/ui/label';
@@ -9,6 +9,7 @@ import {
   useGetUser,
   useUpdateUser,
 } from '@/features/auth/hooks/useAuthQueries.client';
+import LoadingSpinner from '@/ui/loading-spinner';
 
 function useEditField(initialValue: string, onSave: (value: string) => void) {
   const [isEditing, setIsEditing] = useState(false);
@@ -26,6 +27,8 @@ function useEditField(initialValue: string, onSave: (value: string) => void) {
     }
     setIsEditing(!isEditing);
   };
+
+  useEffect(() => setValue(initialValue), [initialValue]);
 
   return {
     isEditing,
@@ -80,7 +83,7 @@ function EditableField({
 }
 
 export default function Name() {
-  const { data: user } = useGetUser();
+  const { data: user, isLoading: isGettingUser } = useGetUser();
   const { mutate: updateUser } = useUpdateUser();
 
   const lastNameField = useEditField(user?.lastName || '', (value) => {
@@ -93,6 +96,7 @@ export default function Name() {
 
   return (
     <div className="flex flex-col gap-2">
+      {isGettingUser && <LoadingSpinner />}
       <EditableField
         label="姓"
         value={lastNameField.value}

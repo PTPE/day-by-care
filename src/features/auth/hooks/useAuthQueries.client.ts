@@ -6,6 +6,7 @@ import {
   signOut,
   signUp,
   updateUser,
+  updateUserPassword,
 } from '@/features/auth/services/auth-actions';
 import { QUERY_KEYS } from '@/const/QUERY_KEYS';
 import { getUser } from '@/features/auth/services/auth-apis';
@@ -60,12 +61,12 @@ export function useSignUp({
 
 export function useGetUser() {
   const supabaseClient = useSupabaseBrowser();
-  const { data, isPending, error } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: [QUERY_KEYS.USER],
     queryFn: () => getUser(supabaseClient),
   });
 
-  return { data, isPending, error };
+  return { data, isLoading, error };
 }
 
 export function useUpdateUser() {
@@ -73,6 +74,19 @@ export function useUpdateUser() {
 
   const { mutate, isPending, error } = useMutation({
     mutationFn: updateUser,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER] });
+    },
+  });
+
+  return { mutate, isPending, error };
+}
+
+export function useUpdateUserPassword() {
+  const queryClient = useQueryClient();
+
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: updateUserPassword,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEYS.USER] });
     },

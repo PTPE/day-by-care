@@ -71,7 +71,7 @@ export async function signIn(data: SignInParams) {
 
   revalidatePath('/', 'layout');
 
-  redirect('/dashboard/clients');
+  redirect('/dashboard');
 }
 
 export async function signInWithGoogle() {
@@ -124,5 +124,32 @@ export async function updateUser(data: {
 
   if (error) {
     throw new Error(error.message);
+  }
+}
+
+type UpdateUserPasswordParams = {
+  currentPassword: string;
+  newPassword: string;
+};
+
+export async function updateUserPassword(params: UpdateUserPasswordParams) {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  const supabaseClient = useSupabaseServer(cookies());
+
+  const { data: user } = await supabaseClient.auth.getUser();
+  const userId = user.user?.id;
+
+  if (!userId) {
+    throw new Error('User not found');
+  }
+
+  const { data, error } = await supabaseClient.rpc('change_password', {
+    current_password: params.currentPassword,
+    new_password: params.newPassword,
+    user_id: userId,
+  });
+
+  if (error || data === 'incorrect') {
+    throw new Error('password is incorrect');
   }
 }
