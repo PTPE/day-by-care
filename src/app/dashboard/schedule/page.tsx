@@ -1,23 +1,35 @@
-import ClientSelect from '@/features/schedule/components/client-select';
-import MonthSchedule from '@/features/schedule/components/month-schedule';
-import ScheduleTimeSelect from '@/features/schedule/components/schedule-time-select';
-import WeekSchedule from '@/features/schedule/components/week-schedule';
+import SectionTabs from '@/components/section-tabs';
+import EditSection from '@/features/schedule/components/edit-section';
+import ExportSection from '@/features/schedule/components/export-section';
 
-export default function SchedulePage() {
+const tabs = [
+  {
+    id: 'edit',
+    label: '編輯班表',
+  },
+  {
+    id: 'export',
+    label: '匯出班表',
+  },
+];
+
+export default function SchedulePage({
+  searchParams,
+}: {
+  searchParams: { tab?: string; month?: string; year?: string };
+}) {
+  const selectedSectionId = searchParams.tab || tabs[0].id;
+
   return (
     <div className="flex flex-col gap-5">
-      <div className="grid grid-cols-[3fr_1fr] gap-5 sticky top-0 z-10 mx-[-20px] px-5 py-2 bg-secondary">
-        <ClientSelect />
-        <ScheduleTimeSelect />
-      </div>
-
       <div>
-        <WeekSchedule />
+        <SectionTabs tabs={tabs} />
       </div>
 
-      <div className="overflow-auto">
-        <MonthSchedule />
-      </div>
+      {selectedSectionId === 'edit' && <EditSection />}
+      {selectedSectionId === 'export' && (
+        <ExportSection searchParams={searchParams} />
+      )}
     </div>
   );
 }

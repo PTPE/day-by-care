@@ -15,24 +15,30 @@ export default function ScheduleTimeSelect() {
   const searchParams = useSearchParams();
   const pathname = usePathname();
 
-  const month = searchParams.get('month') || new Date().getMonth() + 1;
-  const year = searchParams.get('year') || new Date().getFullYear();
-  const clientId = searchParams.get('clientId') || '';
+  const now = new Date();
+  const month = Number(searchParams.get('month')) || now.getMonth() + 1;
+  const year = Number(searchParams.get('year')) || now.getFullYear();
 
   const yearOptions = Array.from(
     { length: 10 },
     (_, i) => new Date().getFullYear() + 1 - i
   );
+
   const monthOptions = Array.from({ length: 12 }, (_, i) => i + 1);
+
+  const updateSearchParams = (newParams: { year?: string; month?: string }) => {
+    const params = new URLSearchParams(searchParams);
+
+    if (newParams.year) params.set('year', newParams.year);
+    if (newParams.month) params.set('month', newParams.month);
+
+    router.push(`${pathname}?${params.toString()}`);
+  };
 
   return (
     <div className="flex gap-2">
       <Select
-        onValueChange={(value) =>
-          router.push(
-            `${pathname}?year=${value}&clientId=${clientId}&month=${month}`
-          )
-        }
+        onValueChange={(value) => updateSearchParams({ year: value })}
         value={year.toString()}
       >
         <SelectTrigger>
@@ -48,11 +54,7 @@ export default function ScheduleTimeSelect() {
       </Select>
 
       <Select
-        onValueChange={(value) =>
-          router.push(
-            `${pathname}?year=${year}&clientId=${clientId}&month=${value}`
-          )
-        }
+        onValueChange={(value) => updateSearchParams({ month: value })}
         value={month.toString()}
       >
         <SelectTrigger>
