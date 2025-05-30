@@ -1,5 +1,7 @@
+import PreviewSelectedClient from '@/components/preview-selected-client';
 import SelectExportClient from '@/components/select-export-client';
 import ScheduleTimeSelect from '@/features/schedule/components/schedule-time-select';
+import Button from '@/ui/button';
 
 export default function ExportSection({
   searchParams,
@@ -10,7 +12,7 @@ export default function ExportSection({
   const year = searchParams?.year || new Date().getFullYear();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-5">
       <ScheduleTimeSelect />
 
       <div className="flex items-center gap-2 text-primary text-lg font-bold">
@@ -21,6 +23,15 @@ export default function ExportSection({
       </div>
 
       <SelectExportClient />
+
+      <PreviewSelectedClient />
+
+      <div className="flex justify-around">
+        <Button className="text-sm" variant="accent">
+          下載PDF
+        </Button>
+        <Button className="text-sm">至iBon列印</Button>
+      </div>
     </div>
   );
 }
