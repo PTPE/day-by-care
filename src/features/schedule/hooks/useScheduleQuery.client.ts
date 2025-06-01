@@ -40,3 +40,8 @@ export function useGetSchedule(params: GetScheduleParams) {
 
   return { data, isLoading, error };
 }
+
+export function useGetExportedClientsByYearAndMonth() {
+  const client = useSupabaseBrowser();
+  // const {data,isLoading,error} = use
+}
