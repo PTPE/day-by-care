@@ -1,7 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { QUERY_KEYS } from '@/const/QUERY_KEYS';
-import { updateServiceTimeByDay } from '@/services/actions';
+import {
+  updateServiceTimeByDay,
+  uploadFileToIbonAndSendNotifyEmail,
+} from '@/services/actions';
 import {
   getClients,
   GetClientsParams,
@@ -67,4 +70,23 @@ export function useGetClients(params: GetClientsParams) {
   });
 
   return { data, isLoading, error };
+}
+
+export function useUploadFileToIbonAndSendNotifyEmail({
+  onSuccessCb,
+}: {
+  onSuccessCb?: (data: { pincode: string; deadline: string }) => void;
+} = {}) {
+  const { mutate, isPending, error } = useMutation({
+    mutationFn: uploadFileToIbonAndSendNotifyEmail,
+    onSuccess: (data) => {
+      onSuccessCb?.(data);
+    },
+  });
+
+  return {
+    mutate,
+    isPending,
+    error,
+  };
 }
