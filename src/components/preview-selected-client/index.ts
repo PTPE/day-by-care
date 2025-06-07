@@ -1,3 +1,3 @@
-import PreviewSelectedClient from './preview-selected.client';
+import PreviewSelectedClient from './preview-selected-client';
 
 export default PreviewSelectedClient;

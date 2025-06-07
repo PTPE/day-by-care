@@ -6,6 +6,7 @@ export const QUERY_KEYS = {
   CLIENT_SCHEDULE_MONTH: 'client-schedule-month',
   SCHEDULE: 'schedule',
   SCHEDULES: 'schedules',
+  EXPORTED_CLIENT_LIST: 'exported-client-list',
   SERVICE_SUMMARY: 'service-summary',
   CLIENTS_SERVICE_SUMMARY: 'clients-service-summary',
   CLIENT_SERVICE_DETAIL: 'client-service-detail',

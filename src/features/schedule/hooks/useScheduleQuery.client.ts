@@ -2,8 +2,10 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { updateSchedule } from '@/features/schedule/services/schedule-actions';
 import {
+  getExportedClientsByYearAndMonth,
   getSchedule,
   GetScheduleParams,
+  ParamsGetExportedClientsByYearAndMonth,
 } from '@/features/schedule/services/schedule-apis';
 import { QUERY_KEYS } from '@/const/QUERY_KEYS';
 import useSupabaseBrowser from '@/utils/supabase/supabase-browser';
@@ -41,7 +43,14 @@ export function useGetSchedule(params: GetScheduleParams) {
   return { data, isLoading, error };
 }
 
-export function useGetExportedClientsByYearAndMonth() {
-  const client = useSupabaseBrowser();
-  // const {data,isLoading,error} = use
+export function useGetExportedClientsByYearAndMonth(
+  params: ParamsGetExportedClientsByYearAndMonth
+) {
+  const supabaseClient = useSupabaseBrowser();
+  const { data, isLoading, error } = useQuery({
+    queryKey: [QUERY_KEYS.EXPORTED_CLIENT_LIST, params],
+    queryFn: () => getExportedClientsByYearAndMonth(supabaseClient, params),
+  });
+
+  return { data, isLoading, error };
 }

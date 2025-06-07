@@ -27,9 +27,7 @@ export default function SchedulePage({
       </div>
 
       {selectedSectionId === 'edit' && <EditSection />}
-      {selectedSectionId === 'export' && (
-        <ExportSection searchParams={searchParams} />
-      )}
+      {selectedSectionId === 'export' && <ExportSection />}
     </div>
   );
 }

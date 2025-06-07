@@ -1,7 +1,14 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { QUERY_KEYS } from '@/const/QUERY_KEYS';
 import { updateServiceTimeByDay } from '@/services/actions';
+import {
+  getClients,
+  GetClientsParams,
+  getSchedules,
+  GetSchedulesParams,
+} from '@/services/apis';
+import useSupabaseBrowser from '@/utils/supabase/supabase-browser';
 
 export function useUpdateServiceTimeByDay({
   onSuccessCb,
@@ -38,4 +45,26 @@ export function useUpdateServiceTimeByDay({
   });
 
   return { mutate, isPending, error };
+}
+
+export function useGetSchedules(params: GetSchedulesParams) {
+  const supabaseClient = useSupabaseBrowser();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: [params, QUERY_KEYS.SCHEDULES],
+    queryFn: () => getSchedules(supabaseClient, params),
+  });
+
+  return { data, isLoading, error };
+}
+
+export function useGetClients(params: GetClientsParams) {
+  const supabaseClient = useSupabaseBrowser();
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: [params, QUERY_KEYS.CLIENTS],
+    queryFn: () => getClients(supabaseClient, params),
+  });
+
+  return { data, isLoading, error };
 }

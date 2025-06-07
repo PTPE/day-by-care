@@ -30,30 +30,3 @@ export async function getSchedule(
 
   return data;
 }
-
-export async function getExportedClientsByYearAndMonth(
-  supabaseClient: TypedSupabaseClient,
-  params: {
-    year: number;
-    month: number;
-  }
-) {
-  const startDate = new Date(params.year, params.month - 1, 1)
-    .toISOString()
-    .split('T')[0];
-  const endDate = new Date(params.year, params.month, 1)
-    .toISOString()
-    .split('T')[0];
-
-  const { data, error } = await supabaseClient
-    .from('schedule')
-    .select('*, client(client_id, client_name)')
-    .gte('date', startDate)
-    .lt('date', endDate);
-
-  if (error) {
-    throw new Error(error.message);
-  }
-
-  return data;
-}
