@@ -16,6 +16,6 @@ export type Schedule = {
 
 export type ServiceTime = {
   date: string;
-  start: string;
-  end: string;
+  start: string | null;
+  end: string | null;
 };

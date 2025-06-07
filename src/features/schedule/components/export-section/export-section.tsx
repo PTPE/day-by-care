@@ -11,6 +11,9 @@ import Button from '@/ui/button';
 import { useGetClients, useGetSchedules } from '@/hooks/query';
 import { getMonthRange } from '@/utils/get-month-range';
 import { Client } from '@/types/client';
+import downloadPdf from '@/utils/download-pdf';
+
+import DownloadPdf from './_download-pdf';
 
 export default function ExportSection() {
   const [selectedClients, setSelectedClients] = useState<Client[]>([]);
@@ -31,6 +34,11 @@ export default function ExportSection() {
     endDate,
   });
 
+  const selectedClientSchedule = schedules?.filter((schedule) => {
+    const selectedClientIds = selectedClients.map((client) => client.clientId);
+    return selectedClientIds.includes(schedule.clientId);
+  });
+
   const handleSelectClientId = (clientId: string) => {
     const selectedClient = clients?.find(
       (client) => client.clientId === clientId
@@ -43,10 +51,13 @@ export default function ExportSection() {
     });
   };
 
-  const selectedClientSchedule = schedules?.filter((schedule) => {
-    const selectedClientIds = selectedClients.map((client) => client.clientId);
-    return selectedClientIds.includes(schedule.clientId);
-  });
+  function handleDownloadPdf() {
+    const downloadScheduleIds = selectedClients.flatMap((client) => [
+      `first-half-month-${client.clientId}`,
+      `second-half-month-${client.clientId}`,
+    ]);
+    downloadPdf(downloadScheduleIds);
+  }
 
   return (
     <div className="flex flex-col gap-5">
@@ -67,10 +78,22 @@ export default function ExportSection() {
 
       <PreviewSelectedClient selectedSchedules={selectedClientSchedule || []} />
 
+      <DownloadPdf
+        year={year}
+        month={month}
+        selectedClientSchedule={selectedClientSchedule || []}
+        selectedClients={selectedClients}
+      />
+
       <div className="flex justify-around">
-        <Button className="text-sm" variant="accent">
+        <Button
+          className="text-sm"
+          variant="accent"
+          onClick={() => handleDownloadPdf()}
+        >
           下載PDF
         </Button>
+
         <Button className="text-sm">至iBon列印</Button>
       </div>
     </div>

@@ -2,17 +2,11 @@ import { format, parseISO, eachDayOfInterval } from 'date-fns';
 
 import { ServiceTime } from '@/types/client';
 
-type FilledServiceTime = {
-  date: string;
-  start: string | null;
-  end: string | null;
-};
-
 export default function fillMissingServiceDates(
   startDate: string,
   endDate: string,
   serviceTimes: ServiceTime[]
-): FilledServiceTime[] {
+): ServiceTime[] {
   const serviceMap = new Map(serviceTimes.map((s) => [s.date, s]));
 
   const allDates = eachDayOfInterval({
