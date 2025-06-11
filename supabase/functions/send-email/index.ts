@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Webhook } from 'https://esm.sh/standardwebhooks@1.0.0';
+import { Webhook } from 'standardwebhooks';
 import { Resend } from 'resend';
 import { renderAsync } from '@react-email/components';
 import { MagicLinkEmail } from './_templates/magic-link.tsx';
