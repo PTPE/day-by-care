@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select';
-import { serviceItems } from '@/const/service-items';
+import { serviceItemMap } from '@/const/service-items';
 import { ServiceItemId } from '@/features/client/types';
 
 import ServiceChip from './_service-chip';
@@ -24,6 +24,11 @@ export default function ClientServiceSelect({
 }: Props) {
   const [selectedServiceItems, setSelectedServiceItems] =
     useState<ServiceItemId[]>(serviceItemsIds);
+
+  const serviceItems = Object.entries(serviceItemMap).map(([key, value]) => ({
+    id: key,
+    name: value,
+  }));
 
   const handleSelectChange = (value: ServiceItemId) => {
     setSelectedServiceItems((prev) => [...prev, value]);
