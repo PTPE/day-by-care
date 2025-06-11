@@ -67,36 +67,38 @@ th {
   }
 
   .dark {
-    --primary-background: 222, 15%, 10%;
-    --secondary-background: 222, 10%, 15%;
+    --primary-background: 222, 15%, 8%; /* 主背景：幾近黑的深藍灰 */
+    --secondary-background: 222, 12%, 12%; /* 次背景：淺一點 */
 
-    --primary: 27, 40%, 50%;
-    --primary-foreground: 0, 0%, 100%;
-
-    --secondary: 222, 10%, 25%;
-    --secondary-foreground: 210, 20%, 90%;
-
-    --accent: 105, 30%, 50%;
-    --accent-foreground: 210, 20%, 90%;
-
-    --destructive: 0, 65%, 45%;
-    --destructive-foreground: 0, 0%, 100%;
-
-    --muted: 210, 15%, 30%;
-    --muted-foreground: 210, 20%, 70%;
-
-    --card: 210, 15%, 15%;
+    --card: 222, 10%, 16%; /* 卡片：帶灰的深咖啡，比背景略亮 */
     --card-foreground: 0, 0%, 100%;
-    --popover: 210, 15%, 15%;
+
+    --tertiary-background: 222, 10%, 20%;
+    --tertiary: 105, 15%, 30%;
+    --tertiary-foreground: 210, 20%, 90%;
+
+    --popover: 222, 10%, 20%;
     --popover-foreground: 0, 0%, 100%;
 
-    --foreground: 210, 20%, 90%;
+    --primary: 27, 40%, 55%; /* 溫暖的大地咖啡 */
+    --primary-foreground: 0, 0%, 100%;
+
+    --secondary: 105, 20%, 35%; /* 深抹茶綠，用作互動色塊較自然 */
+    --secondary-foreground: 0, 0%, 100%;
+
+    --accent: 105, 30%, 50%; /* 抹茶綠，作為跳色與亮點 */
+    --accent-foreground: 210, 20%, 95%;
+
+    --destructive: 0, 65%, 50%;
+    --destructive-foreground: 0, 0%, 100%;
+
+    --muted: 210, 15%, 25%;
+    --muted-foreground: 210, 20%, 70%;
+
+    --foreground: 0, 0%, 95%; /* 白字偏暖，避開死白 */
     --border: 210, 10%, 30%;
     --input: 210, 10%, 25%;
     --ring: 105, 30%, 50%;
-
-    --popover: 210, 15%, 15%; /* 深藍灰底 */
-    --popover-foreground: 0, 0%, 100%; /* 白字 */
   }
 }
 

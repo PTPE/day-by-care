@@ -14,8 +14,8 @@ export default function Tab({ children, selected, onClick }: TabProps) {
       type="button"
       onClick={onClick}
       className={cn(
-        'p-1 w-full rounded-lg text-sm font-bold',
-        selected ? 'bg-primary' : 'bg-tertiary'
+        'p-1 w-full rounded-lg text-sm font-bold transition-colors',
+        selected ? 'bg-card text-primary' : 'text-muted-foreground'
       )}
     >
       {children}

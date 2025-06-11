@@ -8,7 +8,7 @@ import {
 } from '@/ui/collapsible';
 import { Client } from '@/features/client/types';
 import routes from '@/const/routes';
-import { serviceItems } from '@/const/service-items';
+import { serviceItemMap } from '@/const/service-items';
 
 import ClientDetail from './_client-detail';
 
@@ -28,6 +28,11 @@ export default function ClientExpandableCard({ client }: Props) {
     supervisor_phone: client.supervisor_phone,
     office_phone: client.office_phone,
   };
+
+  const serviceItems = client.service_item_ids.map((id) => {
+    const serviceItem = serviceItemMap[id as keyof typeof serviceItemMap];
+    return serviceItem || '';
+  });
 
   return (
     <div className="flex flex-col gap-3 bg-card p-4 rounded-lg lg:p-8">
@@ -53,9 +58,9 @@ export default function ClientExpandableCard({ client }: Props) {
       </div>
 
       <div className="flex gap-1 text-tertiary-foreground text-sm md:text-base flex-wrap">
-        {client.service_item_ids.map((id) => (
-          <div className="bg-secondary rounded-full px-2 py-1" key={id}>
-            {serviceItems.find((item) => item.id === id)?.name}
+        {client.service_item_ids.map((id, index) => (
+          <div className="bg-tertiary rounded-full px-2 py-1" key={id}>
+            {serviceItems[index]}
           </div>
         ))}
       </div>
