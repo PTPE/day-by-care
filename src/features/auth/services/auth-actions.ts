@@ -29,7 +29,7 @@ export async function signUp(data: z.infer<typeof signUpSchema>) {
     email: data.email,
     password: data.password,
     options: {
-      emailRedirectTo: 'http://localhost:3000/api/auth/callback',
+      emailRedirectTo: 'api/auth/callback',
       data: {
         firstName: data.firstName,
         lastName: data.lastName,
@@ -80,7 +80,7 @@ export async function signInWithGoogle() {
 
   const { data, error } = await supabaseClient.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: 'http://localhost:3000/api/auth/callback' },
+    options: { redirectTo: '/api/auth/callback' },
   });
 
   if (error) {
