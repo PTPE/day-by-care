@@ -1,25 +1,35 @@
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 import ReportTimeSelect from '@/features/report/components/report-time-select';
-import ServiceSummaryCard from '@/features/report/components/service-summary-card';
 import {
   useSchedulesPrefetch,
   useServiceSummaryPrefetch,
   queryClient,
   useClientsServiceSummaryPrefetch,
 } from '@/features/report/hooks/useReportPrefetch.server';
-import ClientServiceSummaryList from '@/features/report/components/client-service-summary-list';
+import SectionTabs from '@/components/section-tabs';
+import ViewSection from '@/features/report/components/view-section';
+import ExportSection from '@/features/report/components/export-section';
+
+const tabs = [
+  {
+    label: '查看總表',
+    id: 'view',
+  },
+  {
+    label: '匯出總表',
+    id: 'export',
+  },
+];
 
 export default async function Reports({
   searchParams,
 }: {
-  searchParams: {
-    year: string;
-    month: string;
-  };
+  searchParams: { tab?: string; month?: string; year?: string };
 }) {
   const thisYear = Number(searchParams.year) || new Date().getFullYear();
   const thisMonth = Number(searchParams.month) || new Date().getMonth() + 1;
+  const selectedSectionId = searchParams.tab || tabs[0].id;
 
   const { prefetchSchedules } = useSchedulesPrefetch({
     year: thisYear,
@@ -43,11 +53,13 @@ export default async function Reports({
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <div className="flex flex-col gap-5">
+        <SectionTabs tabs={tabs} />
+
         <ReportTimeSelect />
 
-        <ServiceSummaryCard />
+        {selectedSectionId === 'view' && <ViewSection />}
 
-        <ClientServiceSummaryList />
+        {selectedSectionId === 'export' && <ExportSection />}
       </div>
     </HydrationBoundary>
   );

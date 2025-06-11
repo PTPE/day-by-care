@@ -1,6 +1,6 @@
 'use client';
 
-import { serviceItems } from '@/const/service-items';
+import { serviceItemMap } from '@/const/service-items';
 import { ClientsInfo } from '@/features/dashboard/types';
 
 type ClientInformationProps = {
@@ -49,11 +49,7 @@ export default function ClientInformation({
         <div className="text-sm md:text-base">服務項目</div>
         <div className="text-sm md:text-base font-bold">
           {selectedClientInfo.serviceItemIds
-            ?.map(
-              (item) =>
-                serviceItems.find((serviceItem) => serviceItem.id === item)
-                  ?.name
-            )
+            ?.map((id) => serviceItemMap[id])
             .join('、')}
         </div>
       </div>

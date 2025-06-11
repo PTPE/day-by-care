@@ -2,10 +2,11 @@ import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 
 export default async function pdfToBuffer(
-  ids: string[]
+  ids: string[],
+  orientation: 'l' | 'p' = 'l'
 ): Promise<string | null> {
   // eslint-disable-next-line new-cap
-  const pdf = new jsPDF('l', 'mm', 'a4');
+  const pdf = new jsPDF(orientation, 'mm', 'a4');
 
   for (let i = 0; i < ids.length; i += 1) {
     const input = document.getElementById(ids[i]);

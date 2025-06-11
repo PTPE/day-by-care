@@ -9,7 +9,7 @@ import ClientServiceDetailDialog, {
   ClientServiceDetailDialogRef,
 } from '@/features/report/components/client-service-detail-dialog';
 import { ClientServiceSummary } from '@/features/report/types';
-import { serviceItems } from '@/const/service-items';
+import { serviceItemMap } from '@/const/service-items';
 
 type Props = {
   client: ClientServiceSummary;
@@ -37,7 +37,7 @@ export default function ClientServiceCard({ client }: Props) {
               key={serviceItemId}
               className="bg-tertiary text-tertiary-foreground rounded-lg px-2 py-1"
             >
-              {serviceItems.find((item) => item.id === serviceItemId)?.name}
+              {serviceItemMap[serviceItemId]}
             </div>
           ))}
         </div>

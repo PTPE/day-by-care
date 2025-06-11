@@ -4,13 +4,10 @@ import fillMissingServiceDates from '@/utils/fill-missing-service-dates';
 import { getMonthRange } from '@/utils/get-month-range';
 import { calculateServiceTimeLengthInHours } from '@/utils/calculate-service-time-in-hours';
 import getTotalServiceHours from '@/utils/calculate-total-service-time-in-hours';
+import { ServiceTime } from '@/types/client';
 
 type Props = {
-  serviceTime: {
-    date: string;
-    start: string;
-    end: string;
-  }[];
+  serviceTime: ServiceTime[];
 };
 
 export default function ServiceTimePerClient({ serviceTime }: Props) {

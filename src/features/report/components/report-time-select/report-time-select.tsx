@@ -34,11 +34,13 @@ export default function ReportTimeSelect() {
       {isPending && <LoadingSpinner />}
       <div className="flex gap-2">
         <Select
-          onValueChange={(value) =>
+          onValueChange={(value) => {
             startTransition(() => {
-              router.push(`${pathname}?year=${value}&month=${month}`);
-            })
-          }
+              const params = new URLSearchParams(searchParams);
+              params.set('year', value);
+              router.push(`${pathname}?${params.toString()}`);
+            });
+          }}
           value={year.toString()}
         >
           <SelectTrigger>
@@ -54,9 +56,13 @@ export default function ReportTimeSelect() {
         </Select>
 
         <Select
-          onValueChange={(value) =>
-            router.push(`${pathname}?year=${year}&month=${value}`)
-          }
+          onValueChange={(value) => {
+            startTransition(() => {
+              const params = new URLSearchParams(searchParams);
+              params.set('month', value);
+              router.push(`${pathname}?${params.toString()}`);
+            });
+          }}
           value={month.toString()}
         >
           <SelectTrigger>

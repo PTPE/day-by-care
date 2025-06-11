@@ -1,6 +1,10 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useTransition } from 'react';
+
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import LoadingSpinner from '@/ui/loading-spinner';
 
 import Tab from './_tab';
 
@@ -17,17 +21,22 @@ interface SectionTabsProps {
 }
 
 export default function SectionTabs({ tabs, defaultTabId }: SectionTabsProps) {
+  const [isPending, startTransition] = useTransition();
   const searchParams = useSearchParams();
   const router = useRouter();
   const selectedSectionId =
     searchParams.get('tab') || defaultTabId || tabs[0].id;
+  const pathname = usePathname();
 
   const handleTabChange = (tabId: TabId) => {
-    router.push(`/dashboard/schedule?tab=${tabId}`);
+    startTransition(() => {
+      router.push(`${pathname}?tab=${tabId}`);
+    });
   };
 
   return (
     <div className="bg-tertiary p-2 rounded-lg flex">
+      {isPending && <LoadingSpinner />}
       {tabs.map((tab) => (
         <Tab
           key={tab.id}
