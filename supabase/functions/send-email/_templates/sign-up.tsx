@@ -15,11 +15,9 @@ interface MagicLinkEmailProps {
   email_action_type: string;
   redirect_to: string;
   token_hash: string;
-  token: string;
 }
 
 export const SignUpEmail = ({
-  token,
   supabase_url,
   email_action_type,
   redirect_to,
