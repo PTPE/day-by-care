@@ -72,7 +72,6 @@ Deno.serve(async (req) => {
       throw error;
     }
   } catch (error) {
-    console.log(error);
     return new Response(
       JSON.stringify({
         error: {
