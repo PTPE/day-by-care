@@ -13,9 +13,10 @@ import { QUERY_KEYS } from '@/const/QUERY_KEYS';
 import useSupabaseServer from '@/utils/supabase/supabase-server';
 
 export const queryClient = new QueryClient();
-const cookieStore = cookies();
 
 export function useSchedulesPrefetch(params: GetSchedulesParams) {
+  const cookieStore = cookies();
+
   const client = useSupabaseServer(cookieStore);
   const prefetchSchedules = async () => {
     await queryClient.prefetchQuery({
@@ -28,6 +29,8 @@ export function useSchedulesPrefetch(params: GetSchedulesParams) {
 }
 
 export function useServiceSummaryPrefetch(params: GetServiceSummaryParams) {
+  const cookieStore = cookies();
+
   const client = useSupabaseServer(cookieStore);
   const prefetchServiceSummary = async () => {
     await queryClient.prefetchQuery({
@@ -42,6 +45,8 @@ export function useServiceSummaryPrefetch(params: GetServiceSummaryParams) {
 export function useClientsServiceSummaryPrefetch(
   params: GetClientsServiceSummaryParams
 ) {
+  const cookieStore = cookies();
+
   const client = useSupabaseServer(cookieStore);
   const prefetchClientsServiceSummary = async () => {
     await queryClient.prefetchQuery({

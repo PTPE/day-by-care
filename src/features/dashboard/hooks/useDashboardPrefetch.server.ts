@@ -11,11 +11,12 @@ import useSupabaseServer from '@/utils/supabase/supabase-server';
 import { QUERY_KEYS } from '@/const/QUERY_KEYS';
 
 const queryClient = new QueryClient();
-const cookieStore = cookies();
 
 export function usePrefetchServiceTimeByClientIdAndDate(
   params: GetServiceTimeByClientIdAndDateParams
 ) {
+  const cookieStore = cookies();
+
   const supabaseClient = useSupabaseServer(cookieStore);
 
   const prefetchServiceTimeByClientIdAndDate = async () => {
@@ -29,6 +30,8 @@ export function usePrefetchServiceTimeByClientIdAndDate(
 }
 
 export function usePrefetchThisWeekClientsInfo() {
+  const cookieStore = cookies();
+
   const supabaseClient = useSupabaseServer(cookieStore);
 
   const prefetchClientList = async () => {
@@ -42,6 +45,8 @@ export function usePrefetchThisWeekClientsInfo() {
 }
 
 export function usePrefetchThisWeekServiceTimeOfClient() {
+  const cookieStore = cookies();
+
   const supabaseClient = useSupabaseServer(cookieStore);
 
   const prefetchThisWeekServiceTimeOfClient = async () => {
@@ -53,5 +58,4 @@ export function usePrefetchThisWeekServiceTimeOfClient() {
 
   return { prefetchThisWeekServiceTimeOfClient };
 }
-
 export { queryClient };
