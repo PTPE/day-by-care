@@ -3,7 +3,7 @@
 import { z } from 'zod';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 
 import signUpSchema from '@/modules/signUp';
 import signInSchema from '@/modules/signIn';
@@ -75,12 +75,16 @@ export async function signIn(data: SignInParams) {
 }
 
 export async function signInWithGoogle() {
+  const headersList = headers();
+  const host = headersList.get('host');
+  const protocol = headersList.get('x-forwarded-proto') || 'http';
+
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const supabaseClient = useSupabaseServer(cookies());
 
   const { data, error } = await supabaseClient.auth.signInWithOAuth({
     provider: 'google',
-    options: { redirectTo: '/api/auth/callback' },
+    options: { redirectTo: `${protocol}://${host}/api/auth/callback` },
   });
 
   if (error) {
