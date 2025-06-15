@@ -20,12 +20,14 @@ export default async function Dashboard({
 
   const { startOfThisWeek, endOfThisWeek } = getThisWeekDateRange();
 
-  const clientList = await getClients(supabaseClient, {
-    startDate: startOfThisWeek,
-    endDate: endOfThisWeek,
-  });
+  const clientList =
+    (await getClients(supabaseClient, {
+      startDate: startOfThisWeek,
+      endDate: endOfThisWeek,
+    })) || [];
 
-  const selectedClientId = searchParams.clientId || clientList[0].clientId;
+  const selectedClientId =
+    searchParams.clientId || clientList[0]?.clientId || '';
 
   const selectedClient = clientList.find(
     (client) => client.clientId === selectedClientId
@@ -37,6 +39,8 @@ export default async function Dashboard({
   });
 
   await prefetchSchedules();
+
+  if (!clientList.length) return <div>尚未建立案主</div>;
 
   return (
     <div className="space-y-5 pb-5 lg:mt-5">
