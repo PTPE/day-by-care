@@ -1,18 +1,15 @@
 'use client';
 
-import { ClientList as ClientListType } from '@/features/dashboard/types';
+import { Client } from '@/types/client';
 
 import ClientListItem from './_client-list-item';
 
-type ClientListProps = {
-  clientList: ClientListType;
+type Props = {
   selectedClientId: string;
+  clientList: Client[];
 };
 
-export default function ClientList({
-  clientList,
-  selectedClientId,
-}: ClientListProps) {
+export default function ClientList({ selectedClientId, clientList }: Props) {
   return (
     <div className="flex gap-2 overflow-y-auto py-3">
       {clientList?.map((client) => (

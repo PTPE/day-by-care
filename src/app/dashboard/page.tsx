@@ -1,19 +1,14 @@
 import { cookies } from 'next/headers';
-import { format } from 'date-fns';
 import { dehydrate, HydrationBoundary } from '@tanstack/react-query';
 
 import Attendance from '@/features/dashboard/components/attendance';
 import ClientInformation from '@/features/dashboard/components/client-information';
 import ClientList from '@/features/dashboard/components/client-list';
 import WeekSchedule from '@/features/dashboard/components/week-schedule';
-import { getThisWeekClientsInfo } from '@/features/dashboard/services/dashboard-apis';
+import { getThisWeekDateRange } from '@/features/dashboard/utils/getThisWeekDateRange';
+import { getClients } from '@/services/apis';
 import useSupabaseServer from '@/utils/supabase/supabase-server';
-import {
-  usePrefetchServiceTimeByClientIdAndDate,
-  queryClient,
-  usePrefetchThisWeekClientsInfo,
-  usePrefetchThisWeekServiceTimeOfClient,
-} from '@/features/dashboard/hooks/useDashboardPrefetch.server';
+import { usePrefetchSchedules } from '@/hooks/prefetch-queries';
 
 export default async function Dashboard({
   searchParams,
@@ -23,44 +18,34 @@ export default async function Dashboard({
   const cookieStore = cookies();
   const supabaseClient = useSupabaseServer(cookieStore);
 
-  const { clientList, clientsInfo } =
-    await getThisWeekClientsInfo(supabaseClient);
+  const { startOfThisWeek, endOfThisWeek } = getThisWeekDateRange();
 
-  const selectedClientId = searchParams.clientId || clientList[0]?.clientId;
+  const clientList = await getClients(supabaseClient, {
+    startDate: startOfThisWeek,
+    endDate: endOfThisWeek,
+  });
 
-  const { prefetchClientList } = usePrefetchThisWeekClientsInfo();
-  const { prefetchServiceTimeByClientIdAndDate } =
-    usePrefetchServiceTimeByClientIdAndDate({
-      clientId: selectedClientId,
-      date: format(new Date(), 'yyyy-MM-dd'),
-    });
-  const { prefetchThisWeekServiceTimeOfClient } =
-    usePrefetchThisWeekServiceTimeOfClient();
+  const selectedClientId = searchParams.clientId || clientList[0].clientId;
 
-  if (!clientList.length) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full">
-        <h1 className="text-2xl font-bold text-center">
-          尚未建立案主
-          <br />
-          請至案主頁新增
-        </h1>
-      </div>
-    );
-  }
+  const selectedClient = clientList.find(
+    (client) => client.clientId === selectedClientId
+  );
 
-  await prefetchClientList();
-  await prefetchServiceTimeByClientIdAndDate();
-  await prefetchThisWeekServiceTimeOfClient();
+  const { queryClient, prefetchClients } = usePrefetchSchedules({
+    startDate: startOfThisWeek,
+    endDate: endOfThisWeek,
+  });
+
+  await prefetchClients();
 
   return (
     <div className="space-y-5 pb-5 lg:mt-5">
-      <ClientList clientList={clientList} selectedClientId={selectedClientId} />
-      <ClientInformation
-        clientsInfo={clientsInfo}
-        selectedClientId={selectedClientId}
-      />
       <HydrationBoundary state={dehydrate(queryClient)}>
+        <ClientList
+          clientList={clientList}
+          selectedClientId={selectedClientId}
+        />
+        <ClientInformation selectedClient={selectedClient} />
         <WeekSchedule selectedClientId={selectedClientId} />
         <Attendance selectedClientId={selectedClientId} />
       </HydrationBoundary>

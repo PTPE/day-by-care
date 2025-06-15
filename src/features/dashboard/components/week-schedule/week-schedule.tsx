@@ -1,51 +1,28 @@
 'use client';
 
-import { addDays, format } from 'date-fns';
-import { zhTW } from 'date-fns/locale';
-
-import { getThisWeekDateRange } from '@/features/dashboard/utils';
-import { useGetThisWeekServiceTimeOfClient } from '@/features/dashboard/hooks/useDashboardQuery.client';
+import getDaysFromSchedules from '@/features/dashboard/utils/getDaysFromSchedule';
+import { getThisWeekDateRange } from '@/features/dashboard/utils/getThisWeekDateRange';
+import { useGetSchedules } from '@/hooks/query';
 
 import DayItem from './day-item';
 
-type WeekScheduleProps = {
+type Props = {
   selectedClientId: string;
 };
 
-export default function WeekSchedule({ selectedClientId }: WeekScheduleProps) {
-  const { startOfThisWeek } = getThisWeekDateRange();
-  const { data: serviceTime } = useGetThisWeekServiceTimeOfClient();
+export default function WeekSchedule({ selectedClientId }: Props) {
+  const { startOfThisWeek, endOfThisWeek } = getThisWeekDateRange();
+  const { data: schedules } = useGetSchedules({
+    startDate: startOfThisWeek,
+    endDate: endOfThisWeek,
+    clientIds: [selectedClientId],
+  });
 
-  const clientServiceTime = serviceTime?.[selectedClientId];
-
-  const days: {
-    day: string;
-    date: number;
-    time: string[];
-    isToday: boolean;
-  }[] = [];
-
-  for (let i = 0; i < 7; i += 1) {
-    const date = addDays(startOfThisWeek, i);
-    const dateInSQL = format(date, 'yyyy-MM-dd');
-    const isToday = format(new Date(), 'yyyy-MM-dd') === dateInSQL;
-
-    if (clientServiceTime?.[dateInSQL]) {
-      days.push({
-        day: format(date, 'EEEEE', { locale: zhTW }),
-        date: date.getDate(),
-        time: clientServiceTime[dateInSQL].map((item) => item.startTime),
-        isToday,
-      });
-    } else {
-      days.push({
-        day: format(date, 'EEEEE', { locale: zhTW }),
-        date: date.getDate(),
-        time: [],
-        isToday,
-      });
-    }
-  }
+  const days = getDaysFromSchedules(
+    schedules || [],
+    selectedClientId,
+    startOfThisWeek
+  );
 
   return (
     <div className="flex flex-col gap-5 bg-card p-4 rounded-lg lg:p-8">

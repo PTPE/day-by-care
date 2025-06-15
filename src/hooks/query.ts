@@ -24,7 +24,7 @@ export function useUpdateServiceTimeByDay({
     mutationFn: updateServiceTimeByDay,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.SCHEDULE],
+        queryKey: [QUERY_KEYS.SCHEDULES],
       });
 
       queryClient.invalidateQueries({
@@ -54,7 +54,12 @@ export function useGetSchedules(params: GetSchedulesParams) {
   const supabaseClient = useSupabaseBrowser();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [params, QUERY_KEYS.SCHEDULES],
+    queryKey: [
+      QUERY_KEYS.SCHEDULES,
+      params.clientIds,
+      params.endDate,
+      params.startDate,
+    ],
     queryFn: () => getSchedules(supabaseClient, params),
   });
 
@@ -65,7 +70,12 @@ export function useGetClients(params: GetClientsParams) {
   const supabaseClient = useSupabaseBrowser();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: [params, QUERY_KEYS.CLIENTS],
+    queryKey: [
+      QUERY_KEYS.CLIENTS,
+      params.clientIds,
+      params.endDate,
+      params.startDate,
+    ],
     queryFn: () => getClients(supabaseClient, params),
   });
 

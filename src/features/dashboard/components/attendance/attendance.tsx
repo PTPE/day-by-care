@@ -8,9 +8,8 @@ import { useFieldArray, useForm } from 'react-hook-form';
 import Button from '@/ui/button';
 import DatePicker from '@/ui/date-picker';
 import Label from '@/ui/label';
-import { useGetServiceTimeByClientIdAndDate } from '@/features/dashboard/hooks/useDashboardQuery.client';
 import { getValidServiceTime } from '@/utils/get-valid-service-time';
-import { useUpdateServiceTimeByDay } from '@/hooks/query';
+import { useGetSchedules, useUpdateServiceTimeByDay } from '@/hooks/query';
 
 import TimeSlot from './_time-slot';
 
@@ -21,17 +20,23 @@ type Props = {
 export default function Attendance({ selectedClientId }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
 
-  const { data: serviceTime } = useGetServiceTimeByClientIdAndDate({
-    clientId: selectedClientId,
-    date: format(selectedDate, 'yyyy-MM-dd'),
+  const { data: schedules } = useGetSchedules({
+    startDate: format(selectedDate, 'yyyy-MM-dd'),
+    endDate: format(selectedDate, 'yyyy-MM-dd'),
+    clientIds: [selectedClientId],
   });
+
+  const serviceTime = schedules?.[0]?.serviceTime;
 
   const { mutate: updateServiceTime } = useUpdateServiceTimeByDay();
 
   const defaultValues = useMemo(
     () => ({
       serviceTime: serviceTime?.length
-        ? serviceTime
+        ? serviceTime.map((time) => ({
+            startTime: time.start || '',
+            endTime: time.end || '',
+          }))
         : [{ startTime: '', endTime: '' }],
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
