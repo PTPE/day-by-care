@@ -11,14 +11,14 @@ import {
   DialogTitle,
 } from '@/ui/dialog';
 import Button from '@/ui/button';
-import { ClientServiceLogPerDay } from '@/features/report/types';
+import { ServiceLog } from '@/features/report/types';
 import { useUpdateServiceTimeByDay } from '@/hooks/query';
 import { getValidServiceTime } from '@/utils/get-valid-service-time';
 
 import TimeSlot from './_time-slot';
 
 type Props = {
-  serviceLog: ClientServiceLogPerDay;
+  serviceLog: ServiceLog;
 };
 
 export type EditTimeSlotDialogRef = {
