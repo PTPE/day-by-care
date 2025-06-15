@@ -1,8 +1,8 @@
 import { cookies } from 'next/headers';
 
 import ClientForm from '@/features/client/components/client-form';
-import { getClient } from '@/features/client/services/client-apis';
 import useSupabaseServer from '@/utils/supabase/supabase-server';
+import { getClients } from '@/services/apis';
 
 export default async function ClientPage({
   params,
@@ -14,19 +14,19 @@ export default async function ClientPage({
   const cookieStore = cookies();
   const supabase = useSupabaseServer(cookieStore);
 
-  const clientData = await getClient(supabase, { clientId });
+  const clientData = (await getClients(supabase, { clientIds: [clientId] }))[0];
 
   const defaultValues = {
-    clientIcon: clientData.client_icon,
-    clientName: clientData.client_name,
+    clientIcon: clientData.clientIcon,
+    clientName: clientData.clientName,
     birthday: clientData.birthday,
     address: clientData.address,
-    emergencyContact: clientData.emergency_contact,
-    emergencyContactPhone: clientData.emergency_contact_phone,
-    serviceItems: clientData.service_item_ids,
-    supervisorName: clientData.supervisor_name,
-    supervisorPhone: clientData.supervisor_phone,
-    officePhone: clientData.office_phone,
+    emergencyContact: clientData.emergencyContact,
+    emergencyContactPhone: clientData.emergencyContactPhone,
+    serviceItems: clientData.serviceItemIds,
+    supervisorName: clientData.supervisorName,
+    supervisorPhone: clientData.supervisorPhone,
+    officePhone: clientData.officePhone,
   };
 
   return <ClientForm defaultValues={defaultValues} />;

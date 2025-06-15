@@ -25,7 +25,7 @@ export type Client = {
   clientId: string;
   clientName: string;
   clientIcon: string;
-  birthday: Date;
+  birthday: string;
   address: string;
   emergencyContact: string;
   emergencyContactPhone: string;
