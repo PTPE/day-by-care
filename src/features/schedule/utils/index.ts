@@ -1,4 +1,4 @@
-import { DayOfWeek, DateString, MonthSchedule, WeekSchedule } from '../types';
+import { DayOfWeek, DateString, WeekSchedule } from '../types';
 
 function getDatesInMonthByDayOfWeek(year: number, month: number) {
   const result: Record<DayOfWeek, DateString[]> = {
@@ -44,7 +44,13 @@ export function weekScheduleToMonthSchedule({
   year: number;
   month: number;
 }) {
-  const result: MonthSchedule = [];
+  const result: {
+    date: string;
+    serviceTime: {
+      startTime: string;
+      endTime: string;
+    };
+  }[] = [];
 
   const datesByDayOfWeek = getDatesInMonthByDayOfWeek(year, month);
 
@@ -55,8 +61,10 @@ export function weekScheduleToMonthSchedule({
       serviceTimes.forEach((serviceTime) => {
         result.push({
           date,
-          service_start_time: serviceTime.start,
-          service_end_time: serviceTime.end,
+          serviceTime: {
+            startTime: serviceTime.start,
+            endTime: serviceTime.end,
+          },
         });
       });
     });
@@ -65,12 +73,22 @@ export function weekScheduleToMonthSchedule({
   return result;
 }
 
-export function getValidMonthScheduleServiceTime(monthSchedule: MonthSchedule) {
+export function getValidMonthScheduleServiceTime(
+  monthSchedule: {
+    date: string;
+    serviceTime: {
+      startTime: string;
+      endTime: string;
+    };
+  }[]
+) {
   return monthSchedule.filter((schedule) => {
-    const start = new Date(`${schedule.date} ${schedule.service_start_time}`);
-    const end = new Date(`${schedule.date} ${schedule.service_end_time}`);
+    const start = new Date(
+      `${schedule.date} ${schedule.serviceTime.startTime}`
+    );
+    const end = new Date(`${schedule.date} ${schedule.serviceTime.endTime}`);
 
-    if (!schedule.service_start_time && !schedule.service_end_time) {
+    if (!schedule.serviceTime.startTime && !schedule.serviceTime.endTime) {
       return true;
     }
 

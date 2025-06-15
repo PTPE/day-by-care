@@ -3,7 +3,8 @@ import { useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { format } from 'date-fns';
 
-import { useGetSchedule } from '@/features/schedule/hooks/useScheduleQuery.client';
+import { getMonthRange } from '@/utils/get-month-range';
+import { useGetSchedules } from '@/hooks/query';
 
 import CheckInOutDialog, { CheckInOutDialogRef } from './_check-in-out-dialog';
 
@@ -16,21 +17,23 @@ export default function DayTile({ date }: Props) {
 
   const searchParams = useSearchParams();
   const clientId = searchParams.get('clientId') || '';
-  const year = searchParams.get('year') || new Date().getFullYear();
-  const month = searchParams.get('month') || new Date().getMonth() + 1;
+  const year = Number(searchParams.get('year')) || new Date().getFullYear();
+  const month = Number(searchParams.get('month')) || new Date().getMonth() + 1;
 
-  const { data: schedule } = useGetSchedule({
-    clientId,
-    year: Number(year),
-    month: Number(month),
+  const { startDate, endDate } = getMonthRange(year, month);
+
+  const { data: schedule } = useGetSchedules({
+    clientIds: [clientId],
+    startDate,
+    endDate,
   });
 
   const thisDayServiceTime =
-    schedule
-      ?.filter((s) => s.date === format(date, 'yyyy-MM-dd'))
+    schedule?.[0].serviceTime
+      .filter((s) => s.date === format(date, 'yyyy-MM-dd'))
       .map((s) => ({
-        start: s.service_start_time || '',
-        end: s.service_end_time || '',
+        start: s.start || '',
+        end: s.end || '',
       })) || [];
 
   return (

@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select';
-import { useGetClients } from '@/features/client/hooks/query';
+import { useGetClients } from '@/hooks/query';
 
 export default function ClientSelect() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function ClientSelect() {
   const year = searchParams.get('year') || new Date().getFullYear();
   const month = searchParams.get('month') || new Date().getMonth() + 1;
 
-  const { data: clients } = useGetClients();
+  const { data: clients } = useGetClients({});
 
   return (
     <Select
@@ -36,8 +36,8 @@ export default function ClientSelect() {
       </SelectTrigger>
       <SelectContent>
         {clients?.map((client) => (
-          <SelectItem key={client.client_id} value={client.client_id}>
-            {client.client_name}
+          <SelectItem key={client.clientId} value={client.clientId}>
+            {client.clientName}
           </SelectItem>
         ))}
       </SelectContent>

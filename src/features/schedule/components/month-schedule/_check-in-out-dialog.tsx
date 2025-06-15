@@ -19,11 +19,11 @@ import {
   DialogTitle,
 } from '@/ui/dialog';
 import Button from '@/ui/button';
-import { useUpdateSchedule } from '@/features/schedule/hooks/useScheduleQuery.client';
 import { DateString } from '@/features/schedule/types';
 import LoadingSpinner from '@/ui/loading-spinner';
 import { getValidMonthScheduleServiceTime } from '@/features/schedule/utils';
 import { useScheduleUrlParams } from '@/features/schedule/hooks/useScheduleUrlParams';
+import { useUpdateServiceTimeByDay } from '@/hooks/query';
 
 import TimeSlot from './_time-slot';
 
@@ -52,13 +52,12 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [hasServiceTime, JSON.stringify(serviceTime)]);
 
-    const { mutate: updateSchedule, isPending: isUpdating } = useUpdateSchedule(
-      {
-        onSuccess: () => {
+    const { mutate: updateSchedule, isPending: isUpdating } =
+      useUpdateServiceTimeByDay({
+        onSuccessCb: () => {
           setOpen(false);
         },
-      }
-    );
+      });
 
     const { clientId } = useScheduleUrlParams();
 
@@ -87,8 +86,10 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
     const onSubmit = handleSubmit((data) => {
       const monthSchedule = data.serviceTime.map((s) => ({
         date: format(date, 'yyyy-MM-dd') as DateString,
-        service_start_time: s.start,
-        service_end_time: s.end,
+        serviceTime: {
+          startTime: s.start,
+          endTime: s.end,
+        },
       }));
 
       const validMonthSchedule =
@@ -96,7 +97,7 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
 
       const params = {
         clientId,
-        monthSchedule: validMonthSchedule,
+        serviceTimePerDay: validMonthSchedule,
       };
 
       updateSchedule(params);

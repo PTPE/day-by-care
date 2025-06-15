@@ -30,12 +30,6 @@ export const DayOfWeekToNumber: Record<DayOfWeek, number> = {
 
 export type DateString = `${number}-${number}-${number}`;
 
-export type MonthSchedule = {
-  date: DateString;
-  service_start_time: string;
-  service_end_time: string;
-}[];
-
 export type WeekSchedule = {
   [key in DayOfWeek]: {
     start: string;

@@ -7,15 +7,15 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { DayOfWeek as DayOfWeekType } from '@/features/schedule/types';
-import { weekScheduleSchema } from '@/features/schedule/modules';
+import { weekScheduleSchema } from '@/features/schedule/schema/week-schedule-schema';
 import {
   getValidMonthScheduleServiceTime,
   weekScheduleToMonthSchedule,
 } from '@/features/schedule/utils';
 import Button from '@/ui/button';
-import { useUpdateSchedule } from '@/features/schedule/hooks/useScheduleQuery.client';
 import LoadingSpinner from '@/ui/loading-spinner';
 import { useScheduleUrlParams } from '@/features/schedule/hooks/useScheduleUrlParams';
+import { useUpdateServiceTimeByDay } from '@/hooks/query';
 
 import DayOfWeek from './_day-of-week';
 
@@ -37,11 +37,12 @@ export default function WeekSchedule() {
 
   const { year, month, clientId } = useScheduleUrlParams();
 
-  const { mutate: updateSchedule, isPending: isUpdating } = useUpdateSchedule({
-    onSuccess: () => {
-      methods.reset(defaultValues);
-    },
-  });
+  const { mutate: updateSchedule, isPending: isUpdating } =
+    useUpdateServiceTimeByDay({
+      onSuccessCb: () => {
+        methods.reset(defaultValues);
+      },
+    });
 
   if (!year || !month || !clientId) return null;
 
@@ -56,7 +57,7 @@ export default function WeekSchedule() {
 
     updateSchedule({
       clientId,
-      monthSchedule: validMonthSchedule,
+      serviceTimePerDay: validMonthSchedule,
     });
   };
 
