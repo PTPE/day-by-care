@@ -75,9 +75,9 @@ export default function SignIn() {
           Google 登入
         </Button>
 
-        <Button type="button" variant="link" className="text-sm">
+        {/* <Button type="button" variant="link" className="text-sm">
           忘記密碼
-        </Button>
+        </Button> */}
       </form>
     </>
   );
