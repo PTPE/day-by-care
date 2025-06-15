@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 日日安 DayByCare
 
-## Getting Started
+居家照護排班系統，協助照服員與照護機構輕鬆安排每日照護行程。
 
-First, run the development server:
+---
 
+## 功能
+
+-  **一目了然的排班視圖**：可依月份查看個別案主的服務時段
+-  **時段管理與統計**：支援時數統計、跨日照護、時段標記
+-  **PDF 匯出**：可匯出每月排班表，方便列印與保存
+-  **iBon 雲端列印引導**：可直接上傳至 7-11 iBon 網頁，產生列印代碼，至超商機台輕鬆列印
+-  **Email 通知整合**：使用 Resend 寄送排班確認信件
+-  **帳號登入**：以 Supabase 管理使用者與資料安全
+
+---
+
+## 使用技術
+
+- **前端**：Next.js 14（App Router）、Tailwind CSS
+- **後端服務**：Supabase
+- **Email**：Resend
+- **部署**：Vercel
+
+## 專案啟動方式
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+注意：本專案未附上完整金鑰，若未設定 .env.local，部分功能（如登入、排班管理、寄信）將無法正常執行。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 測試帳號
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+你可以使用以下測試帳號登入系統進行體驗：
 
-## Learn More
+帳號：test@mail.com
+密碼：12345678
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
