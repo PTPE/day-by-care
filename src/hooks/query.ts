@@ -27,22 +27,6 @@ export function useUpdateServiceTimeByDay({
         queryKey: [QUERY_KEYS.SCHEDULES],
       });
 
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.SERVICE_SUMMARY],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.CLIENTS_SERVICE_SUMMARY],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.CLIENT_SERVICE_DETAIL],
-      });
-
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEYS.DASHBOARD_SERVICE_TIME],
-      });
-
       onSuccessCb?.();
     },
   });
