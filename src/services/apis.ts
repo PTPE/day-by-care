@@ -60,7 +60,7 @@ export async function getClients(
     clientId: client.client_id,
     clientName: client.client_name,
     clientIcon: client.client_icon ?? '',
-    birthday: new Date(client.birthday),
+    birthday: client.birthday,
     address: client.address ?? null,
     emergencyContact: client.emergency_contact,
     emergencyContactPhone: client.emergency_contact_phone ?? null,
