@@ -24,18 +24,20 @@ export function usePrefetchClients(params: GetClientsParams = {}) {
       queryFn: () => getClients(supabase, params),
     });
 
-  return { prefetchClients, queryClient };
+  return { prefetchClients };
 }
 
 export function usePrefetchSchedules(params: GetSchedulesParams = {}) {
   const cookieStore = cookies();
   const supabase = useSupabaseServer(cookieStore);
 
-  const prefetchClients = async () =>
+  const prefetchSchedules = async () =>
     await queryClient.prefetchQuery({
       queryKey: [QUERY_KEYS.SCHEDULES, params],
       queryFn: () => getSchedules(supabase, params),
     });
 
-  return { prefetchClients, queryClient };
+  return { prefetchSchedules };
 }
+
+export { queryClient };

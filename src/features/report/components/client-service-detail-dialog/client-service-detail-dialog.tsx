@@ -7,8 +7,10 @@ import {
   DialogTitle,
 } from '@/ui/dialog';
 import useReportUrlParams from '@/features/report/hooks/useReportUrlParams';
-import { useGetClientServiceDetail } from '@/features/report/hooks/useReportQuery.client';
 import LoadingSpinner from '@/ui/loading-spinner';
+import { useGetSchedules } from '@/hooks/query';
+import { getServiceLogByDay } from '@/features/report/utils';
+import { getMonthRange } from '@/utils/get-month-range';
 
 import ServiceLogPerDay from './_service-log-per-day';
 
@@ -36,14 +38,17 @@ const ClientServiceDetailDialog = forwardRef<
 
   const { year, month } = useReportUrlParams();
 
-  const { data: serviceLogs, isLoading } = useGetClientServiceDetail({
-    params: {
-      clientId,
-      year: Number(year),
-      month: Number(month),
-    },
-    enabled: open,
+  const { startDate, endDate } = getMonthRange(year, month);
+
+  const { data: schedules, isLoading } = useGetSchedules({
+    startDate,
+    endDate,
+    clientIds: [clientId],
   });
+
+  if (!schedules) return null;
+
+  const serviceLogs = getServiceLogByDay(schedules?.[0]);
 
   return (
     <>
@@ -61,7 +66,7 @@ const ClientServiceDetailDialog = forwardRef<
             </div>
           </div>
           {serviceLogs?.map((log) => (
-            <ServiceLogPerDay key={log.scheduleId} serviceLog={log} />
+            <ServiceLogPerDay key={log.date} serviceLog={log} />
           ))}
         </DialogContent>
       </Dialog>

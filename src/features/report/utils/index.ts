@@ -1,39 +1,30 @@
-type Schedule = {
-  date?: string | null;
-  service_start_time?: string | null;
-  service_end_time?: string | null;
-};
+import { Schedule, ServiceTime } from '@/types/client';
+import calculateTotalServiceHours from '@/utils/calculate-total-service-time-in-hours';
+import { ServiceLog } from '@/features/report/types';
 
-export function calculateServiceTimeLengthInHours({
-  date,
-  service_start_time,
-  service_end_time,
-}: Schedule): number {
-  if (!date || !service_start_time || !service_end_time) {
-    return 0;
-  }
+export function getServiceLogByDay(schedule: Schedule): ServiceLog[] {
+  const groupedByDate = new Map<string, ServiceTime[]>();
 
-  const serviceStartTimeDate = new Date(`${date} ${service_start_time}`);
-  const serviceEndTimeDate = new Date(`${date} ${service_end_time}`);
+  schedule.serviceTime.forEach((entry) => {
+    if (!entry.date) return;
+    if (!groupedByDate.has(entry.date)) {
+      groupedByDate.set(entry.date, []);
+    }
+    groupedByDate.get(entry.date)!.push(entry);
+  });
 
-  const rawDiffInHours =
-    (serviceEndTimeDate.getTime() - serviceStartTimeDate.getTime()) /
-    (1000 * 60 * 60);
+  const serviceLogs = Array.from(groupedByDate.entries())
+    .map(([date, dailyService]) => ({
+      clientId: schedule.clientId,
+      clientName: schedule.clientName ?? '',
+      date,
+      serviceTotalHours: calculateTotalServiceHours(dailyService),
+      serviceTime: dailyService.map((timeSlot) => ({
+        startTime: timeSlot.start ?? '',
+        endTime: timeSlot.end ?? '',
+      })),
+    }))
+    .sort((a, b) => a.date.localeCompare(b.date));
 
-  const rounded = Math.round(rawDiffInHours * 10) / 10;
-
-  return rounded;
-}
-
-export function sumServiceHours(schedules: Schedule[]): number {
-  const totalTenthHours = schedules.reduce((acc, schedule) => {
-    const hours = calculateServiceTimeLengthInHours({
-      date: schedule.date ?? '',
-      service_start_time: schedule.service_start_time ?? '',
-      service_end_time: schedule.service_end_time ?? '',
-    });
-    return acc + Math.round(hours * 10);
-  }, 0);
-
-  return totalTenthHours / 10;
+  return serviceLogs;
 }

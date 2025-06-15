@@ -2,7 +2,7 @@ import { ServiceTime } from '@/types/client';
 
 import { calculateServiceTimeLengthInHours } from './calculate-service-time-in-hours';
 
-export default function getTotalServiceHours(
+export default function calculateTotalServiceHours(
   serviceTime: ServiceTime[]
 ): number {
   const total = serviceTime.reduce((acc, schedule) => {

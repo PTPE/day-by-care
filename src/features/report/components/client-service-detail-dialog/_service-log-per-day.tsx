@@ -7,12 +7,12 @@ import Button from '@/ui/button';
 import EditTimeSlotDialog, {
   EditTimeSlotDialogRef,
 } from '@/features/report/components/edit-time-slot-dialog';
-import { ClientServiceLogPerDay } from '@/features/report/types';
+import { ServiceLog } from '@/features/report/types';
 
 import TimeSlot from './_time-slot';
 
 type Props = {
-  serviceLog: ClientServiceLogPerDay;
+  serviceLog: ServiceLog;
 };
 
 export default function ServiceLogPerDay({ serviceLog }: Props) {

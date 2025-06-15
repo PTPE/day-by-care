@@ -1,5 +1,5 @@
 import { Schedule } from '@/types/client';
-import getTotalServiceHours from '@/utils/calculate-total-service-time-in-hours';
+import calculateTotalServiceInHours from '@/utils/calculate-total-service-time-in-hours';
 
 import ServiceTimePerClient from './_service-time-per-client';
 
@@ -10,7 +10,7 @@ type Props = {
 const thisMonthDays = Array.from({ length: 31 }, (_, i) => i + 1);
 
 export default function PreviewSelectedClient({ selectedSchedules }: Props) {
-  const totalHours = getTotalServiceHours(
+  const totalHours = calculateTotalServiceInHours(
     selectedSchedules.flatMap((schecule) => schecule.serviceTime)
   );
 

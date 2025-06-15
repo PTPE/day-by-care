@@ -8,7 +8,7 @@ import WeekSchedule from '@/features/dashboard/components/week-schedule';
 import { getThisWeekDateRange } from '@/features/dashboard/utils/getThisWeekDateRange';
 import { getClients } from '@/services/apis';
 import useSupabaseServer from '@/utils/supabase/supabase-server';
-import { usePrefetchSchedules } from '@/hooks/prefetch-queries';
+import { queryClient, usePrefetchSchedules } from '@/hooks/prefetch-queries';
 
 export default async function Dashboard({
   searchParams,
@@ -31,12 +31,12 @@ export default async function Dashboard({
     (client) => client.clientId === selectedClientId
   );
 
-  const { queryClient, prefetchClients } = usePrefetchSchedules({
+  const { prefetchSchedules } = usePrefetchSchedules({
     startDate: startOfThisWeek,
     endDate: endOfThisWeek,
   });
 
-  await prefetchClients();
+  await prefetchSchedules();
 
   return (
     <div className="space-y-5 pb-5 lg:mt-5">

@@ -8,16 +8,23 @@ import { useRef } from 'react';
 import ClientServiceDetailDialog, {
   ClientServiceDetailDialogRef,
 } from '@/features/report/components/client-service-detail-dialog';
-import { ClientServiceSummary } from '@/features/report/types';
 import { serviceItemMap } from '@/const/service-items';
+import { Client, Schedule } from '@/types/client';
+import calculateTotalServiceHours from '@/utils/calculate-total-service-time-in-hours';
 
 type Props = {
-  client: ClientServiceSummary;
+  schedule: Schedule;
+  client: Client;
 };
 
-export default function ClientServiceCard({ client }: Props) {
+export default function ClientServiceCard({ schedule, client }: Props) {
   const clientServiceDetailDialogRef =
     useRef<ClientServiceDetailDialogRef>(null);
+
+  const totalHours = calculateTotalServiceHours(schedule.serviceTime);
+
+  const serviceDay = new Set(schedule.serviceTime.map((time) => time.date))
+    .size;
 
   return (
     <>
@@ -25,10 +32,10 @@ export default function ClientServiceCard({ client }: Props) {
         className="bg-card rounded-lg p-5 grid grid-cols-[2fr_1fr] gap-3 cursor-pointer"
         onClick={() => clientServiceDetailDialogRef.current?.open()}
       >
-        <div className="text-lg font-bold">{client.clientName}</div>
+        <div className="text-lg font-bold">{schedule.clientName}</div>
 
         <div className="font-bold text-lg text-accent ml-auto">
-          {client.totalServiceHours}小時
+          {totalHours}小時
         </div>
 
         <div className="flex text-sm gap-2">
@@ -45,7 +52,7 @@ export default function ClientServiceCard({ client }: Props) {
         <div className="icon-[material-symbols--arrow-forward-ios-rounded] ml-auto text-muted-foreground" />
 
         <div className="text-sm text-muted-foreground">
-          共服務{client.serviceItemIdDays}天
+          共服務{serviceDay}天
         </div>
       </div>
 
@@ -53,7 +60,7 @@ export default function ClientServiceCard({ client }: Props) {
         ref={clientServiceDetailDialogRef}
         clientId={client.clientId}
         clientName={client.clientName}
-        totalServiceHours={client.totalServiceHours}
+        totalServiceHours={totalHours}
       />
     </>
   );

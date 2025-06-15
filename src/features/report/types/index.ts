@@ -7,10 +7,9 @@ export type ClientServiceSummary = {
   serviceItemIdDays: number;
 };
 
-export type ClientServiceLogPerDay = {
+export type ServiceLog = {
   clientId: string;
   clientName: string;
-  scheduleId: string;
   date: string;
   serviceTotalHours: number;
   serviceTime: {
