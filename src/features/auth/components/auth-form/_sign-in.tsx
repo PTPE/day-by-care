@@ -1,6 +1,9 @@
+import { useTransition } from 'react';
+
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
 
 import Button from '@/ui/button';
 import Input from '@/ui/input';
@@ -11,8 +14,13 @@ import {
   useSignIn,
   useSignInWithGoogle,
 } from '@/features/auth/hooks/useAuthQueries.client';
+import routes from '@/const/routes';
 
 export default function SignIn() {
+  const router = useRouter();
+
+  const [isPending, startTransition] = useTransition();
+
   const {
     register,
     handleSubmit,
@@ -25,6 +33,9 @@ export default function SignIn() {
   const { mutate: signIn, isPending: isSigningIn } = useSignIn({
     onSuccessCb: () => {
       reset();
+      startTransition(() => {
+        router.push(routes.Dashboard());
+      });
     },
   });
 
@@ -35,7 +46,9 @@ export default function SignIn() {
 
   return (
     <>
-      {(isSigningIn || isSigningInWithGoogle) && <LoadingSpinner />}
+      {(isPending || isSigningIn || isSigningInWithGoogle) && (
+        <LoadingSpinner />
+      )}
 
       <form
         onSubmit={handleSubmit(onSubmit)}
