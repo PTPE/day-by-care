@@ -13,6 +13,15 @@ export async function createClient(formData: z.infer<typeof clientFormSchema>) {
 
   const client = useSupabaseServer(cookieStore);
 
+  const {
+    data: { user },
+    error: userError,
+  } = await client.auth.getUser();
+
+  if (userError || !user) {
+    throw new Error('User not authenticated');
+  }
+
   const { error } = await client.from('client').insert({
     client_name: formData.clientName,
     client_icon: formData.clientIcon,

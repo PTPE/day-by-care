@@ -29,7 +29,7 @@ export default function DayTile({ date }: Props) {
   });
 
   const thisDayServiceTime =
-    schedule?.[0].serviceTime
+    schedule?.[0]?.serviceTime
       .filter((s) => s.date === format(date, 'yyyy-MM-dd'))
       .map((s) => ({
         start: s.start || '',

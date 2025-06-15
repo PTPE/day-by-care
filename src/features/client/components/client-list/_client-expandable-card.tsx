@@ -70,6 +70,9 @@ export default function ClientExpandableCard({ client }: Props) {
         <Button
           className="col-span-2 border-accent text-accent w-full mt-4"
           variant="outline"
+          onClick={() => {
+            router.push(routes.Client({ id: client.clientId }));
+          }}
         >
           <div className="icon-[material-symbols-light--edit-square-rounded]" />
           編輯
