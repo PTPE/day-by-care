@@ -61,7 +61,7 @@ export default function FirstHalfSchedulePdf({
             colSpan={18}
             className={`text-left border-none ${downloadCellClass}`}
           >
-            個案地址：{client.clientName}
+            個案地址：{client.address}
           </th>
         </tr>
       </thead>

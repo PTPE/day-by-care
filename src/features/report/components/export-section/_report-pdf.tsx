@@ -50,7 +50,7 @@ export default function ReportPdf({ schedules }: Props) {
       <colgroup>
         <col className="w-[60px]" />
         <col className="w-[60px]" />
-        <col span={8} className="w-auto" />
+        <col span={8} className="w-[100px]" />
       </colgroup>
 
       <thead>
@@ -73,7 +73,7 @@ export default function ReportPdf({ schedules }: Props) {
             <div
               className="absolute left-0 top-0 w-full h-full pointer-events-none"
               style={{
-                transform: 'rotate(21.5deg)',
+                transform: 'rotate(18deg)',
                 transformOrigin: 'top left',
                 borderTop: '1px solid black',
                 width: '141.5%',

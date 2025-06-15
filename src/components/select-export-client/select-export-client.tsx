@@ -19,7 +19,7 @@ export default function SelectExportClient({
     <div className="bg-card p-4 rounded-lg flex flex-col gap-2">
       <div className="font-bold">選擇匯出的案主</div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-2 flex-wrap">
         {clients?.map((client) => (
           <ClientItem
             selectedClients={selectedClients}

@@ -22,7 +22,7 @@ export default function ClientItem({
   );
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-2 shrink-0">
       <Checkbox
         id={clientId}
         onClick={() => onHandleSelectClient(clientId)}
