@@ -2,14 +2,16 @@ import { UseFormRegister } from 'react-hook-form';
 
 import Input from '@/ui/input';
 import Label from '@/ui/label';
-import { Attendance } from '@/features/dashboard/types';
 import Button from '@/ui/button';
 
 type Props = {
   index: number;
   onRemove: () => void;
   register: UseFormRegister<{
-    serviceTime: Attendance;
+    serviceTime: {
+      startTime: string;
+      endTime: string;
+    }[];
   }>;
 };
 
