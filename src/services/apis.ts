@@ -5,57 +5,70 @@ export type GetClientsParams = {
   clientIds?: string[];
   startDate?: string;
   endDate?: string;
+  clientName?: string;
 };
 
 export async function getClients(
   supabaseClient: TypedSupabaseClient,
-  params: GetClientsParams
+  params: {
+    startDate?: string;
+    endDate?: string;
+    clientIds?: string[];
+    clientName?: string;
+  } = {}
 ): Promise<Client[]> {
-  const { startDate, endDate, clientIds } = params;
-  let query = supabaseClient
-    .from('schedule')
-    .select(
-      'client_id, client(client_name, client_icon, address, emergency_contact_phone, supervisor_name, service_item_ids)'
-    );
+  const { startDate, endDate, clientIds, clientName } = params;
 
-  if (startDate) {
-    query = query.gte('date', startDate);
-  }
-
-  if (endDate) {
-    query = query.lte('date', endDate);
-  }
+  let clientQuery = supabaseClient.from('client').select('*');
 
   if (clientIds && clientIds.length > 0) {
-    query = query.in('client_id', clientIds);
+    clientQuery = clientQuery.in('client_id', clientIds);
   }
 
-  const { data, error } = await query;
+  if (clientName) {
+    clientQuery = clientQuery.ilike('client_name', `%${clientName}%`);
+  }
 
-  if (error) throw new Error(error.message);
+  const { data: clients, error: clientError } = await clientQuery;
+  if (clientError) throw new Error(clientError.message);
 
-  const clientMap = new Map<string, Client>();
+  if (!clients || clients.length === 0) return [];
 
-  data?.forEach((item) => {
-    const { client } = item;
-    const clientId = item.client_id;
+  let scheduleQuery = supabaseClient.from('schedule').select('client_id, date');
 
-    if (!client || !clientId) return;
+  if (startDate) {
+    scheduleQuery = scheduleQuery.gte('date', startDate);
+  }
+  if (endDate) {
+    scheduleQuery = scheduleQuery.lte('date', endDate);
+  }
 
-    if (!clientMap.has(clientId)) {
-      clientMap.set(clientId, {
-        clientId,
-        clientName: client.client_name,
-        clientIcon: client.client_icon ?? '',
-        address: client.address ?? null,
-        emergencyContactPhone: client.emergency_contact_phone ?? null,
-        supervisorName: client.supervisor_name ?? null,
-        serviceItemIds: client.service_item_ids ?? [],
-      });
-    }
+  const clientIdList = clients.map((c) => c.client_id);
+  scheduleQuery = scheduleQuery.in('client_id', clientIdList);
+
+  const { data: schedules, error: scheduleError } = await scheduleQuery;
+  if (scheduleError) throw new Error(scheduleError.message);
+
+  const scheduleMap = new Map<string, { date: string }[]>();
+  schedules?.forEach((s) => {
+    const arr = scheduleMap.get(s.client_id) ?? [];
+    arr.push({ date: s.date || '' });
+    scheduleMap.set(s.client_id, arr);
   });
 
-  return Array.from(clientMap.values());
+  return clients.map((client) => ({
+    clientId: client.client_id,
+    clientName: client.client_name,
+    clientIcon: client.client_icon ?? '',
+    birthday: new Date(client.birthday),
+    address: client.address ?? null,
+    emergencyContact: client.emergency_contact,
+    emergencyContactPhone: client.emergency_contact_phone ?? null,
+    supervisorName: client.supervisor_name ?? null,
+    supervisorPhone: client.supervisor_phone,
+    serviceItemIds: client.service_item_ids ?? [],
+    officePhone: client.office_phone,
+  }));
 }
 
 export type GetSchedulesParams = {

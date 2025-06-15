@@ -9,13 +9,13 @@ import {
   SelectValue,
 } from '@/ui/select';
 import { serviceItemMap } from '@/const/service-items';
-import { ServiceItemId } from '@/features/client/types';
+import { ServiceItemIds } from '@/types/client';
 
 import ServiceChip from './_service-chip';
 
 type Props = {
-  onChange: (value: ServiceItemId[]) => void;
-  serviceItemsIds: ServiceItemId[];
+  onChange: (value: ServiceItemIds[]) => void;
+  serviceItemsIds: ServiceItemIds[];
 };
 
 export default function ClientServiceSelect({
@@ -23,14 +23,14 @@ export default function ClientServiceSelect({
   serviceItemsIds,
 }: Props) {
   const [selectedServiceItems, setSelectedServiceItems] =
-    useState<ServiceItemId[]>(serviceItemsIds);
+    useState<ServiceItemIds[]>(serviceItemsIds);
 
   const serviceItems = Object.entries(serviceItemMap).map(([key, value]) => ({
     id: key,
     name: value,
   }));
 
-  const handleSelectChange = (value: ServiceItemId) => {
+  const handleSelectChange = (value: ServiceItemIds) => {
     setSelectedServiceItems((prev) => [...prev, value]);
   };
 

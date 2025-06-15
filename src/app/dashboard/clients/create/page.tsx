@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import ClientForm from '@/features/client/components/client-form';
-import { clientFormSchema } from '@/features/client/modules';
+import { clientFormSchema } from '@/features/client/schema/client-form-schema';
 
 const defaultValues = {
   clientIcon: '',

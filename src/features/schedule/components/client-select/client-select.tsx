@@ -9,7 +9,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select';
-import { useGetClients } from '@/features/client/hooks/useClientsQuery.client';
+import { useGetClients } from '@/features/client/hooks/query';
 
 export default function ClientSelect() {
   const router = useRouter();

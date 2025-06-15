@@ -1,16 +1,16 @@
+import { Client } from '@/types/client';
 import { Label } from '@/ui/label/label';
-import { Client } from '@/features/client/types';
 
 type Props = {
   clientDetail: Pick<
     Client,
     | 'address'
     | 'birthday'
-    | 'emergency_contact'
-    | 'emergency_contact_phone'
-    | 'supervisor_name'
-    | 'supervisor_phone'
-    | 'office_phone'
+    | 'emergencyContact'
+    | 'emergencyContactPhone'
+    | 'supervisorName'
+    | 'supervisorPhone'
+    | 'officePhone'
   >;
 };
 
@@ -39,27 +39,27 @@ export default function ClientDetail({ clientDetail }: Props) {
         <span className="icon-[material-symbols--circle-notifications] text-accent" />
         緊急聯絡人
       </Label>
-      <div className="flex items-center">{clientDetail.emergency_contact}</div>
+      <div className="flex items-center">{clientDetail.emergencyContact}</div>
 
       <Label className="flex items-center gap-2 flex-shrink-0">
         <span className="icon-[material-symbols--call] text-accent" />
         緊急聯絡人電話
       </Label>
       <div className="flex items-center">
-        {clientDetail.emergency_contact_phone}
+        {clientDetail.emergencyContactPhone}
       </div>
 
       <Label className="flex items-center gap-2 flex-shrink-0">
         <span className="icon-[mdi--account-tie] text-accent" />
         督導
       </Label>
-      <div className="flex items-center">{clientDetail.supervisor_name}</div>
+      <div className="flex items-center">{clientDetail.supervisorName}</div>
 
       <Label className="flex items-center gap-2 flex-shrink-0">
         <span className="icon-[material-symbols--call] text-accent" />
         督導電話
       </Label>
-      <div className="flex items-center">{clientDetail.supervisor_phone}</div>
+      <div className="flex items-center">{clientDetail.supervisorPhone}</div>
     </div>
   );
 }

@@ -3,8 +3,8 @@ import { HydrationBoundary, dehydrate } from '@tanstack/react-query';
 
 import Button from '@/ui/button';
 import SearchClient from '@/features/client/components/search-client';
-import { usePrefetchClients } from '@/features/client/hooks/useClientsPrefetch.server';
 import ClientList from '@/features/client/components/client-list/client-list';
+import { usePrefetchClients } from '@/hooks/prefetch-queries';
 
 export default async function Clients() {
   const { queryClient, prefetchClients } = usePrefetchClients();

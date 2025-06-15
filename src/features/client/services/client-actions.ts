@@ -5,7 +5,7 @@
 import { z } from 'zod';
 import { cookies } from 'next/headers';
 
-import { clientFormSchema } from '@/features/client/modules';
+import { clientFormSchema } from '@/features/client/schema/client-form-schema';
 import useSupabaseServer from '@/utils/supabase/supabase-server';
 
 export async function createClient(formData: z.infer<typeof clientFormSchema>) {

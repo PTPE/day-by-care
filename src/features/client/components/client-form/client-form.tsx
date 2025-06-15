@@ -11,13 +11,14 @@ import DatePicker from '@/ui/date-picker';
 import Button from '@/ui/button';
 import ClientIconSelectDialog from '@/features/client/components/client-icon-select-dialog';
 import ClientServiceSelect from '@/features/client/components/client-service-select';
-import { clientFormSchema } from '@/features/client/modules';
+import { clientFormSchema } from '@/features/client/schema/client-form-schema';
 import {
   useCreateClient,
   useUpdateClient,
-} from '@/features/client/hooks/useClientsQuery.client';
+} from '@/features/client/hooks/query';
 import routes from '@/const/routes';
 import LoadingSpinner from '@/ui/loading-spinner';
+import { ServiceItemIds } from '@/types/client';
 
 type Props = {
   defaultValues: z.infer<typeof clientFormSchema>;
@@ -132,7 +133,7 @@ export default function ClientForm({ defaultValues }: Props) {
           <div>
             <Label>服務項目</Label>
             <ClientServiceSelect
-              onChange={(serviceIds) => {
+              onChange={(serviceIds: ServiceItemIds[]) => {
                 setValue('serviceItems', serviceIds);
               }}
               serviceItemsIds={watch('serviceItems') || []}
@@ -184,7 +185,11 @@ export default function ClientForm({ defaultValues }: Props) {
           >
             取消
           </Button>
-          <Button variant="accent" className="w-full text-primary-foreground">
+          <Button
+            type="submit"
+            variant="accent"
+            className="w-full text-primary-foreground"
+          >
             確定
           </Button>
         </div>

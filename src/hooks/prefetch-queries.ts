@@ -14,7 +14,7 @@ import {
 
 const queryClient = new QueryClient();
 
-export function usePrefetchClients(params: GetClientsParams) {
+export function usePrefetchClients(params: GetClientsParams = {}) {
   const cookieStore = cookies();
   const supabase = useSupabaseServer(cookieStore);
 
@@ -27,7 +27,7 @@ export function usePrefetchClients(params: GetClientsParams) {
   return { prefetchClients, queryClient };
 }
 
-export function usePrefetchSchedules(params: GetSchedulesParams) {
+export function usePrefetchSchedules(params: GetSchedulesParams = {}) {
   const cookieStore = cookies();
   const supabase = useSupabaseServer(cookieStore);
 

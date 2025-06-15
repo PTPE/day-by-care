@@ -6,9 +6,9 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from '@/ui/collapsible';
-import { Client } from '@/features/client/types';
 import routes from '@/const/routes';
 import { serviceItemMap } from '@/const/service-items';
+import { Client } from '@/types/client';
 
 import ClientDetail from './_client-detail';
 
@@ -22,14 +22,14 @@ export default function ClientExpandableCard({ client }: Props) {
   const clientDetail = {
     address: client.address,
     birthday: client.birthday,
-    emergency_contact: client.emergency_contact,
-    emergency_contact_phone: client.emergency_contact_phone,
-    supervisor_name: client.supervisor_name,
-    supervisor_phone: client.supervisor_phone,
-    office_phone: client.office_phone,
+    emergencyContact: client.emergencyContact,
+    emergencyContactPhone: client.emergencyContactPhone,
+    supervisorName: client.supervisorName,
+    supervisorPhone: client.supervisorPhone,
+    officePhone: client.officePhone,
   };
 
-  const serviceItems = client.service_item_ids.map((id) => {
+  const serviceItems = client.serviceItemIds.map((id) => {
     const serviceItem = serviceItemMap[id as keyof typeof serviceItemMap];
     return serviceItem || '';
   });
@@ -38,27 +38,27 @@ export default function ClientExpandableCard({ client }: Props) {
     <div className="flex flex-col gap-3 bg-card p-4 rounded-lg lg:p-8">
       <div className="flex items-center gap-3">
         <div className="w-16 aspect-square rounded-full flex items-center justify-center p-2 shadow-[0_7px_29px_0px_rgba(100,100,111,0.2)]">
-          {client.client_icon ? (
-            <div className={`${client.client_icon} w-full h-full`} />
+          {client.clientIcon ? (
+            <div className={`${client.clientIcon} w-full h-full`} />
           ) : (
-            <div className="text-2xl font-bold">{client.client_name[0]}</div>
+            <div className="text-2xl font-bold">{client.clientName[0]}</div>
           )}
         </div>
 
         <div>
           <div className="text-xl font-extrabold tracking-widest">
-            {client.client_name}
+            {client.clientName}
           </div>
 
           <div className="flex items-center gap-2">
             <span className="icon-[material-symbols--call]" />
-            <div>{client.emergency_contact_phone}</div>
+            <div>{client.emergencyContact}</div>
           </div>
         </div>
       </div>
 
       <div className="flex gap-1 text-tertiary-foreground text-sm md:text-base flex-wrap">
-        {client.service_item_ids.map((id, index) => (
+        {client.serviceItemIds.map((id, index) => (
           <div className="bg-tertiary rounded-full px-2 py-1" key={id}>
             {serviceItems[index]}
           </div>
@@ -94,7 +94,7 @@ export default function ClientExpandableCard({ client }: Props) {
               className="col-span-2 border-accent text-accent"
               variant="outline"
               onClick={() => {
-                router.push(routes.Client({ id: client.client_id }));
+                router.push(routes.Client({ id: client.clientId }));
               }}
             >
               <div className="icon-[material-symbols-light--edit-square-rounded]" />
