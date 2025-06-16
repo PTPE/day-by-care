@@ -44,7 +44,6 @@ const IbonPrintDialog = forwardRef<IbonPrintDialogRef, Props>(
             <div className="text-primary font-bold text-5xl">{pincode}</div>
 
             <div className="text-muted-foreground text-center">
-              列印通知已寄送至您的信箱。
               <br /> 請於 {expiryDate} 前，
               <br />
               至全台 7-ELEVEN 的 iBon 機台輸入代碼，
