@@ -38,9 +38,12 @@ export function useSignInWithGoogle({
   return { mutate, isPending, error };
 }
 
-export function useSignOut() {
+export function useSignOut({ onSuccessCb }: { onSuccessCb?: () => void } = {}) {
   const { mutate, isPending, error } = useMutation({
     mutationFn: signOut,
+    onSuccess: () => {
+      onSuccessCb?.();
+    },
   });
 
   return { mutate, isPending, error };
