@@ -74,7 +74,10 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
 
     useImperativeHandle(ref, () => ({
       open: () => setOpen(true),
-      close: () => setOpen(false),
+      close: () => {
+        reset(defaultValues);
+        setOpen(false);
+      },
     }));
 
     useEffect(() => {
@@ -104,7 +107,13 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
     });
 
     return (
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog
+        open={open}
+        onOpenChange={(isOpen) => {
+          setOpen(isOpen);
+          if (!isOpen) reset(defaultValues);
+        }}
+      >
         <DialogContent className="bg-primary w-[95%] rounded-md">
           {isUpdating && <LoadingSpinner />}
           <DialogDescription />
@@ -141,7 +150,12 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
           <div className="w-full h-[1px] bg-line" />
 
           <div className="flex justify-between">
-            <Button variant="ghost" className="text-destructive" type="button">
+            <Button
+              variant="ghost"
+              className="text-destructive"
+              type="button"
+              onClick={() => reset({ serviceTime: [{ start: '', end: '' }] })}
+            >
               刪除全部時段
             </Button>
 
