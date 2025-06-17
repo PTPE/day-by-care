@@ -31,7 +31,7 @@ export default function ClientListItem({
       <button
         type="button"
         onClick={handleClick}
-        className={`flex flex-col gap-2 items-center justify-between px-4 py-2 border-b border-gray-200 flex-shrink-0 rounded-full cursor-pointer ${
+        className={`flex flex-col gap-2 items-center justify-between px-4 py-2 flex-shrink-0 rounded-full cursor-pointer ${
           isSelected ? 'bg-button-primary' : 'bg-tertiary'
         }`}
       >
