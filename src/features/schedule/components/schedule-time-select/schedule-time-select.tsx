@@ -1,5 +1,7 @@
 'use client';
 
+import { useTransition } from 'react';
+
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import {
@@ -9,8 +11,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/ui/select';
+import LoadingSpinner from '@/ui/loading-spinner';
 
 export default function ScheduleTimeSelect() {
+  const [isPending, startTransition] = useTransition();
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -32,11 +37,12 @@ export default function ScheduleTimeSelect() {
     if (newParams.year) params.set('year', newParams.year);
     if (newParams.month) params.set('month', newParams.month);
 
-    router.push(`${pathname}?${params.toString()}`);
+    startTransition(() => router.push(`${pathname}?${params.toString()}`));
   };
 
   return (
     <div className="flex gap-2">
+      {isPending && <LoadingSpinner />}
       <Select
         onValueChange={(value) => updateSearchParams({ year: value })}
         value={year.toString()}
