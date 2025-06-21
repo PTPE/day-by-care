@@ -29,10 +29,13 @@ export async function createClient(formData: z.infer<typeof clientFormSchema>) {
     address: formData.address,
     emergency_contact: formData.emergencyContact,
     emergency_contact_phone: formData.emergencyContactPhone,
-    service_item_ids: formData.serviceItems,
+    service_item_ids: formData.serviceItemIds,
     supervisor_name: formData.supervisorName,
     supervisor_phone: formData.supervisorPhone,
     office_phone: formData.officePhone,
+    cms: formData.cms,
+    is_high_risk: formData.isHighRisk,
+    income_category: formData.incomeCategory,
   });
 
   if (error) {
@@ -59,10 +62,13 @@ export async function updateClient({ clientId, formData }: UpdateClientParams) {
       address: formData.address,
       emergency_contact: formData.emergencyContact,
       emergency_contact_phone: formData.emergencyContactPhone,
-      service_item_ids: formData.serviceItems,
+      service_item_ids: formData.serviceItemIds,
       supervisor_name: formData.supervisorName,
       supervisor_phone: formData.supervisorPhone,
       office_phone: formData.officePhone,
+      cms: formData.cms,
+      is_high_risk: formData.isHighRisk,
+      income_category: formData.incomeCategory,
     })
     .eq('client_id', clientId)
     .throwOnError();

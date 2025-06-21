@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description:
     '一套專為居家照護設計的排班與時數管理工具，簡單好用，提升照護工作的效率與品質。',
   icons: {
-    icon: 'logo.png',
+    icon: '/logo.png',
   },
 };
 

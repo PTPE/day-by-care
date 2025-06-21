@@ -1,3 +1,4 @@
+import { incomeCategoryMap } from '@/const/income-category';
 import { Client } from '@/types/client';
 import { Label } from '@/ui/label/label';
 
@@ -11,6 +12,9 @@ type Props = {
     | 'supervisorName'
     | 'supervisorPhone'
     | 'officePhone'
+    | 'cms'
+    | 'isHighRisk'
+    | 'incomeCategory'
   >;
 };
 
@@ -40,6 +44,28 @@ export default function ClientDetail({ clientDetail }: Props) {
         緊急聯絡人
       </Label>
       <div className="flex items-center">{clientDetail.emergencyContact}</div>
+
+      <Label className="flex items-center gap-2 flex-shrink-0">
+        <span className="icon-[material-symbols--call] text-accent" />
+        CMS 級數
+      </Label>
+      <div className="flex items-center">{clientDetail.cms}</div>
+
+      <Label className="flex items-center gap-2 flex-shrink-0">
+        <span className="icon-[material-symbols--call] text-accent" />
+        身份別
+      </Label>
+      <div className="flex items-center">
+        {incomeCategoryMap[clientDetail.incomeCategory]}
+      </div>
+
+      <Label className="flex items-center gap-2 flex-shrink-0">
+        <span className="icon-[material-symbols--call] text-accent" />
+        重點看視對象
+      </Label>
+      <div className="flex items-center">
+        {clientDetail.isHighRisk ? '是' : '否'}
+      </div>
 
       <Label className="flex items-center gap-2 flex-shrink-0">
         <span className="icon-[material-symbols--call] text-accent" />

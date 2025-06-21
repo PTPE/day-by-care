@@ -49,9 +49,14 @@ export type Database = {
           client_icon: string | null;
           client_id: string;
           client_name: string;
+          cms: string | null;
           created_at: string;
           emergency_contact: string;
           emergency_contact_phone: string;
+          income_category:
+            | Database['public']['Enums']['income_category']
+            | null;
+          is_high_risk: boolean | null;
           office_phone: string;
           service_item_ids: Database['public']['Enums']['service_item_id'][];
           supervisor_name: string;
@@ -64,9 +69,14 @@ export type Database = {
           client_icon?: string | null;
           client_id?: string;
           client_name?: string;
+          cms?: string | null;
           created_at?: string;
           emergency_contact?: string;
           emergency_contact_phone?: string;
+          income_category?:
+            | Database['public']['Enums']['income_category']
+            | null;
+          is_high_risk?: boolean | null;
           office_phone?: string;
           service_item_ids: Database['public']['Enums']['service_item_id'][];
           supervisor_name?: string;
@@ -79,24 +89,21 @@ export type Database = {
           client_icon?: string | null;
           client_id?: string;
           client_name?: string;
+          cms?: string | null;
           created_at?: string;
           emergency_contact?: string;
           emergency_contact_phone?: string;
+          income_category?:
+            | Database['public']['Enums']['income_category']
+            | null;
+          is_high_risk?: boolean | null;
           office_phone?: string;
           service_item_ids?: Database['public']['Enums']['service_item_id'][];
           supervisor_name?: string;
           supervisor_phone?: string;
           user_id?: string;
         };
-        Relationships: [
-          {
-            foreignKeyName: 'client_user_id_fkey';
-            columns: ['user_id'];
-            isOneToOne: false;
-            referencedRelation: 'user';
-            referencedColumns: ['id'];
-          },
-        ];
+        Relationships: [];
       };
       schedule: {
         Row: {
@@ -180,27 +187,6 @@ export type Database = {
           },
         ];
       };
-      user: {
-        Row: {
-          created_at: string;
-          email: string | null;
-          id: string;
-          name: string | null;
-        };
-        Insert: {
-          created_at?: string;
-          email?: string | null;
-          id?: string;
-          name?: string | null;
-        };
-        Update: {
-          created_at?: string;
-          email?: string | null;
-          id?: string;
-          name?: string | null;
-        };
-        Relationships: [];
-      };
     };
     Views: {
       [_ in never]: never;
@@ -246,6 +232,7 @@ export type Database = {
       };
     };
     Enums: {
+      income_category: 'low' | 'mid-low' | 'general';
       service_item_id:
         | 'BA01'
         | 'BA02'
@@ -383,6 +370,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
+      income_category: ['low', 'mid-low', 'general'],
       service_item_id: [
         'BA01',
         'BA02',

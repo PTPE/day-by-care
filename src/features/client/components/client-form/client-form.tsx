@@ -18,7 +18,14 @@ import {
 } from '@/features/client/hooks/query';
 import routes from '@/const/routes';
 import LoadingSpinner from '@/ui/loading-spinner';
-import { ServiceItemIds } from '@/types/client';
+import { IncomeCategory, ServiceItemIds } from '@/types/client';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/ui/select';
 
 type Props = {
   defaultValues: z.infer<typeof clientFormSchema>;
@@ -121,6 +128,79 @@ export default function ClientForm({ defaultValues }: Props) {
               {errors.emergencyContactPhone?.message}
             </p>
           </div>
+          <div>
+            <Label>CMS 級數</Label>
+            <Select
+              onValueChange={(value) => {
+                setValue('cms', value);
+              }}
+              defaultValue={watch('cms')}
+            >
+              <div className="flex items-center gap-2">
+                <SelectTrigger className="bg-secondary">
+                  <SelectValue placeholder="CMS 級數" />
+                </SelectTrigger>
+              </div>
+
+              <SelectContent>
+                <SelectItem value="1">1</SelectItem>
+                <SelectItem value="2">2</SelectItem>
+                <SelectItem value="3">3</SelectItem>
+                <SelectItem value="4">4</SelectItem>
+                <SelectItem value="5">5</SelectItem>
+                <SelectItem value="6">6</SelectItem>
+                <SelectItem value="7">7</SelectItem>
+                <SelectItem value="8">8</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-red-500 text-sm">{errors.cms?.message}</p>
+          </div>
+          <div>
+            <Label>身份別</Label>
+            <Select
+              onValueChange={(value: IncomeCategory) => {
+                setValue('incomeCategory', value);
+              }}
+              defaultValue={watch('incomeCategory')}
+            >
+              <div className="flex items-center gap-2">
+                <SelectTrigger className="bg-secondary">
+                  <SelectValue placeholder="身份別" />
+                </SelectTrigger>
+              </div>
+
+              <SelectContent>
+                <SelectItem value="general">一般戶（16%）</SelectItem>
+                <SelectItem value="mid-low">中低戶（5%）</SelectItem>
+                <SelectItem value="low">低收（0%）</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-red-500 text-sm">
+              {errors.incomeCategory?.message}
+            </p>
+          </div>
+          <div>
+            <Label>重點看視對象</Label>
+            <Select
+              onValueChange={(value) => {
+                const isHighRisk = value === 'yes';
+                setValue('isHighRisk', isHighRisk);
+              }}
+              defaultValue={watch('incomeCategory') ? 'yes' : 'no'}
+            >
+              <div className="flex items-center gap-2">
+                <SelectTrigger className="bg-secondary">
+                  <SelectValue placeholder="是否為重點看視對象" />
+                </SelectTrigger>
+              </div>
+
+              <SelectContent>
+                <SelectItem value="yes">是</SelectItem>
+                <SelectItem value="no">否</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-red-500 text-sm">{errors.isHighRisk?.message}</p>
+          </div>
         </div>
 
         <div className="bg-card p-5 rounded-lg space-y-5">
@@ -134,12 +214,12 @@ export default function ClientForm({ defaultValues }: Props) {
             <Label>服務項目</Label>
             <ClientServiceSelect
               onChange={(serviceIds: ServiceItemIds[]) => {
-                setValue('serviceItems', serviceIds);
+                setValue('serviceItemIds', serviceIds);
               }}
-              serviceItemsIds={watch('serviceItems') || []}
+              serviceItemsIds={watch('serviceItemIds') || []}
             />
             <p className="text-red-500 text-sm">
-              {errors.serviceItems?.message}
+              {errors.serviceItemIds?.message}
             </p>
           </div>
         </div>

@@ -21,6 +21,10 @@ export type ServiceItemIds =
   | 'BA23'
   | 'BA24';
 
+export type IncomeCategory = 'low' | 'mid-low' | 'general';
+
+export type CMS = '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8';
+
 export type Client = {
   clientId: string;
   clientName: string;
@@ -33,6 +37,9 @@ export type Client = {
   supervisorPhone: string;
   serviceItemIds: ServiceItemIds[];
   officePhone: string;
+  incomeCategory: IncomeCategory;
+  cms: CMS;
+  isHighRisk: boolean;
 };
 
 export type Schedule = {

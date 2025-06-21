@@ -10,10 +10,13 @@ const defaultValues = {
   address: '',
   emergencyContact: '',
   emergencyContactPhone: '',
-  serviceItems: [],
+  serviceItemIds: [],
   supervisorName: '',
   supervisorPhone: '',
   officePhone: '',
+  isHighRisk: false,
+  cms: '',
+  incomeCategory: 'low',
 } as z.infer<typeof clientFormSchema>;
 
 export default function CreateClientPage() {

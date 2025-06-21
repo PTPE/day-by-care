@@ -16,18 +16,5 @@ export default async function ClientPage({
 
   const clientData = (await getClients(supabase, { clientIds: [clientId] }))[0];
 
-  const defaultValues = {
-    clientIcon: clientData.clientIcon,
-    clientName: clientData.clientName,
-    birthday: clientData.birthday,
-    address: clientData.address,
-    emergencyContact: clientData.emergencyContact,
-    emergencyContactPhone: clientData.emergencyContactPhone,
-    serviceItems: clientData.serviceItemIds,
-    supervisorName: clientData.supervisorName,
-    supervisorPhone: clientData.supervisorPhone,
-    officePhone: clientData.officePhone,
-  };
-
-  return <ClientForm defaultValues={defaultValues} />;
+  return <ClientForm defaultValues={clientData} />;
 }

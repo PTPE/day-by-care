@@ -1,4 +1,4 @@
-import { Client, Schedule } from '@/types/client';
+import { Client, CMS, IncomeCategory, Schedule } from '@/types/client';
 import { TypedSupabaseClient } from '@/utils/supabase/types';
 
 export type GetClientsParams = {
@@ -30,6 +30,7 @@ export async function getClients(
   }
 
   const { data: clients, error: clientError } = await clientQuery;
+
   if (clientError) throw new Error(clientError.message);
 
   if (!clients || clients.length === 0) return [];
@@ -47,6 +48,7 @@ export async function getClients(
   scheduleQuery = scheduleQuery.in('client_id', clientIdList);
 
   const { data: schedules, error: scheduleError } = await scheduleQuery;
+
   if (scheduleError) throw new Error(scheduleError.message);
 
   const scheduleMap = new Map<string, { date: string }[]>();
@@ -68,6 +70,9 @@ export async function getClients(
     supervisorPhone: client.supervisor_phone,
     serviceItemIds: client.service_item_ids ?? [],
     officePhone: client.office_phone,
+    cms: (client.cms || '1') as CMS,
+    incomeCategory: client.income_category as IncomeCategory,
+    isHighRisk: client.is_high_risk || false,
   }));
 }
 

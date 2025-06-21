@@ -20,6 +20,9 @@ export default function ClientExpandableCard({ client }: Props) {
   const router = useRouter();
 
   const clientDetail = {
+    cms: client.cms,
+    isHighRisk: client.isHighRisk,
+    incomeCategory: client.incomeCategory,
     address: client.address,
     birthday: client.birthday,
     emergencyContact: client.emergencyContact,
