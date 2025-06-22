@@ -3,6 +3,7 @@ import { zhTW } from 'date-fns/locale';
 
 import { Client, ServiceTime } from '@/types/client';
 import { serviceItemMap } from '@/const/service-items';
+import { incomeCategoryMap } from '@/const/income-category';
 
 type Props = {
   year: number;
@@ -51,17 +52,15 @@ export default function FirstHalfSchedulePdf({
           <th
             scope="col"
             colSpan={18}
-            className={`text-left border-none ${downloadCellClass}`}
+            className={`border-none ${downloadCellClass}`}
           >
-            個案姓名：{client.clientName}
-          </th>
-        </tr>
-        <tr>
-          <th
-            colSpan={18}
-            className={`text-left border-none ${downloadCellClass}`}
-          >
-            個案地址：{client.address}
+            <div className="flex justify-between">
+              <div>個案姓名：{client.clientName}</div>
+              <div> 個案地址：{client.address}</div>
+              <div>身份別：{incomeCategoryMap[client.incomeCategory]}</div>
+              <div>CMS:：{client.cms}</div>
+              <div>{client.isHighRisk ? '為' : '非'}重點看視對象</div>
+            </div>
           </th>
         </tr>
       </thead>
