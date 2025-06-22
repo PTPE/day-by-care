@@ -58,22 +58,26 @@ export async function getClients(
     scheduleMap.set(s.client_id, arr);
   });
 
-  return clients.map((client) => ({
-    clientId: client.client_id,
-    clientName: client.client_name,
-    clientIcon: client.client_icon ?? '',
-    birthday: client.birthday,
-    address: client.address ?? null,
-    emergencyContact: client.emergency_contact,
-    emergencyContactPhone: client.emergency_contact_phone ?? null,
-    supervisorName: client.supervisor_name ?? null,
-    supervisorPhone: client.supervisor_phone,
-    serviceItemIds: client.service_item_ids ?? [],
-    officePhone: client.office_phone,
-    cms: (client.cms || '1') as CMS,
-    incomeCategory: client.income_category as IncomeCategory,
-    isHighRisk: client.is_high_risk || false,
-  }));
+  const activeClientIds = new Set(schedules.map((s) => s.client_id));
+
+  return clients
+    .filter((client) => activeClientIds.has(client.client_id)) // ← 加上這行過濾
+    .map((client) => ({
+      clientId: client.client_id,
+      clientName: client.client_name,
+      clientIcon: client.client_icon ?? '',
+      birthday: client.birthday,
+      address: client.address ?? null,
+      emergencyContact: client.emergency_contact,
+      emergencyContactPhone: client.emergency_contact_phone ?? null,
+      supervisorName: client.supervisor_name ?? null,
+      supervisorPhone: client.supervisor_phone,
+      serviceItemIds: client.service_item_ids ?? [],
+      officePhone: client.office_phone,
+      cms: (client.cms || '1') as CMS,
+      incomeCategory: client.income_category as IncomeCategory,
+      isHighRisk: client.is_high_risk || false,
+    }));
 }
 
 export type GetSchedulesParams = {
