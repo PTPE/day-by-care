@@ -2,7 +2,6 @@ import { useSearchParams } from 'next/navigation';
 
 import fillMissingServiceDates from '@/utils/fill-missing-service-dates';
 import { getMonthRange } from '@/utils/get-month-range';
-import { calculateServiceTimeLengthInHours } from '@/utils/calculate-service-time-in-hours';
 import getTotalServiceHours from '@/utils/calculate-total-service-time-in-hours';
 import { ServiceTime } from '@/types/client';
 
@@ -29,11 +28,14 @@ export default function ServiceTimePerClient({ serviceTime }: Props) {
     <>
       <div className="flex gap-5 flex-1">
         {thisMonthServiceTime.map((day) => {
-          const thisDayServiceHours = calculateServiceTimeLengthInHours({
-            date: day.date,
-            start: day.start || '',
-            end: day.end || '',
-          });
+          const thisDayServiceHours = getTotalServiceHours(
+            day.serviceTime.map((time) => ({
+              date: day.date || '',
+              start: time.start || '',
+              end: time.end || '',
+            }))
+          );
+
           return (
             <div
               key={day.date}
@@ -48,7 +50,6 @@ export default function ServiceTimePerClient({ serviceTime }: Props) {
           );
         })}
       </div>
-
       <div className="min-w-[50px]">{totalTenthHours}</div>
     </>
   );

@@ -1,11 +1,12 @@
 import { format } from 'date-fns';
 import { zhTW } from 'date-fns/locale';
 
-import { Client, ServiceTime } from '@/types/client';
+import { Client } from '@/types/client';
 import { serviceItemMap } from '@/const/service-items';
+import { FilledServiceTime } from '@/utils/fill-missing-service-dates';
 
 type Props = {
-  serviceTime: ServiceTime[];
+  serviceTime: FilledServiceTime[];
   client: Client;
 };
 
@@ -78,7 +79,12 @@ export default function SecondHalfSchedulePdf({ serviceTime, client }: Props) {
               className={`text-center ${downloadCellClass}`}
               colSpan={1}
             >
-              {time.start}
+              {time.serviceTime.map((t) => (
+                <>
+                  {t.start}
+                  <br />
+                </>
+              ))}
             </td>
           ))}
         </tr>
@@ -92,7 +98,12 @@ export default function SecondHalfSchedulePdf({ serviceTime, client }: Props) {
               className={`text-center ${downloadCellClass}`}
               colSpan={1}
             >
-              {time.end}
+              {time.serviceTime.map((t) => (
+                <>
+                  {t.end}
+                  <br />
+                </>
+              ))}
             </td>
           ))}
         </tr>

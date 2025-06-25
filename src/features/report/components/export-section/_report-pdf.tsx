@@ -7,7 +7,6 @@ import { zhTW } from 'date-fns/locale';
 import { Schedule } from '@/types/client';
 import fillMissingServiceDates from '@/utils/fill-missing-service-dates';
 import { getMonthRange } from '@/utils/get-month-range';
-import { calculateServiceTimeLengthInHours } from '@/utils/calculate-service-time-in-hours';
 import getTotalServiceHours from '@/utils/calculate-total-service-time-in-hours';
 import './report.css';
 
@@ -106,11 +105,13 @@ export default function ReportPdf({ schedules }: Props) {
               {clients.map((client) => {
                 const dayService = client.serviceTime[i];
                 const serviceTimeLength =
-                  calculateServiceTimeLengthInHours({
-                    date: dayService.date,
-                    start: dayService.start || '',
-                    end: dayService.end || '',
-                  }) || '';
+                  getTotalServiceHours(
+                    dayService.serviceTime.map((time) => ({
+                      date: dayService.date,
+                      start: time.start,
+                      end: time.end,
+                    }))
+                  ) || '';
                 return <td key={client.clientName}>{serviceTimeLength}</td>;
               })}
               {Array.from({ length: 8 - clients.length }).map((_, index) => (
