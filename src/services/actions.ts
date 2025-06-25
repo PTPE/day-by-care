@@ -65,7 +65,7 @@ export async function getIbonTokens() {
       body: JSON.stringify({
         Data: {
           disposableId,
-          fV: '3.2.3',
+          fV: '3.4.2',
           key,
           memberToken: '',
           t1,
@@ -93,7 +93,7 @@ export async function getPinCode() {
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
-        FV: '3.2.3',
+        FV: '3.4.2',
         Key: key,
       },
       body: JSON.stringify({
@@ -182,7 +182,7 @@ export async function sendNotifyEmail({
       headers: {
         'Content-Type': 'application/json',
         Authorization: token,
-        FV: '3.2.3',
+        FV: '3.4.2',
         Key: key,
       },
       body: JSON.stringify({
