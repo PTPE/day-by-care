@@ -38,7 +38,7 @@ export default function ClientServiceCard({ schedule, client }: Props) {
           {totalHours}小時
         </div>
 
-        <div className="flex text-sm gap-2">
+        <div className="flex text-sm gap-2 flex-wrap">
           {client.serviceItemIds.map((serviceItemId) => (
             <div
               key={serviceItemId}
