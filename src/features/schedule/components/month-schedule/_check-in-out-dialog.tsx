@@ -21,7 +21,7 @@ import {
 import Button from '@/ui/button';
 import { DateString } from '@/features/schedule/types';
 import LoadingSpinner from '@/ui/loading-spinner';
-import { getValidMonthScheduleServiceTime } from '@/features/schedule/utils';
+// import { getValidMonthScheduleServiceTime } from '@/features/schedule/utils';
 import { useScheduleUrlParams } from '@/features/schedule/hooks/useScheduleUrlParams';
 import { useUpdateServiceTimeByDay } from '@/hooks/query';
 
@@ -95,12 +95,12 @@ const CheckInOutDialog = forwardRef<CheckInOutDialogRef, Props>(
         },
       }));
 
-      const validMonthSchedule =
-        getValidMonthScheduleServiceTime(monthSchedule);
+      // const validMonthSchedule =
+      //   getValidMonthScheduleServiceTime(monthSchedule);
 
       const params = {
         clientId,
-        serviceTimePerDay: validMonthSchedule,
+        serviceTimePerDay: monthSchedule,
       };
 
       updateSchedule(params);

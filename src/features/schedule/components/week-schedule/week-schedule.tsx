@@ -9,7 +9,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { DayOfWeek as DayOfWeekType } from '@/features/schedule/types';
 import { weekScheduleSchema } from '@/features/schedule/schema/week-schedule-schema';
 import {
-  getValidMonthScheduleServiceTime,
+  // getValidMonthScheduleServiceTime,
   weekScheduleToMonthSchedule,
 } from '@/features/schedule/utils';
 import Button from '@/ui/button';
@@ -53,11 +53,11 @@ export default function WeekSchedule() {
       weekSchedule: data,
     });
 
-    const validMonthSchedule = getValidMonthScheduleServiceTime(monthSchedule);
+    // const validMonthSchedule = getValidMonthScheduleServiceTime(monthSchedule);
 
     updateSchedule({
       clientId,
-      serviceTimePerDay: validMonthSchedule,
+      serviceTimePerDay: monthSchedule,
     });
   };
 
