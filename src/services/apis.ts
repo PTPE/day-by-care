@@ -58,10 +58,13 @@ export async function getClients(
     scheduleMap.set(s.client_id, arr);
   });
 
-  const activeClientIds = new Set(schedules.map((s) => s.client_id));
+  const activeClientIds =
+    startDate || endDate
+      ? new Set(schedules.map((s) => s.client_id))
+      : new Set(clients.map((client) => client.client_id));
 
   return clients
-    .filter((client) => activeClientIds.has(client.client_id)) // ← 加上這行過濾
+    .filter((client) => activeClientIds.has(client.client_id))
     .map((client) => ({
       clientId: client.client_id,
       clientName: client.client_name,
