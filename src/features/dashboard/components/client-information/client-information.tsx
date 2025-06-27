@@ -16,7 +16,13 @@ export default function ClientInformation({ selectedClient }: Props) {
     <div className="flex flex-col gap-5 bg-card p-4 rounded-lg lg:p-8">
       <div className="flex items-center gap-5">
         <div className="w-20 aspect-square rounded-full flex items-center justify-center p-2 shadow-[0_7px_29px_0px_rgba(100,100,111,0.2)]">
-          <div className={`${selectedClient.clientIcon} w-full h-full`} />
+          {selectedClient.clientIcon ? (
+            <div className={`${selectedClient.clientIcon} w-full h-full`} />
+          ) : (
+            <div className="text-2xl font-bold">
+              {selectedClient.clientName[0]}
+            </div>
+          )}
         </div>
 
         <div className="text-xl font-extrabold tracking-widest">

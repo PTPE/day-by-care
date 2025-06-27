@@ -26,6 +26,9 @@ export function useUpdateServiceTimeByDay({
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEYS.SCHEDULES],
       });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEYS.CLIENTS],
+      });
 
       onSuccessCb?.();
     },
@@ -50,7 +53,7 @@ export function useGetSchedules(params: GetSchedulesParams) {
   return { data, isLoading, error };
 }
 
-export function useGetClients(params: GetClientsParams) {
+export function useGetClients(params: GetClientsParams = {}) {
   const supabaseClient = useSupabaseBrowser();
 
   const { data, isLoading, error } = useQuery({

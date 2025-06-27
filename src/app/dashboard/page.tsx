@@ -45,10 +45,7 @@ export default async function Dashboard({
   return (
     <div className="space-y-5 pb-5 lg:mt-5">
       <HydrationBoundary state={dehydrate(queryClient)}>
-        <ClientList
-          clientList={clientList}
-          selectedClientId={selectedClientId}
-        />
+        <ClientList selectedClientId={selectedClientId} />
         <ClientInformation selectedClient={selectedClient} />
         <WeekSchedule selectedClientId={selectedClientId} />
         <Attendance selectedClientId={selectedClientId} />

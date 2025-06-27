@@ -1,15 +1,16 @@
 'use client';
 
-import { Client } from '@/types/client';
+import { useGetClients } from '@/hooks/query';
 
 import ClientListItem from './_client-list-item';
 
 type Props = {
   selectedClientId: string;
-  clientList: Client[];
 };
 
-export default function ClientList({ selectedClientId, clientList }: Props) {
+export default function ClientList({ selectedClientId }: Props) {
+  const { data: clientList } = useGetClients();
+
   return (
     <div className="flex gap-2 overflow-y-auto py-3">
       {clientList?.map((client) => (
