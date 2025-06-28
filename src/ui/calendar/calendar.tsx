@@ -43,9 +43,10 @@ function Calendar({
             : '[&:has([aria-selected])]:rounded-md'
         ),
         day: cn(
-          'w-10 h-10 aspect-square font-normal aria-selected:bg-accent aria-selected:text-accent-foreground border-none rounded-full'
+          'w-10 h-10 font-normal aria-selected:bg-accent aria-selected:text-accent-foreground border-none rounded-full'
         ),
-        day_button: 'w-full aspect-square font-normal aria-selected:bg-primary',
+        day_button:
+          'w-full h-full aspect-square font-normal aria-selected:bg-primary',
         day_range_start: 'day-range-start',
         day_range_end: 'day-range-end',
         day_selected:
